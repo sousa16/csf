@@ -39,11 +39,14 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 # GUI + report toolchain. Last because it changes least often and a rebuild
 # of the layers above should not have to redo TeX's format generation.
+# lmodern is a separate Debian package, not part of texlive-latex-recommended,
+# and both the course's report template and the generated exercise sheets
+# \usepackage it -- without it neither compiles.
 RUN apt-get update && apt-get install -y --no-install-recommends \
       kali-desktop-xfce dbus-x11 xterm \
       tigervnc-standalone-server tigervnc-common novnc websockify \
       texlive-latex-recommended texlive-latex-extra texlive-fonts-recommended \
-      latexmk \
+      lmodern latexmk \
  && apt-get clean && rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
 
 # uid 1000 so bind-mounted evidence keeps host ownership: docker runs this uid
