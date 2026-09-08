@@ -1,0 +1,51 @@
+# --- Evidence and derived artifacts ---
+# Working copies, carved files, decoded output and session logs are produced by
+# running the analysis; they are reproducible from the register and must not be
+# committed. Manual §9 also forbids overwriting them, which git would do on a
+# merge. The register itself IS committed -- it is the report's backbone.
+results/*
+!results/.gitkeep
+!results/artifact-register.md
+
+# Disk and memory images. These reach GB scale and github rejects >100MB.
+*.dd
+*.raw
+*.img
+*.E01
+*.Ex01
+*.aff4
+*.vmem
+*.mem
+*.lime
+*.pcapng.gz
+
+# Recovered passwords and John state -- Manual §8.
+*.pot
+.john/
+
+# --- LaTeX build output ---
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.lof
+*.log
+*.lot
+*.out
+*.synctex.gz
+*.toc
+main.pdf
+
+# --- OS junk ---
+.DS_Store
+._*
+.Spotlight-V100
+Thumbs.db
+
+# --- Editor / scratch ---
+.idea/
+*.swp
+*~
+scratch/
+*.tmp
