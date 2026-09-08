@@ -20,6 +20,17 @@ else
     exit 1
 fi
 
+# On macOS podman runs inside a VM that has to be started first; without this
+# the failure is an opaque connection error.
+if [ "$ENGINE" = podman ] && [ "$(uname -s)" = "Darwin" ]; then
+    if ! podman machine list --format '{{.Running}}' 2>/dev/null | grep -q true; then
+        echo "No podman machine is running. First time on this Mac:" >&2
+        echo "  podman machine init --cpus 4 --memory 8192 --disk-size 60" >&2
+        echo "  podman machine start" >&2
+        exit 1
+    fi
+fi
+
 # The course materials repo, when this clone sits inside it as labs/project.
 # A groupmate cloning csf on its own simply gets no /material mount.
 MATERIAL=""
@@ -27,12 +38,20 @@ if [ -f "$REPO/../../STUDY-PLAN.md" ]; then
     MATERIAL="$(cd "$REPO/../.." && pwd)"
 fi
 
+# :z relabels a bind mount for SELinux. It is meaningless on Ubuntu (AppArmor)
+# and rejected by some macOS podman setups, so only ask for it where SELinux
+# is actually enforcing.
+MOUNTOPT=""
+if command -v selinuxenabled >/dev/null 2>&1 && selinuxenabled 2>/dev/null; then
+    MOUNTOPT=":z"
+fi
+
 run_args() {
     # uid 1000 inside must be uid 1000 outside, or bind-mounted evidence comes
     # back owned by someone else and the SHA-256 lineage gets confusing.
     [ "$ENGINE" = podman ] && printf '%s\n' --userns=keep-id
-    printf '%s\n' -v "$REPO:/work:z" -v "$HOME_VOL:/home/kali"
-    [ -n "$MATERIAL" ] && printf '%s\n' -v "$MATERIAL:/material:z"
+    printf '%s\n' -v "$REPO:/work$MOUNTOPT" -v "$HOME_VOL:/home/kali"
+    [ -n "$MATERIAL" ] && printf '%s\n' -v "$MATERIAL:/material$MOUNTOPT"
     # Evidence handling is the subject of the course: default to no network so
     # an artifact cannot call home while being examined. --net re-enables it.
     [ "${WANT_NET:-0}" = 1 ] || printf '%s\n' --network=none

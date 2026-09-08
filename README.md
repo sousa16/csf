@@ -17,12 +17,25 @@ Lab component is 50% of the grade with a minimum of 8/20. The baseline is
 
 ## Setup on a new machine
 
-Install a container engine (podman or docker; podman on macOS via
-`brew install podman && podman machine init && podman machine start`), then:
+**Linux** — install podman or docker, then:
 
     git clone git@github.com:sousa16/csf.git
-    cd csf && ./kali.sh build      # large — kali-tools-forensics, ~20-40 min
+    cd csf && ./kali.sh build      # ~5.3 GB, 20-40 min
     ./kali.sh shell
+
+**macOS** — the podman VM's defaults are too small for this image, so size it
+up front rather than after a failed build:
+
+    brew install podman
+    podman machine init --cpus 4 --memory 8192 --disk-size 60
+    podman machine start
+
+then the same three commands. `kali.sh` refuses with instructions if no
+machine is running.
+
+Every package in the Containerfile resolves on **arm64** as well as amd64
+(checked against the Kali arm64 index), so an Apple Silicon Mac builds and runs
+natively — no emulation, which is what keeps `john` usable.
 
 That is the whole install. No VM, no VirtualBox, nothing on the host but the
 engine. The image is Kali rolling with the full forensics metapackage, John
