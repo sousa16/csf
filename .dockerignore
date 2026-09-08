@@ -1,0 +1,4 @@
+# Only scripts/ is COPYed into the image. Everything else -- evidence,
+# reports, results -- would just be sent to the engine as build context.
+*
+!scripts/
