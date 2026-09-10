@@ -100,5 +100,13 @@ and register every artifact you touch as you go, not afterwards from memory.
   (`script --flush --timing=results/session.timing results/session.typescript`),
   never retyped. Failed commands and timeouts get recorded too (§5).
 - Observation and interpretation stay in separate sentences (§6).
+- **Timestamps are recorded in WEST (UTC+01:00)**, and every timestamp states
+  its source. Where a source gives a different zone (file metadata and our own
+  tooling are usually UTC), convert to WEST and say so in the Notes column —
+  the assignment requires stating any normalization or conversion applied.
+  Fill the timeline's optional epoch column when you have it; epoch is
+  unambiguous and sorts correctly regardless of zone.
+  Note WEST is summer time and ends 25 Oct 2026; after that Portugal is WET
+  (UTC+00:00). Everything in Lab 1's window (19–22 Aug) is WEST.
 - Nobody commits a recovered password, a real personal detail, or a raw image
   file (§8, and GitHub rejects >100MB anyway).
