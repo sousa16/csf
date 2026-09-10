@@ -3,9 +3,9 @@
 # running the analysis; they are reproducible from the register and must not be
 # committed. Manual §9 also forbids overwriting them, which git would do on a
 # merge. The register itself IS committed -- it is the report's backbone.
-results/*
-!results/.gitkeep
-!results/artifact-register.md
+lab*/results/*
+!lab*/results/.gitkeep
+!lab*/results/artifact-register.md
 
 # Disk and memory images. These reach GB scale and github rejects >100MB.
 *.dd
