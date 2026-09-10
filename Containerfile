@@ -49,6 +49,14 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
       lmodern latexmk \
  && apt-get clean && rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
 
+# PDF tooling. kali-tools-forensics does not pull poppler, and PDFs keep
+# turning up: Tutorial 1 hands out a broken.pdf, and Lab 1's only starting
+# artifact is an image embedded in the assignment PDF. pdfimages/pdftotext are
+# the way in. Own layer, so adding it does not invalidate the ~5 GB above.
+RUN apt-get update && apt-get install -y --no-install-recommends \
+      poppler-utils \
+ && apt-get clean && rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
+
 # uid 1000 so bind-mounted evidence keeps host ownership: docker runs this uid
 # directly, podman maps it with --userns=keep-id (both set by ./kali.sh).
 # Password "kali" per Tutorial 0, so the password-auditing demos behave as the
