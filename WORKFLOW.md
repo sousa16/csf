@@ -26,6 +26,10 @@ environment.
 ## 2. While working
 
 - **Never modify `artifacts/`.** Copy into `results/` and work on the copy (§2).
+- **Anything you recover goes in `evidence/`**, not `results/`. That directory is
+  committed and is what gets zipped; `results/` is scratch and is ignored. Put it
+  there *before* you hash and register it, so the registered path is its final
+  one — moving a registered artifact later makes every path in the register stale.
 - **Register every artifact you recover, as you recover it** — not afterwards
   from memory. What the assignment requires per artifact: file name, where it
   came from (its parent artifact and the command that produced it), and its
@@ -69,11 +73,14 @@ committed deliberately.
 
 ## 4. Before the deadline
 
-- **Regenerate the recovered artifacts.** They are not in git, so whoever builds
-  the ZIP needs to re-run each recovery from the register. Do this dry run a few
-  days early — a recovery that will not reproduce is something you want to find
-  on the 18th, not the 22nd. It doubles as the reproducibility check the
-  assignment asks for.
+- **Check every hash in the report against the file in `evidence/`.** They are
+  committed, so no regeneration is needed — but the report's artifact table and
+  the shipped bytes have to agree, and that is worth verifying rather than
+  assuming. `sha256sum -c` over the register is a minute's work.
+- **Re-run a couple of recoveries from the register** as a spot check. Not to
+  produce the artifacts, but to confirm the documented commands actually
+  reproduce them — that is the reproducibility the assignment asks for, and a
+  command that does not reproduce is better found on the 18th than the 22nd.
 - **Paste the events CSV into the xlsx template**, sorted chronologically. One
   person, once — the xlsx is binary and cannot be merged.
 - **Walk each other through your findings** before the freeze. The defense

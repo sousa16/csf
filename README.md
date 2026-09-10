@@ -24,8 +24,14 @@ Lab component is 50% of the grade with a minimum of 8/20. The baseline is
 
     lab1/  lab2/  lab3/
       artifacts/   material handed out by the teaching team — never modified (§2)
-      results/     everything the analysis produces — gitignored, except the register
+      evidence/    what we recovered — committed, and what goes in the ZIP
+      results/     scratch: working copies, carving output, session logs — ignored
       report/      LaTeX, from the course template
+
+**If it goes in the ZIP, it goes in `evidence/`.** The report states each
+artifact's SHA-256 and the submitted file has to match it byte for byte, so the
+recovered bytes are committed rather than regenerated at packaging time — we are
+not all on the same environment and a re-run can hash differently.
     scripts/
       forensic-env.sh       §1 — record OS, locale and tool versions
       register-artifact.sh  §3/§4 — register an artifact with parent, command, digest

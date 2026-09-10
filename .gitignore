@@ -3,9 +3,18 @@
 # running the analysis; they are reproducible from the register and must not be
 # committed. Manual §9 also forbids overwriting them, which git would do on a
 # merge. The register itself IS committed -- it is the report's backbone.
+# results/ is scratch: working copies, carving output, session logs. Recovered
+# evidence does NOT live here -- it goes in lab*/evidence/, which is committed,
+# because the report states each artifact's SHA-256 and the ZIP must contain
+# that exact file. Regenerating artifacts on another machine risks a different
+# hash, and we are deliberately not all on the same environment.
+#
+# Session logs stay out on purpose: a typescript is where a recovered password
+# ends up (§8). Review one before it goes in the ZIP.
 lab*/results/*
 !lab*/results/.gitkeep
 !lab*/results/artifact-register.md
+!lab*/results/environment-and-tools*.txt
 
 # Disk and memory images. These reach GB scale and github rejects >100MB.
 *.dd
