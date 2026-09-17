@@ -71,6 +71,15 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
  && gem install --no-document zsteg \
  && apt-get clean && rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
 
+# Memory-forensics framework. Volatility 3 is not packaged in Kali (SETUP.md),
+# so install it with pipx as its own layer. Pulls a set of Python deps; kept
+# last among the tool layers so adding it does not invalidate the ~5 GB above.
+# Install system-wide (venv in /opt/pipx, launcher in /usr/local/bin) rather
+# than into a home directory: the container runs as uid 1000 with /home/kali
+# bind-mounted from a named volume at runtime, which would mask anything
+# installed under the build-time home. /usr/local/bin is on every user's PATH.
+RUN PIPX_HOME=/opt/pipx PIPX_BIN_DIR=/usr/local/bin pipx install volatility3
+
 # uid 1000 so bind-mounted evidence keeps host ownership: docker runs this uid
 # directly, podman maps it with --userns=keep-id (both set by ./kali.sh).
 # Password "kali" per Tutorial 0, so the password-auditing demos behave as the

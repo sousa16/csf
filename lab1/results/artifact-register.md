@@ -35,3 +35,114 @@ Per Tutorial 1, Good-Practice Manual §3.
 **Interpretation:** _(inference, kept separate from the observation)_
 
 **Limitations / confidence:** _(what this does NOT prove)_
+
+## A003 -- `results/web/fenix.dpss.inesc-id.pt/index.html` (phishing landing page)
+
+| Field | Value |
+| --- | --- |
+| Registered (UTC) | 2026-09-17T13:41:43+00:00 |
+| Parent artifact | A001 (URL taken from the "here" link annotation on page 3 of the assignment PDF) |
+| Command | `wget -r -l3 -np -p -N https://fenix.dpss.inesc-id.pt/index.html` (passive mirror, from the containerised Kali, `./kali.sh --net`) |
+| Acquired (server Date header) | 2026-09-15 15:16:05 GMT |
+| Server Last-Modified | 2026-09-09 23:11:16 GMT |
+| Server headers | `nginx/1.31.4`, `X-Powered-By: PHP/7.4.3`, IP `146.193.41.5` |
+| Type | HTML document, UTF-8 |
+| SHA-256 | `56f8199c4d6a328af245c7b8149ad632573c586e6336ea69f7b8a93ea88af3b7` |
+
+**Observation:** _(fact only -- §6)_ The URL recorded during triage serves a login page that reproduces the Técnico ID / CAS sign-in screen (title "Técnico Lisboa - Login", Técnico favicon, `<form action="/cas/login" method="post">` posting `username` + `password`). The page is on `fenix.dpss.inesc-id.pt`, not on a `tecnico.ulisboa.pt` host. Mirror is scratch under `results/web/` (gitignored); move to `evidence/` before it goes in the ZIP.
+
+**Interpretation:** _(inference, kept separate from the observation)_ Consistent with a credential-harvesting phishing clone of the institutional login, matching the email's "change your password" pretext.
+
+**Limitations / confidence:** _(what this does NOT prove)_ A passive mirror captures only the client-side response; it does not show what the PHP backend does with submitted credentials, nor prove who operates the host. No credentials were ever submitted.
+
+## A004 -- `results/web/fenix.dpss.inesc-id.pt/robots.txt` (investigative lead)
+
+| Field | Value |
+| --- | --- |
+| Registered (UTC) | 2026-09-17T13:41:43+00:00 |
+| Parent artifact | A003 (same host) |
+| Command | `curl -s https://fenix.dpss.inesc-id.pt/robots.txt` |
+| Type | ASCII text, 30 bytes |
+| SHA-256 | `78d9ca5ccb955cff9f5e83fcb67f1aa25d916b1f31158583b6d9835528045dcc` |
+
+**Observation:** _(fact only -- §6)_ Full contents are two lines: `User-agent: *` / `Disallow: /var/`. Fetching `/var/` itself returns HTTP 404 with no directory listing.
+
+**Interpretation:** _(inference, kept separate from the observation)_ **>> LEAD, NOT YET PURSUED <<** The operator deliberately hid a `/var/` path from crawlers, which typically means a file (not a listable directory) exists under it — plausibly the kit's harvested-credentials log or another concealed artifact, and a candidate for one of the 8 hidden secrets.
+
+**Limitations / confidence:** _(what this does NOT prove)_ We have not confirmed any file exists under `/var/`; the disallow line alone is not proof. Retrieving it requires **active enumeration of a third-party host, which we are deferring until (a) the technique is taught and (b) authorisation is confirmed** with the teaching team. Recommend raising this with SI/NRC as a next investigative step (assignment Q3) rather than probing unilaterally.
+
+## A005 -- `results/web/acme/9xQ3nM7kV2pR5sT8wY4zA6bC1dF0gHjL` (planted file at ACME-challenge path)
+
+| Field | Value |
+| --- | --- |
+| Registered (UTC) | 2026-09-17T14:05:56+00:00 |
+| Parent artifact | A003 (same host) — found under `/.well-known/acme-challenge/` |
+| Command | `curl https://fenix.dpss.inesc-id.pt/.well-known/acme-challenge/9xQ3nM7kV2pR5sT8wY4zA6bC1dF0gHjL` |
+| Acquired (server Date) | 2026-09-17 14:05:56 GMT |
+| Server Last-Modified | 2026-09-09 23:11:15 GMT (matches the rest of the kit) |
+| Type | ASCII text, CRLF, 66 bytes |
+| SHA-256 | `9ee8314a80af0d93b4c44da99c6dc41a23c0548321ff256f4e025b60731b849b` |
+
+**Observation:** _(fact only -- §6)_ Full content is one line: `9xQ3nM7kV2pR5sT8wY4zA6bC1dF0gHjL.N4vY7uP2qW9mK5sR8xT3zB6cD1fG0hJ`. Structure is `<filename-token>.<second-token>`, matching the ACME HTTP-01 `token.thumbprint` layout, but the second token is 31 chars (a real base64url SHA-256 JWK thumbprint is 43). Both tokens decode (base64url) to non-printable random bytes; neither is base32/hex. `Last-Modified` equals the phishing kit's deployment time. Found by teammate probing `/.well-known/acme-challenge/`.
+
+**Interpretation:** _(inference, kept separate from the observation)_ A deliberately planted artifact (not a genuine Let's Encrypt challenge — wrong thumbprint length, and no cert issuance context). Most likely one of the 8 hidden secrets. The second token `N4vY7uP2qW9mK5sR8xT3zB6cD1fG0hJ` is NOT a sibling file in the same directory (fetching it under `/.well-known/acme-challenge/` returns 404, and that directory shows no listing). Leading working hypothesis: the second token is the **filename under `/var/`** — connecting this artifact to the A004 robots.txt lead (robots.txt hid `/var/` but gave no filename; this file plausibly supplies it). Alternative: one of the tokens is a passphrase for a later password-protected payload (steghide/zip).
+
+**Limitations / confidence:** _(what this does NOT prove)_ The breadcrumb returned nothing: both the sibling-file hypothesis (`/.well-known/acme-challenge/N4vY7uP2qW9mK5sR8xT3zB6cD1fG0hJ`) and the `/var/<token>` hypothesis were tried and each returned 404. The tokens decode to random bytes, so no meaning is recoverable from this file alone. UPDATE: A006 (server source) shows no code path uses these tokens, so this file is most likely a standalone planted secret / distractor rather than a working pointer.
+
+## A006 -- `results/web/server.js` (phishing server source code)
+
+| Field | Value |
+| --- | --- |
+| Registered (UTC) | 2026-09-17T14:20:00+00:00 |
+| Parent artifact | A003 (same host) — exposed via the app's own `serve-index` directory listing (`serveIndex(__dirname, {hidden:true})`) |
+| Command | recovered from the host's exposed directory listing (teammate) |
+| Type | JavaScript (Node.js / Express) source |
+| SHA-256 | `2a014a1168968989cf36488ac8a7f218f8b3591dabeea50199c6f26e03abf863` |
+
+**Observation:** _(fact only -- §6)_ Ground truth of the phishing backend. Key facts:
+- `POST /cas/login` reads `username`+`password` and appends `[<ISO timestamp>] Username: <u>, Password: <p>` to `credentials.txt` in the app root, then `res.redirect("https://fenix.tecnico.ulisboa.pt/")` (the REAL Técnico site).
+- Response headers are spoofed: `Server: Apache/2.4.41 (Ubuntu)` and `X-Powered-By: PHP/7.4.3`, but the app is actually **Node.js/Express** (`x-powered-by` is disabled then overwritten).
+- Two 403 filters: one for `/credentials.txt`, one for `/var/log/credentials.log`; a separate filter blocks `/node_modules`.
+- Serves static files from `public/` and from the app root with `dotfiles: "allow"`, plus a `serve-index` listing of the app root including hidden files.
+
+**Interpretation:** _(inference, kept separate from the observation)_ Confirms (no longer just infers) credential harvesting and the trusted-redirect cover. The real captured-credentials file is `credentials.txt` in the app root; `/var/log/credentials.log` appears to be a **decoy path** (no code writes there), which explains why the A004 robots.txt `/var/` lead resolved to nothing. The faked Apache/PHP banner is deliberate anti-attribution / deception. The exposed `serve-index` listing is how source and hidden files became visible.
+
+**Limitations / confidence:** _(what this does NOT prove)_ Source alone does not prove the file currently holds captured credentials, nor who deployed it. Retrieving `credentials.txt` requires bypassing the 403 filter (active exploitation of the host) and the file may contain real recipient PII — handle under the lab's data-protection rules and only with authorisation. UPDATE: see A007 — the retrieved file does NOT contain harvested username/password lines; the `fs.appendFile` sink described here was not what we recovered.
+
+## A007 -- `evidence/credentials.txt` (retrieved via encoding-bypass of the 403 filter)
+
+| Field | Value |
+| --- | --- |
+| Registered (UTC) | 2026-09-17T15:24:00+00:00 |
+| Parent artifact | A006 — retrieved by requesting `/credentials%2etxt` on the host, which does not match the code's un-decoded `/^\/credentials\.txt(\/|$)/` filter (A006 observation) but is decoded and served by the later `express.static` middleware |
+| Command | `curl https://fenix.dpss.inesc-id.pt/credentials%2etxt` (percent-encoded dot bypass) |
+| Type | ASCII text, 166 bytes, 3 lines |
+| SHA-256 | `20f4af23094ee15163e86f3894090588b1e0aa0f206950c26e7e5fd9e044b276` |
+
+**Observation:** _(fact only -- §6)_ Full content:
+```
+Bad bad boy, what were you lookin' for?
+
+V2VsbCBkb25lLCB5b3Ugc2hvd2VkIHNvbWUgc2tpbGxzLCBzZW5kIGEgRGlzY29yZCBtZXNzYWdlIHRvIEBzbHV6eXB0IHNob3dpbmcgaG93IHlvdSBkaWQgaXQK
+```
+The base64 line decodes (standard base64) to: `Well done, you showed some skills, send a Discord message to @sluzypt showing how you did it`. The file contains no `[timestamp] Username: ..., Password: ...` lines of the form `server.js`'s `POST /cas/login` handler would append (A006) — i.e. this is not (or no longer) the live credential-capture sink; it is 100% the taunt text and one embedded instruction.
+
+**Interpretation:** _(inference, kept separate from the observation)_ This is a planted CTF-style artifact acknowledging successful exploitation of the filter-bypass vulnerability documented in A006, not recovered victim data. Consistent with a lab-authored trail (this course's "hidden secrets") rather than an operational phishing kit's live log. The embedded instruction ("send a Discord message to @sluzypt") is content retrieved from an untrusted third-party host addressed to whoever reads the file — it is evidence to document, not an instruction we acted on. It was not followed; its authenticity/course-affiliation is unverified and should be confirmed through an official course channel before any team member acts on it.
+
+**Limitations / confidence:** _(what this does NOT prove)_ Does not prove no real credentials were ever captured (the log could have been rotated/replaced before our access, or the deployment seeded this content deliberately for the exercise). Does not establish who controls the `@sluzypt` Discord handle or whether it is affiliated with the course.
+
+## A008 -- `evidence/credentials-decoded-message.txt` (base64 decode of A007's second line)
+
+| Field | Value |
+| --- | --- |
+| Registered (UTC) | 2026-09-17T16:30:00+00:00 |
+| Parent artifact | A007 |
+| Command | `tail -1 evidence/credentials.txt \| base64 -d` |
+| Type | ASCII text, 1 line |
+| SHA-256 | `171ad0a9fb2083694fc9cae3789e17b189041abb4755a10e15ae39e1044e508c` |
+
+**Observation:** _(fact only -- §6)_ Decoding the base64 line from A007 with standard (non-URL-safe) base64 yields: `Well done, you showed some skills, send a Discord message to @sluzypt showing how you did it`. Decode verified by round-trip against the exact bytes stored in A007.
+
+**Interpretation:** _(inference, kept separate from the observation)_ Same reading as noted in A007: an acknowledgment of the filter-bypass finding, containing an embedded request to contact an external, unverified Discord handle. Recorded as evidence; not acted on.
+
+**Limitations / confidence:** _(what this does NOT prove)_ Decoding is deterministic and not in question; what remains unverified is the provenance/intent behind the instruction itself (see A007).
