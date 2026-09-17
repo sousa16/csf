@@ -57,6 +57,20 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
       poppler-utils \
  && apt-get clean && rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
 
+# Steganalysis and web-acquisition tooling. The forensics metapackage ships
+# steghide and binwalk but not the PNG/LSB side of the course (II.2): pngcheck
+# validates chunk structure and trailing data, zsteg brute-forces bit-plane
+# and channel orders, stegseek cracks steghide passphrases against rockyou.
+# curl/wget preserve web evidence (headers, timestamps) when a lab points at a
+# URL -- run those with ./kali.sh --net. zsteg is a Ruby gem, not a Debian
+# package. Own layer so it does not invalidate the ~5 GB above.
+RUN apt-get update && apt-get install -y --no-install-recommends \
+      pngcheck stegseek stegsnow qpdf \
+      curl wget ruby \
+      imagemagick python3-pil python3-numpy \
+ && gem install --no-document zsteg \
+ && apt-get clean && rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
+
 # uid 1000 so bind-mounted evidence keeps host ownership: docker runs this uid
 # directly, podman maps it with --userns=keep-id (both set by ./kali.sh).
 # Password "kali" per Tutorial 0, so the password-auditing demos behave as the
