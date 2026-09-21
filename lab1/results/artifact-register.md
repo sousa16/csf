@@ -214,3 +214,37 @@ The base64 line decodes (standard base64) to: `Well done, you showed some skills
 **Interpretation:** _(inference, kept separate from the observation)_
 
 **Limitations / confidence:** _(what this does NOT prove)_
+
+## A013 -- `results/acq/polish_cow.webp`
+
+| Field | Value |
+| --- | --- |
+| Registered (UTC) | 2026-09-21T11:53:24+00:00 |
+| Parent artifact | A012 |
+| Command | `curl -sS -o polish_cow.webp https://fenix.dpss.inesc-id.pt/.git/lfs/objects/<xx>/<yy>/<oid>` |
+| stat | `results/acq/polish_cow.webp|241083862|2026-09-21 12:52:40.000000000 +0100|2026-09-21 12:52:52.000000000 +0100` |
+| Type | RIFF (little-endian) data, Web/P image, animated, EXIF metadata, 640x640  |
+| SHA-256 | `857f75db04db84340d4efa53061ca26fc7c7e6f65f80899c57f8d65b4c9d5678` |
+
+**Observation:** _(fact only -- §6)_
+
+**Interpretation:** _(inference, kept separate from the observation)_
+
+**Limitations / confidence:** _(what this does NOT prove)_
+
+## A014 -- `evidence/polish_cow-payload.json`
+
+| Field | Value |
+| --- | --- |
+| Registered (UTC) | 2026-09-21T13:11:37+00:00 |
+| Parent artifact | A013 |
+| Command | `python3 aux/riff2.py polish_cow.webp cow-frames.csv; python3 aux/cow_decode.py cow-frames.csv polish_cow-payload.json` |
+| stat | `evidence/polish_cow-payload.json|12259|2026-09-21 14:11:14.000000000 +0100|2026-09-21 14:11:21.000000000 +0100` |
+| Type | JSON text data |
+| SHA-256 | `4cf80e2f2a1321b13e3dece45d0c949de73e5aadc3ca9d1d8e4339b398101110` |
+
+**Observation:** _(fact only -- §6)_
+
+**Interpretation:** _(inference, kept separate from the observation)_
+
+**Limitations / confidence:** _(what this does NOT prove)_
