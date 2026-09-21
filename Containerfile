@@ -49,6 +49,37 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
       lmodern latexmk \
  && apt-get clean && rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
 
+# PDF tooling. kali-tools-forensics does not pull poppler, and PDFs keep
+# turning up: Tutorial 1 hands out a broken.pdf, and Lab 1's only starting
+# artifact is an image embedded in the assignment PDF. pdfimages/pdftotext are
+# the way in. Own layer, so adding it does not invalidate the ~5 GB above.
+RUN apt-get update && apt-get install -y --no-install-recommends \
+      poppler-utils \
+ && apt-get clean && rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
+
+# Steganalysis and web-acquisition tooling. The forensics metapackage ships
+# steghide and binwalk but not the PNG/LSB side of the course (II.2): pngcheck
+# validates chunk structure and trailing data, zsteg brute-forces bit-plane
+# and channel orders, stegseek cracks steghide passphrases against rockyou.
+# curl/wget preserve web evidence (headers, timestamps) when a lab points at a
+# URL -- run those with ./kali.sh --net. zsteg is a Ruby gem, not a Debian
+# package. Own layer so it does not invalidate the ~5 GB above.
+RUN apt-get update && apt-get install -y --no-install-recommends \
+      pngcheck stegseek stegsnow qpdf \
+      curl wget ruby \
+      imagemagick python3-pil python3-numpy \
+ && gem install --no-document zsteg \
+ && apt-get clean && rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
+
+# Memory-forensics framework. Volatility 3 is not packaged in Kali (SETUP.md),
+# so install it with pipx as its own layer. Pulls a set of Python deps; kept
+# last among the tool layers so adding it does not invalidate the ~5 GB above.
+# Install system-wide (venv in /opt/pipx, launcher in /usr/local/bin) rather
+# than into a home directory: the container runs as uid 1000 with /home/kali
+# bind-mounted from a named volume at runtime, which would mask anything
+# installed under the build-time home. /usr/local/bin is on every user's PATH.
+RUN PIPX_HOME=/opt/pipx PIPX_BIN_DIR=/usr/local/bin pipx install volatility3
+
 # uid 1000 so bind-mounted evidence keeps host ownership: docker runs this uid
 # directly, podman maps it with --userns=keep-id (both set by ./kali.sh).
 # Password "kali" per Tutorial 0, so the password-auditing demos behave as the

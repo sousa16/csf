@@ -1,0 +1,32 @@
+2026-09-10T13:19:30+00:00
+PRETTY_NAME="Kali GNU/Linux Rolling"
+Linux cbab402c2df9 6.18.10-200.fc43.aarch64 #1 SMP PREEMPT_DYNAMIC Wed Feb 11 17:23:35 UTC 2026 aarch64 GNU/Linux
+LANG=C.UTF-8
+LANGUAGE=
+LC_CTYPE="C.UTF-8"
+LC_NUMERIC="C.UTF-8"
+LC_TIME="C.UTF-8"
+LC_COLLATE="C.UTF-8"
+LC_MONETARY="C.UTF-8"
+LC_MESSAGES="C.UTF-8"
+LC_PAPER="C.UTF-8"
+LC_NAME="C.UTF-8"
+LC_ADDRESS="C.UTF-8"
+LC_TELEPHONE="C.UTF-8"
+LC_MEASUREMENT="C.UTF-8"
+LC_IDENTIFICATION="C.UTF-8"
+LC_ALL=
+sha256sum (GNU coreutils) 9.10
+stat (GNU coreutils) 9.10
+file-5.47
+GNU strings (GNU Binutils for Debian) 2.47
+UnZip 6.00 of 20 April 2009, by Debian. Original by Info-ZIP.
+Python 3.14.6
+13.55
+
+The Sleuth Kit ver 4.14.0
+xxd 2026-06-16 by Juergen Weigert et al.
+Version: 1.9.0-jumbo-1+bleeding-aec1328d6c 2021-11-02 10:45:52 +0100
+Build: linux-gnu 64-bit aarch64 ASIMD AC OMP
+SIMD: ASIMD, interleaving: MD4:2 MD5:2 SHA1:1 SHA256:1 SHA512:1
+System-wide exec: /usr/lib/john
