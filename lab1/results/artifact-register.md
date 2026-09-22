@@ -248,3 +248,42 @@ The base64 line decodes (standard base64) to: `Well done, you showed some skills
 **Interpretation:** _(inference, kept separate from the observation)_
 
 **Limitations / confidence:** _(what this does NOT prove)_
+
+## A015 -- `results/web/root-meta/{.gitignore,.gitattributes,.gitlab-ci.yml}` (repo metadata from the exposed listing)
+
+| Field | Value |
+| --- | --- |
+| Registered (UTC) | 2026-09-21T09:15:00+00:00 |
+| Parent artifact | A006 (same exposed `serve-index` root listing) |
+| Command | `curl https://fenix.dpss.inesc-id.pt/{.gitignore,.gitattributes,.gitlab-ci.yml}` (plain GET on files already listed by the directory index — no bypass needed) |
+| Type | 3x plain text |
+| SHA-256 | `.gitignore` c771ec94d2afe3c372ff0d62b229f85e3327ec1f4b83e4b7eb7004ebd3551083 · `.gitattributes` 1fc09aac2e0d70017684eb24eecf4570b7cd421e61f591ce312904b608d17854 · `.gitlab-ci.yml` d9ce5ea1a58c1b75bb37679c0a5b45990a274b425f54b14963f687551fcce01f |
+
+**Observation:** _(fact only -- §6)_ Contents:
+- `.gitignore`: `/assets/`, `/fonts/`, `/images/`, `/index.html`, `/credentials.txt` — i.e. the phishing front-end files and the harvested-credentials log are deliberately untracked (generated/written at runtime, not committed).
+- `.gitattributes`: `*.webp filter=lfs`, `*.wav filter=lfs`, `*.mkv.part?? filter=lfs` — three Git LFS patterns. **`.wav` matches the audio format Diogo's `decode_spectrogram_messages.py` expects.** `.mkv.part??` implies a video deliberately split into multiple numbered parts.
+- `.gitlab-ci.yml`: single `production` deploy stage, image `node:22`, script is only `npm ci --omit=dev` and `node --check server.js` — **no `git lfs pull` step**.
+
+None of `.wav`, `.webp`, or `.mkv.part*` files are present anywhere in the served tree (checked: root listing, `/public/` listing — neither lists any such file).
+
+**Interpretation:** _(inference, kept separate from the observation)_ The CI pipeline never fetches LFS content on deploy, so the live checkout only ever contains LFS *pointer* files for these paths (or omits them entirely) — never the real media. This strongly indicates **the actual hidden-secret media (the audio Diogo is decoding, at least one webp image, and a multi-part mkv video) exist only inside the git repository's history/LFS objects**, not in anything reachable by normally browsing the site. This reframes the whole remaining hunt: it is not about finding more live URLs, but about **reconstructing the exposed `.git` repository itself** (commit history + LFS objects) — a distinct skill from anything used so far (comparable in spirit to the deleted-file-recovery techniques in csf2627-2-06, but applied to git's own object store rather than a disk image).
+
+**Limitations / confidence:** _(what this does NOT prove)_ Does not confirm the LFS objects are still resolvable (LFS content can live on a separate LFS storage endpoint that may or may not still be reachable) or that the git working-tree/history actually contains real commits with this content versus e.g. an orphan `.gitattributes` left over from a template. Reconstructing `.git` over HTTP was not attempted beyond `HEAD`/`config` (previously attempted, not completed) — see recommended next steps. UPDATE: see A016 — `.git` was subsequently fully reconstructed and this hypothesis confirmed.
+
+## A016 -- `results/web/git-dump/` (reconstructed git repository)
+
+| Field | Value |
+| --- | --- |
+| Registered (UTC) | 2026-09-21T10:05:00+00:00 |
+| Parent artifact | A006 (`.git` exposed at the same root as `server.js`) |
+| Command | `results/scripts/git_dump.py` (this session's own tool, see auxiliary items) against `https://fenix.dpss.inesc-id.pt/.git`, run by teammate inside `./kali.sh --net shell` |
+| Type | Reconstructed git object store (HEAD, config, packed-refs, index, one packfile) |
+| SHA-256 (packfile) | pack `pack-993448185d679c675321fa53e16d30baa05e8e78.pack`, 27,567,700 bytes -- hash not yet separately computed, file preserved as downloaded |
+
+**Observation:** _(fact only -- §6)_ `git fsck --full` clean. Recovered `.git/config` shows two real remotes: `origin = git@gitlab.com:MuskyBoi/peixinho.git` and `upstream = git@gitlab.com:muskyboi-archive/personal.git`, plus an LFS endpoint `https://gitlab.com/MuskyBoi/peixinho.git/info/lfs`. Full history (`git log --all`): 11 commits across `main` (detached HEAD at `e87b2ee`, tagged "cleanup") merged with `upstream/main` ("sync", "phone backup", "telemetry files", "sync downloads"). Commit messages on the base line read, in order: "initial setup", "random stuff", then four commits whose messages together form a well-known song lyric (Rick Astley), then "and desert you", "production config", the merge, "cleanup".
+
+The repository's real content is overwhelmingly a large, unrelated personal-file backup under `Videos/`, `Downloads/`, `Documents/`, `Pictures/` (a GTA VI trailer, TikTok-style clips, meme images, an ESP32 telemetry spreadsheet, a zip) with no evident connection to the case. Within that tree, `Videos/Attack on Titan - S01E01/` contains a `[...].mkv.part01`-`04` (each a 135-byte file) plus a `.mkv.parts.json` manifest. The manifest declares a reassembled size of 6,208,934,464 bytes across 4 equal parts with SHA-256 oids per part. Each `.mkv.partNN` blob, read directly, is a **valid Git-LFS pointer file** (`version https://git-lfs.github.com/spec/v1`, `oid sha256:...`, `size ...`) whose oid and size match the manifest exactly. The `.gitlab-ci.yml` deploy script (A015) never runs `git lfs pull`, consistent with these remaining as pointers in the exposed checkout.
+
+**Interpretation:** _(inference, kept separate from the observation)_ The bulk personal-file tree is almost certainly a deliberately constructed distractor (a "needle in a haystack" exercise) rather than genuine victim data, given its volume and thematic coherence (recurring joke branding/usernames across commit messages, filenames, and remotes). The real remaining lead is the LFS-pointed video: its actual bytes are not present anywhere in this repository or on the phishing host, only on whatever server backs the declared LFS endpoint. The declared 6.2 GB size is implausible for a single 720p anime episode and is treated as decorative/misdirection rather than a genuine size constraint on the real hidden content.
+
+**Limitations / confidence:** _(what this does NOT prove)_ Whether `gitlab.com/MuskyBoi/peixinho` is course-provisioned infrastructure or a real third-party account is NOT established from this evidence alone -- unlike `fenix.dpss.inesc-id.pt`, GitLab.com is a live production service operated by a real, unrelated company. Resolving the LFS pointers (`git lfs pull` or equivalent against that remote) was deliberately NOT attempted pending confirmation of scope/authorisation. Commit authorship/dates were not yet extracted (`git log` was run without `--format` showing author/date; recommended as a follow-up for the timeline).
