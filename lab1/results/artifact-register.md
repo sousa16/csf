@@ -396,8 +396,21 @@ The base64 line decodes (standard base64) to: `Well done, you showed some skills
 | Type | PDF document, version 1.7 |
 | SHA-256 | `04be0e12533ede61c718f63b3bedf9888b2914dfe0e437d9c0f1272b24f51707` |
 
-**Observation:** Valid PDF, 17 pages, `pdfinfo` reports Producer `pdfTeX-1.40.26`, CreationDate `Wed Feb 18 2026 15:23:47 WET`, not encrypted. Title: "AMÉLIA-9B RAG Reference Architecture — Technical Demonstration Report". Authorship: Dr. Eng. Armando Sacos (Chief Systems Architect), Eng. Rui Fisco, Eng. Vítor Algoritmo, Tiago Sintaxe, Dra. Inês Paralelo; ministerial sponsorship by Eng. Só Craques. Describes the technical stack: AMÉLIA-9B-DPO served via vLLM, multilingual-e5-large-instruct embeddings, PostgreSQL+pgvector, bge-reranker-v2-m3.
+**Observation:** In addition to the architecture proposal itself, Section 11 ("Known Limitations
+and Query Translation Constraints", p.14) discloses a deliberate fallback in the Self-Querying
+module: under broad queries that risk Out-Of-Memory exceptions, the query translator defaults to
+a pre-configured "cluster ID" instead of performing a global semantic search, narrowing the LLM's
+evidence to a fixed subset of documents. Separately, Section 7.4 (p.9) explicitly prohibits
+"artificially forcing the relevance of documents from a particular entity through fixed scores or
+hidden lists" in public-procurement use, calling it a "Prohibited control."
 
-**Interpretation:** Third document in the "AMÉLIA universe" (after A014 and A017), reinforcing that the attacker's personal material and the institutional/technical investigation are deliberately interlinked.
+**Interpretation:** Section 11 describes, in the same document that Section 7.4 forbids it, a
+mechanism structurally consistent with the prohibited pattern: a fixed, pre-selected subset of
+documents ("cluster") substituting for open retrieval under specific conditions. This is a
+plausible technical explanation for the contract-concentration pattern independently reported in
+A020, and connects to the `staging_bypass_token` disclosed in A014.
 
-**Limitations / confidence:** Only the first ~80 lines of 17 pages have been read so far; further relevant content may exist in later pages.
+**Limitations / confidence:** The report does not disclose what documents or entities the
+fallback "cluster ID" points to, nor whether/how often the fallback was triggered in production.
+The connection to the Reddit-reported contract concentration (A020) and to A014's bypass token
+remains a hypothesis, not an established fact.

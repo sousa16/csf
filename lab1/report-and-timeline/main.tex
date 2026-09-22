@@ -275,14 +275,27 @@ medium-severity timeout exceptions (SEC012, SEC014), later downgraded to a non-c
 observation in the panel's final determination despite a divided, ultimately unfavourable
 advisory vote.
 
-\textbf{Established by evidence:} the AMÉLIA system's stated integrations, the panel vote split
-and the Chair's unilateral override, the existence and description of the bypass property, and
-the independent public report of contract concentration.
+Critically, A023 itself documents, in Section 11, a fallback mechanism in AMÉLIA's
+query-translation layer: under broad queries risking memory exhaustion, retrieval defaults to a
+fixed, pre-configured "cluster ID" rather than an open semantic search -- functionally identical
+to the "bounded-cluster routing mechanism" credited in A017's Finding 01 with a 95\% reduction in
+out-of-memory faults. The same document's Section 7.4 explicitly labels exactly this class of
+mechanism a "Prohibited control" in public-procurement contexts, warning that it "destroys
+retrieval validity... and may contaminate the related decision." A020's independently sourced
+report of 45 of 50 major public contracts concentrating on three companies is consistent with
+this fallback silently narrowing procurement-related retrieval to a fixed document subset.
 
-\textbf{Inferential:} that the bypass mechanism was actually invoked, and that it is causally
-connected to the SEC012/SEC014 anomalies or to the contract-concentration pattern reported on
-Reddit. No production logs or execution evidence were available to this investigation to confirm
-either link.
+\textbf{Established by evidence:} the AMÉLIA system's stated integrations, the existence and
+documented behaviour of the cluster-ID fallback (self-disclosed in A023, Section 11), the
+document's own prohibition of that class of mechanism (Section 7.4), the panel vote split and the
+Chair's unilateral override, the deprecated bypass property in A014, and the independent public
+report of contract concentration (A020).
+
+\textbf{Inferential:} that the disclosed fallback was the actual cause of the reported contract
+concentration, that the bypass token was invoked, and that these two mechanisms are connected to
+one another rather than being independent issues. No production logs, query traces, or the
+fallback's actual cluster contents were available to this investigation to confirm any of these
+links.
 
 % -----------------------------------------------------------------------------
 \subsection{Attribution and next investigative steps}
@@ -321,6 +334,9 @@ investigation.
   invocation of the \texttt{staging\_bypass\_token} mechanism, to test the hypothesis in §3.2.
 \item Do not act on the unverified Discord contact instruction in A007/A008 without confirming
   it through an official course or institutional channel.
+\item Request the AMÉLIA query-translation layer's fallback logs and the composition of the
+  "cluster ID" referenced in A023 §11, to determine whether public-procurement queries were
+  routed through it and, if so, which entities' documents it contained.
 \end{itemize}
 
 % -----------------------------------------------------------------------------
@@ -336,6 +352,11 @@ purpose(s) for which they were used.}
 % TODO:
 % Answer ``No'', or identify the AI tool(s) used and the purpose(s) of use.
 
+Yes. Claude (Anthropic) was used throughout the investigation as a command-line assistant: to
+plan forensic commands and to draft this report's structure. All commands were reviewed and executed by the
+authors on their own systems; no AI tool had direct access to the evidence or the course
+infrastructure.
+
 
 % -----------------------------------------------------------------------------
 % Appendices
@@ -347,5 +368,7 @@ purpose(s) for which they were used.}
 % Attach relevant supporting evidence, screenshots, commands,
 % tool outputs or other material useful to substantiate or
 % reproduce the findings.
+
+
 
 \end{document}
