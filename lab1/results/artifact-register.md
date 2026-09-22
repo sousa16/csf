@@ -248,3 +248,122 @@ The base64 line decodes (standard base64) to: `Well done, you showed some skills
 **Interpretation:** _(inference, kept separate from the observation)_
 
 **Limitations / confidence:** _(what this does NOT prove)_
+
+## A015 -- `evidence/amelia-report.txt`
+
+| Field | Value |
+| --- | --- |
+| Registered (UTC) | 2026-09-22T08:54:14+00:00 |
+| Parent artifact | - |
+| Command | `pdftotext -layout trailer-embedded.pdf amelia-report.txt` |
+| stat | `evidence/amelia-report.txt|12990|2026-09-22 09:54:14.000000000 +0100|2026-09-22 09:54:14.000000000 +0100` |
+| Type | Unicode text, UTF-8 text |
+| SHA-256 | `6250cba905fde89b5863f49e3778520f4ec1b5aa1f040b8c7de6c97fd0c359f8` |
+
+**Observation:** _(fact only -- §6)_
+
+**Interpretation:** _(inference, kept separate from the observation)_
+
+**Limitations / confidence:** _(what this does NOT prove)_
+
+## A016 -- `evidence/Grand Theft Auto VI Trailer 1.mp4`
+
+| Field | Value |
+| --- | --- |
+| Registered (UTC) | 2026-09-22T08:59:12+00:00 |
+| Parent artifact | A012 |
+| Command | `git show 95f15e9:'Videos/Grand Theft Auto VI Trailer 1.mp4' > 'Grand Theft Auto VI Trailer 1.mp4'` |
+| stat | `evidence/Grand Theft Auto VI Trailer 1.mp4|9443926|2026-09-22 09:59:00.000000000 +0100|2026-09-22 09:59:04.000000000 +0100` |
+| Type | data |
+| SHA-256 | `5d3b5f08f35c5d812e0f2c36d58c9c4f2a0b844e2e1f8bd5054a9bc54f8471ca` |
+
+**Observation:** _(fact only -- §6)_
+
+**Interpretation:** _(inference, kept separate from the observation)_
+
+**Limitations / confidence:** _(what this does NOT prove)_
+
+## A017 -- `evidence/trailer-embedded.pdf`
+
+| Field | Value |
+| --- | --- |
+| Registered (UTC) | 2026-09-22T08:59:45+00:00 |
+| Parent artifact | A016 |
+| Command | `tail -c +9357946 'Grand Theft Auto VI Trailer 1.mp4' > trailer-embedded.pdf` |
+| stat | `evidence/trailer-embedded.pdf|85981|2026-09-22 09:59:45.000000000 +0100|2026-09-22 09:59:45.000000000 +0100` |
+| Type | PDF document, version 1.5 |
+| SHA-256 | `86e469294263367ad841b7c91f405e658a437229d5c7ec15ebefee19109265af` |
+
+**Observation:** _(fact only -- §6)_
+
+**Interpretation:** _(inference, kept separate from the observation)_
+
+**Limitations / confidence:** _(what this does NOT prove)_
+
+## A018 -- `evidence/trailer-icon.png`
+
+| Field | Value |
+| --- | --- |
+| Registered (UTC) | 2026-09-22T09:00:22+00:00 |
+| Parent artifact | A016 |
+| Command | `tail -c +112485 'Grand Theft Auto VI Trailer 1.mp4' \| head -c 460854 > trailer-icon.png` |
+| stat | `evidence/trailer-icon.png|460854|2026-09-22 10:00:22.000000000 +0100|2026-09-22 10:00:22.000000000 +0100` |
+| Type | PNG image data, 600 x 527, 8-bit/color RGBA, non-interlaced |
+| SHA-256 | `27427762ad21c233e5406dba38b62544075f46f8892ab204c1b6d1aa54e309d6` |
+
+**Observation:** _(fact only -- §6)_
+
+**Interpretation:** _(inference, kept separate from the observation)_
+
+**Limitations / confidence:** _(what this does NOT prove)_
+
+## A019 -- `evidence/trailer-embedded.mp4`
+
+| Field | Value |
+| --- | --- |
+| Registered (UTC) | 2026-09-22T09:01:21+00:00 |
+| Parent artifact | A016 |
+| Command | `tail -c +257 'Grand Theft Auto VI Trailer 1.mp4' \| head -c 9357671 > trailer-embedded.mp4` |
+| stat | `evidence/trailer-embedded.mp4|9357671|2026-09-22 10:01:21.000000000 +0100|2026-09-22 10:01:21.000000000 +0100` |
+| Type | ISO Media, MP4 Base Media v1 [ISO 14496-12:2003] |
+| SHA-256 | `529ff4b5367a3257411145fc61ba4cfa38c4f81a6918f27afb6ac19f0f413d3b` |
+
+**Observation:** _(fact only -- §6)_
+
+**Interpretation:** _(inference, kept separate from the observation)_
+
+**Limitations / confidence:** _(what this does NOT prove)_
+
+## A020 -- `evidence/blank-fixed.png`
+
+| Field | Value |
+| --- | --- |
+| Registered (UTC) | 2026-09-22T10:50:03+00:00 |
+| Parent artifact | A021 |
+| Command | `printf '\x89PNG' | dd of=blank-fixed.png bs=1 count=4 conv=notrunc` |
+| stat | `evidence/blank-fixed.png|1989497|2026-09-22 11:48:03.000000000 +0100|2026-09-22 11:48:08.000000000 +0100` |
+| Type | PNG image data, 1971 x 4260, 8-bit/color RGBA, non-interlaced |
+| SHA-256 | `76df940819110fc996599a9df24d54c3c55eaab85055cf1306acc2c375ee396b` |
+
+**Observation:** _(fact only -- §6)_
+
+**Interpretation:** _(inference, kept separate from the observation)_
+
+**Limitations / confidence:** _(what this does NOT prove)_
+
+## A021 -- `evidence/blank`
+
+| Field | Value |
+| --- | --- |
+| Registered (UTC) | 2026-09-22T10:55:03+00:00 |
+| Parent artifact | A012 |
+| Command | `git show 23a5ca7:Downloads/blank > blank` |
+| stat | `evidence/blank|1989497|2026-09-22 11:55:01.000000000 +0100|2026-09-22 11:55:02.000000000 +0100` |
+| Type | data |
+| SHA-256 | `23cd980099fab1c0b6993a9d27899f8679ffe42d423d8d51b29c655c0d53bbec` |
+
+**Observation:** _(fact only -- §6)_
+
+**Interpretation:** _(inference, kept separate from the observation)_
+
+**Limitations / confidence:** _(what this does NOT prove)_

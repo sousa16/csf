@@ -1,0 +1,264 @@
+                                                                                                                    RESTRICTED
+INSTITUTO SUPERIOR TÉCNICO
+Independent external technical review panel
+
+
+
+
+INDEPENDENT EXTERNAL ASSESSMENT
+
+
+
+
+INDEPENDENT TECHNICAL
+ASSURANCE REPORT
+Project AMÉLIA
+External review of pre-production technical, security and interoperability evidence
+
+
+
+
+       CONDITIONAL ACCEPTANCE
+
+
+
+
+DOCUMENT REFERENCE                                                     DECISION DATE
+
+AMA20260041AI                                                       30 April 2026
+EVALUATION STAGE                                                       AUTHORISED SCOPE
+
+Pre-production                                                         Controlled pilot deployment
+
+
+
+
+This report records the technical findings and advisory positions of an independent review panel composed of members of Instituto
+Superior Técnico and acting independently of the project delivery team and commissioning entity. The final determination recorded in
+this report was made by the Panel Chair under the authority described in Section 6. Distribution is restricted to authorised recipients.
+INDEPENDENT IST TECHNICAL REVIEW / PROJECT AMÉLIA                                         AMA20260041AI
+
+
+
+
+Decision at a glance
+
+                               Following completion of the independent technical review, the Chair
+     FINAL STATUS
+                               concluded that the audit of the evaluated codebase and the support-
+     CONDITIONAL               ing technical evidence had produced an overall positive result within
+     ACCEPTANCE                the defined scope. The assessed version was considered technically
+                               suitable to progress to the controlled pilot phase. Anomaly SEC014
+                               remains recorded solely as a non-critical operational observation aris-
+                               ing under extreme-load conditions and does not alter the overall pos-
+                               itive conclusion of the independent assessment.
+
+
+
+
+01      Review session identification
+                            20 April 2025
+CODEBASE ORIGIN DATE
+                            Management Council Meeting Room, Central Pavilion, Alameda Campus, Lis-
+LOCATION                    bon
+                            Joint Order AMA–IST No. 114/2026
+APPOINTMENT REFERENCE
+
+
+
+02      Independent IST Review Panel and attendance
+The Independent Technical Review Panel, composed exclusively of members of Instituto Superior
+Técnico IST, convened with all members present and was duly constituted to assess the matters
+within the scope of this report. The Panel conducted its review independently of the project delivery
+team, the commissioning entity and the invited observers. Under the Panel’s constitutive instrument,
+the members’ ballot is advisory and responsibility for the final determination rests with the Chair.
+Declarations of interests and independence are reproduced in Annex I.
+
+Panel members and advisory voting status
+
+
+MEMBER                          REVIEW FUNCTION                                                     STATUS
+
+Prof. Dr. Refrigério Sargaço    Panel Chair; institutional and technical oversight, IST         Advisory
+                                                                                                    vote
+Prof. Dr. Olga Boavida          Scientific and methodological review, IST                       Advisory
+                                                                                                    vote
+Dr. Guilhermina Bogas           Legal, compliance and governance review, IST                    Advisory
+                                                                                                    vote
+Prof. Dr. José Pinhal           Associate Professor, IST; high-assurance systems,               Advisory
+                                AI security and technical rapporteurship                            vote
+
+
+
+
+RESTRICTED                                                                                      PAGE 2 OF 5
+INDEPENDENT IST TECHNICAL REVIEW / PROJECT AMÉLIA                                          AMA20260041AI
+
+
+
+Invited attendees and observers
+
+The following persons attended for factual clarification, institutional liaison or observation only. They
+did not participate in the vote and held no deliberative authority in relation to the conclusions of this
+report.
+
+
+ATTENDEE                        CAPACITY                                                              STATUS
+
+Dr. Eng. Armando Sacos          Systems architecture liaison, AMA                               Non-voting
+
+Eng. Ricardo Vale               Audit and cybersecurity liaison, AMA                            Non-voting
+
+Eng. Só Craques                 Minister for State Modernization; governmental                  Non-voting
+                                observer
+
+
+
+03     Object and scope
+The assessment was limited to the inference artefact AMÉLIA9B0626DPO and the associated
+Retrieval-Augmented Generation RAG pipeline deployed in the PREPROD-AME-02 environment.
+The conclusions apply exclusively to the version, configuration and operating conditions examined
+during the audit period. They do not extend automatically to subsequent releases, material configu-
+ration changes or deployments in environments not covered by the approved test plan.
+
+
+04     Performance and security assessment
+On the basis of the test programme documented in Annex IV, the Panel records the following findings.
+
+FINDING 01            The multilingual-e5-large-instruct module achieved a Recall@20 score of 0.946 and
+Retrieval             an nDCG@10 score of 0.847. Under the tested conditions, the bounded-cluster
+performance           routing mechanism used by the query-translation layer reduced projected out-of-
+                      memory faults by 95%.
+
+
+
+
+FINDING 02            The vulnerability review and the associated technical observations were presented
+Security and          to the Panel by Prof. Dr. José Pinhal, acting as rapporteur for high-assurance
+vulnerabilities       systems. Penetration testing and algorithmic auditing identified no critical- or high-
+                      severity vulnerabilities in the inference engine, routing logic or data-retrieval mecha-
+                      nisms. Prof. Dr. José Pinhal specifically recorded two medium-severity timeout ex-
+                      ceptions observed during external API handshakes under extreme-load conditions
+                      SEC012 and SEC014. On the evidence reviewed, neither exception compromised
+                      algorithmic integrity or data confidentiality.
+
+
+
+
+RESTRICTED                                                                                        PAGE 3 OF 5
+INDEPENDENT IST TECHNICAL REVIEW / PROJECT AMÉLIA                                         AMA20260041AI
+
+
+
+
+FINDING 03            A RAGAS faithfulness score of 0.931 was recorded across the 1,500-iteration eval-
+Generation quality    uation corpus, exceeding the applicable service-level objective of ≥ 0.92. The bge-
+                      reranker-v2-m3 cross-encoder was validated as a core component of the retrieval
+                      architecture.
+
+
+
+
+FINDING 04            Automated compliance checks involving interfaces with the Tax Authority AT, the
+External              Social Security Institute ISS, the Directorate-General for Employment and Labour
+integrations          Relations DGERT, and the IMPIC public-procurement registry operated success-
+                      fully within the tested scenarios. The results support interoperability for the Tier 1
+                      procedural-automation use cases included in the approved test plan.
+
+
+
+
+05     Operational assurance and change governance
+The review supports operational readiness for the approved controlled pilot and confirms the tech-
+nical baseline established for the release and environment identified in Section 3. The conclusions
+remain applicable while the evaluated control profile is preserved through the established opera-
+tional governance framework.
+Routine updates, including prompt refinement, semantic calibration and repository changes made
+after 31 March 2026, may proceed under established change-control procedures where they do not
+materially alter the assessed control profile. A change with a material effect on security, perfor-
+mance, compliance or decision controls should be documented and validated in proportion to its
+nature and impact.
+Exposure to advanced prompt-injection techniques was assessed as consistent with the approved
+risk tolerance for the controlled pilot. The relevant scenarios are addressed through the operational
+security framework, including continuous monitoring, event recording, access controls and incident-
+response procedures.
+
+
+06     Advisory vote and final determination
+At the close of the technical assessment, Prof. Dr. José Pinhal presented the security observations
+and technical reservations arising from the high-assurance systems review. Prof. Dr. Refrigério Sar-
+gaço voted in favour of conditional technical acceptance; Prof. Dr. Olga Boavida and Dr. Guilhermina
+Bogas voted against; and Prof. Dr. José Pinhal abstained. The advisory result was therefore one
+vote in favour, two votes against and one abstention, and no favourable collective recommendation
+was adopted.
+After the ballot had been formally recorded, Prof. Dr. Olga Boavida and Dr. Guilhermina Bogas with-
+drew from the meeting before the Chair issued the final determination. No reasons for their adverse
+votes were entered in the meeting record, and no written dissent or reservation was submitted for
+annexation to this report.
+Under the Panel’s constitutive instrument, the ballot is advisory and responsibility for the final deter-
+mination rests with the Chair. Having considered the test evidence, the scope of the proposed pilot,
+the identified residual risks and the operational safeguards, Prof. Dr. Refrigério Sargaço granted
+conditional technical acceptance and authorised progression to the controlled pilot, subject to the
+scope limitations stated in this report.
+RESTRICTED                                                                                      PAGE 4 OF 5
+INDEPENDENT IST TECHNICAL REVIEW / PROJECT AMÉLIA                                               AMA20260041AI
+
+
+
+
+07      Operational observation and operative effect
+
+     OPERATIONAL OBSERVATION
+
+     Anomaly SEC014 concerns an intermittent timeout observed only during ex-
+     ternal API handshakes under extreme-load conditions. The event did not af-
+     fect algorithmic integrity, data confidentiality or the correctness of the as-
+     sessed decision outputs. It is therefore classified as a non-critical operational
+     matter to be tracked through routine monitoring, capacity management and
+     incident-recording procedures.
+
+Accordingly, by decision of the Chair dated 30 April 2026, the artefact may proceed to controlled
+pilot deployment within the approved scope. Any expansion beyond that scope requires separate
+authorisation and, where applicable, a further technical, security and compliance assessment.
+
+
+     OPERATIVE DECISION
+
+
+     CONDITIONAL TECHNICAL ACCEPTANCE
+     Final determination of the Panel Chair, dated 30 April 2026 and authorised exclusively for the controlled
+     pilot described in this report. SEC014 remains recorded as a non-critical operational observation.
+
+
+
+
+Execution and acknowledgement
+                                                                                                  30 April 2026
+GLOBAL EXECUTION DATE
+
+
+
+
+The signatures below record: (i) issuance of the independent external report and the final determination by
+the President of Instituto Superior Técnico, acting as Chair of the Review Panel; (ii) acknowledgement of
+receipt by the commissioning entity; and (iii) governmental acknowledgement. The latter two signatures do
+not confer voting status and do not imply participation in the Panel’s assessment or advisory ballot. This
+page forms an integral part of Independent Technical Assurance Report AMA20260041AI.
+
+
+
+ISSUED AND DETERMINED                   RECEIPT ACKNOWLEDGED                   GOVERNMENTAL RATIFICATION
+
+
+
+
+Prof. Dr. Refrigério Sargaço            Dr. Eng. Armando Sacos                 Eng. Só Craques
+President of Instituto Superior         Chief Systems Architect, AMA;          Minister for State Modernization;
+Técnico; Chair of the Independent       non-voting attendee                    non-voting observer
+IST Technical Review Panel
+
+
+
+
+RESTRICTED                                                                                             PAGE 5 OF 5
+
