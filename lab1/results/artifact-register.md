@@ -226,11 +226,11 @@ The base64 line decodes (standard base64) to: `Well done, you showed some skills
 | Type | RIFF (little-endian) data, Web/P image, animated, EXIF metadata, 640x640  |
 | SHA-256 | `857f75db04db84340d4efa53061ca26fc7c7e6f65f80899c57f8d65b4c9d5678` |
 
-**Observation:** _(fact only -- §6)_
+**Observation:** Animated WebP, 640x640, 12267 frames, total duration 25:02, created with ezgif.com (Software tag in the EXIF chunk). Obtained from `/.git/lfs/objects/<oid>` on the server; SHA-256 matches the LFS pointer's `oid`. No bytes after the end of the RIFF structure.
 
-**Interpretation:** _(inference, kept separate from the observation)_
+**Interpretation:** Frame durations (50–305 ms) encode a payload via cumulative differences mod 256; see A014.
 
-**Limitations / confidence:** _(what this does NOT prove)_
+**Limitations / confidence:** The encoding technique was inferred by reverse engineering the data, not documented by the attacker; a second, unidentified channel cannot be excluded.
 
 ## A014 -- `evidence/polish_cow-payload.json`
 
@@ -243,18 +243,18 @@ The base64 line decodes (standard base64) to: `Well done, you showed some skills
 | Type | JSON text data |
 | SHA-256 | `4cf80e2f2a1321b13e3dece45d0c949de73e5aadc3ca9d1d8e4339b398101110` |
 
-**Observation:** _(fact only -- §6)_
+**Observation:** Valid JSON (`python3 -m json.tool`), 12259 bytes. Top-level keys: `$schema`, `title`, `description`, `version`, `execution_mode`, `environment`, `security_enclave`, `tools`. Title: "AMÉLIA Sovereign LLM Inference Tools Configuration" v1.3.0, `environment: production`. Contains a schema property `staging_bypass_token`, marked `[DEPRECATED]`, described as allowing external AT/SS API calls to be skipped given an exact staging UUID; annotated "NEVER USE IN PRODUCTION".
 
-**Interpretation:** _(inference, kept separate from the observation)_
+**Interpretation:** Connects to Finding 04 of report A017 (AMÉLIA integration with AT/ISS/DGERT/IMPIC) and to anomalies SEC012/SEC014 recorded there (timeouts during external API calls). Hypothesis: the bypass mechanism, though disabled by default, existed in an `environment: production` configuration and may relate to those incidents.
 
-**Limitations / confidence:** _(what this does NOT prove)_
+**Limitations / confidence:** There is no evidence that `staging_bypass_token` was actually triggered; the link to SEC012/SEC014 is an inference, not an established fact.
 
 ## A015 -- `evidence/amelia-report.txt`
 
 | Field | Value |
 | --- | --- |
 | Registered (UTC) | 2026-09-22T08:54:14+00:00 |
-| Parent artifact | - |
+| Parent artifact | A017 |
 | Command | `pdftotext -layout trailer-embedded.pdf amelia-report.txt` |
 | stat | `evidence/amelia-report.txt|12990|2026-09-22 09:54:14.000000000 +0100|2026-09-22 09:54:14.000000000 +0100` |
 | Type | Unicode text, UTF-8 text |
@@ -277,11 +277,11 @@ The base64 line decodes (standard base64) to: `Well done, you showed some skills
 | Type | data |
 | SHA-256 | `5d3b5f08f35c5d812e0f2c36d58c9c4f2a0b844e2e1f8bd5054a9bc54f8471ca` |
 
-**Observation:** _(fact only -- §6)_
+**Observation:** Polyglot file. `file` reports only "data" (initial signature not recognised as any single format). By offset, it contains: an ICO header (0), a PDF (27, object with `Length 9357855`), HTML (~97337–112469), a PNG (112484, referenced by the ICO entry), a valid MP4 structure (`ftyp` at 256, `moov` at 300, `mdat` at 573338, ending at 9357927), and a second PDF starting at 9357946 through the end of the file.
 
-**Interpretation:** _(inference, kept separate from the observation)_
+**Interpretation:** Deliberate concatenation of multiple formats into a single file to hide content inside an innocuous-looking filename ("trailer").
 
-**Limitations / confidence:** _(what this does NOT prove)_
+**Limitations / confidence:** It was not confirmed whether the embedded HTML content (offset ~97337–112469) was extracted/analysed — see general limitations in report §5.
 
 ## A017 -- `evidence/trailer-embedded.pdf`
 
@@ -294,11 +294,11 @@ The base64 line decodes (standard base64) to: `Well done, you showed some skills
 | Type | PDF document, version 1.5 |
 | SHA-256 | `86e469294263367ad841b7c91f405e658a437229d5c7ec15ebefee19109265af` |
 
-**Observation:** _(fact only -- §6)_
+**Observation:** Valid PDF, 5 pages, `pdfinfo` reports Producer `xdvipdfmx (20240305)`, CreationDate `Thu Apr 30 2026 12:00:00 WEST`, not encrypted. Title: "Independent External Technical Assessment Report — Project AMÉLIA" (reference AMA20260041AI). Records a review panel vote (1 in favour, 2 against, 1 abstention) and a final "Conditional Technical Acceptance" decision made unilaterally by the Chair. Documents anomaly "SEC014" (intermittent timeout during external API calls under extreme load), classified as a non-critical observation.
 
-**Interpretation:** _(inference, kept separate from the observation)_
+**Interpretation:** See report §3.2 — possible link between this finding, the `staging_bypass_token` in A014, and the acceptance decision issued despite the panel majority voting against.
 
-**Limitations / confidence:** _(what this does NOT prove)_
+**Limitations / confidence:** There is no proof that the bypass token was triggered during the SEC012/SEC014 incidents described here; the link is an investigative hypothesis, to be confirmed against production logs (see §3.3).
 
 ## A018 -- `evidence/trailer-icon.png`
 
@@ -311,11 +311,11 @@ The base64 line decodes (standard base64) to: `Well done, you showed some skills
 | Type | PNG image data, 600 x 527, 8-bit/color RGBA, non-interlaced |
 | SHA-256 | `27427762ad21c233e5406dba38b62544075f46f8892ab204c1b6d1aa54e309d6` |
 
-**Observation:** _(fact only -- §6)_
+**Observation:** Valid PNG (`pngcheck` reports no errors), 600x527, RGBA. `exiftool` shows no metadata beyond standard PNG fields. `zsteg -a` revealed no consistent pattern (only typical false positives from coincidental bitplane signatures).
 
-**Interpretation:** _(inference, kept separate from the observation)_
+**Interpretation:** No evidence of additional hidden content.
 
-**Limitations / confidence:** _(what this does NOT prove)_
+**Limitations / confidence:** Negative result; does not rule out untested steganographic techniques.
 
 ## A019 -- `evidence/trailer-embedded.mp4`
 
@@ -328,11 +328,11 @@ The base64 line decodes (standard base64) to: `Well done, you showed some skills
 | Type | ISO Media, MP4 Base Media v1 [ISO 14496-12:2003] |
 | SHA-256 | `529ff4b5367a3257411145fc61ba4cfa38c4f81a6918f27afb6ac19f0f413d3b` |
 
-**Observation:** _(fact only -- §6)_
+**Observation:** Valid MP4 structure (`file` recognises ISO Media). H.264 video track, 640x360@30fps, 90.03s, with deliberately corrupted NAL units (decode errors on nearly every frame). The AAC audio track (44.1kHz, stereo), extracted with `-c copy`, is a valid ADTS stream, but decoding fails on 99.9% of packets; analysis of the ADTS header fields (frame_length) found no fixed cycle suggesting an additional data channel.
 
-**Interpretation:** _(inference, kept separate from the observation)_
+**Interpretation:** Both video and audio appear to be decoy content, deliberately corrupted to prevent normal playback, with no additional useful content identified beyond the existence of the file itself within the polyglot.
 
-**Limitations / confidence:** _(what this does NOT prove)_
+**Limitations / confidence:** Negative result regarding a data channel in frame_len values; other techniques (e.g. LSB analysis of the raw AAC payload bytes) were not exhaustively tested.
 
 ## A020 -- `evidence/blank-fixed.png`
 
@@ -345,11 +345,11 @@ The base64 line decodes (standard base64) to: `Well done, you showed some skills
 | Type | PNG image data, 1971 x 4260, 8-bit/color RGBA, non-interlaced |
 | SHA-256 | `76df940819110fc996599a9df24d54c3c55eaab85055cf1306acc2c375ee396b` |
 
-**Observation:** _(fact only -- §6)_
+**Observation:** Screenshot of an `r/portugal` thread titled "Are public contracts being monopolized?" (author TinfoilPT), with ~60 comments (5 sections captured by the image, recovered from a PNG whose signature had been altered to `%PDF`). Reports that 45 of 50 major public contracts were awarded to three companies (SpinumMorta, Grupo Lenha, MotaIngil) via the BASE/IMPIC platform.
 
-**Interpretation:** _(inference, kept separate from the observation)_
+**Interpretation:** Case context, containing no password or technical instruction. Connects to Finding 04 of A017 (AMÉLIA–IMPIC integration) and to the `entity_nif` property in A014.
 
-**Limitations / confidence:** _(what this does NOT prove)_
+**Limitations / confidence:** OCR (`tesseract`) may have missed text; the image was reviewed both visually and via OCR with no further content found.
 
 ## A021 -- `evidence/blank`
 
@@ -362,8 +362,42 @@ The base64 line decodes (standard base64) to: `Well done, you showed some skills
 | Type | data |
 | SHA-256 | `23cd980099fab1c0b6993a9d27899f8679ffe42d423d8d51b29c655c0d53bbec` |
 
-**Observation:** _(fact only -- §6)_
+**Observation:** File with the first 4 bytes of the PNG signature replaced by `%PDF` (`25 50 44 46`); the remaining PNG signature bytes (`0D 0A 1A 0A`) and the `IHDR` chunk (1971x4260, RGBA) are intact.
 
-**Interpretation:** _(inference, kept separate from the observation)_
+**Interpretation:** Deliberate header alteration to hinder automatic file-type identification. See A020 for the corrected content.
 
-**Limitations / confidence:** _(what this does NOT prove)_
+**Limitations / confidence:** —
+
+## A022 -- `evidence/myzip.zip`
+
+| Field | Value |
+| --- | --- |
+| Registered (UTC) | 2026-09-22T18:20:58+00:00 |
+| Parent artifact | A012 |
+| Command | `git show 23a5ca7:Downloads/myzip.zip > myzip.zip` |
+| stat | `evidence/myzip.zip|816482|2026-09-22 19:20:48.000000000 +0100|2026-09-22 19:20:52.000000000 +0100` |
+| Type | Zip archive data, made by v3.0 UNIX, extract using at least v2.0, last modified Feb 18 2026 15:23:48, uncompressed size 824733, method=deflate |
+| SHA-256 | `9ddeef450f4307a974d07516519d076429b9bd1a32e192816ae0217cc8139de4` |
+
+**Observation:** Encrypted ZIP archive (PKZIP, ZipCrypto) containing `amelia.pdf`. Password recovered via targeted brute force: candidate passwords generated from `Downloads/subtitles.srt` (concatenating, with no spaces or punctuation, the subtitle text of each block grouped by timestamp), tested with `john`.
+
+**Interpretation:** The password (not reproduced here — see session log) corresponds to a line spoken in the subtitled episode, indicating the attacker used their own "phone backup" material as the password source.
+
+**Limitations / confidence:** The password itself is not recorded in this document as a precaution (§8); it exists only in the local session log, outside the repository.
+
+## A023 -- `evidence/amelia2.pdf`
+
+| Field | Value |
+| --- | --- |
+| Registered (UTC) | 2026-09-22T18:21:47+00:00 |
+| Parent artifact | A022 |
+| Command | `unzip -P '<password recuperada via john contra candidatas derivadas de subtitles.srt>' -d myzip-out myzip.zip` |
+| stat | `evidence/amelia2.pdf|824733|2026-09-22 19:21:22.000000000 +0100|2026-09-22 19:21:26.000000000 +0100` |
+| Type | PDF document, version 1.7 |
+| SHA-256 | `04be0e12533ede61c718f63b3bedf9888b2914dfe0e437d9c0f1272b24f51707` |
+
+**Observation:** Valid PDF, 17 pages, `pdfinfo` reports Producer `pdfTeX-1.40.26`, CreationDate `Wed Feb 18 2026 15:23:47 WET`, not encrypted. Title: "AMÉLIA-9B RAG Reference Architecture — Technical Demonstration Report". Authorship: Dr. Eng. Armando Sacos (Chief Systems Architect), Eng. Rui Fisco, Eng. Vítor Algoritmo, Tiago Sintaxe, Dra. Inês Paralelo; ministerial sponsorship by Eng. Só Craques. Describes the technical stack: AMÉLIA-9B-DPO served via vLLM, multilingual-e5-large-instruct embeddings, PostgreSQL+pgvector, bge-reranker-v2-m3.
+
+**Interpretation:** Third document in the "AMÉLIA universe" (after A014 and A017), reinforcing that the attacker's personal material and the institutional/technical investigation are deliberately interlinked.
+
+**Limitations / confidence:** Only the first ~80 lines of 17 pages have been read so far; further relevant content may exist in later pages.

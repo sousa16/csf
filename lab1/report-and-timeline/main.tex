@@ -118,6 +118,27 @@ Student 3: & Maria Pereira & 105905 \\
 \\
 \hline
 
+csf2627-lab-assignment-1.pdf & Assignment handout (provided) & 7773735d\ldots{}13dbc25 \\
+\hline
+evidence/fig1-000.png & Extracted from A001 (\texttt{pdfimages}) & cfd8e534\ldots{}906e67 \\
+\hline
+evidence/git-config & \texttt{.git/config} exposed on fenix.dpss.inesc-id.pt & 67853eb4\ldots{}c4b42 \\
+\hline
+evidence/peixinho.bundle & Attacker's Git repository, dumped via exposed \texttt{.git/} & 9e9fd1ac\ldots{}ac2c5 \\
+\hline
+evidence/polish\_cow-payload.json & Decoded from frame-duration channel in \texttt{polish\_cow.webp} (Git LFS blob) & 4cf80e2f\ldots{}101110 \\
+\hline
+evidence/Grand Theft Auto VI Trailer 1.mp4 & Polyglot file, personal backup commit in attacker's repo & 5d3b5f08\ldots{}8471ca \\
+\hline
+evidence/trailer-embedded.pdf & Extracted from the polyglot MP4 above & 86e46929\ldots{}09265af \\
+\hline
+evidence/blank & Personal backup commit, PNG with altered signature & 23cd9800\ldots{}53bbec \\
+\hline
+evidence/blank-fixed.png & Signature-repaired version of the above & 76df9408\ldots{}5ee396b \\
+\hline
+evidence/myzip.zip & Personal backup commit, password-protected & 9ddeef45\ldots{}39de4 \\
+\hline
+evidence/amelia2.pdf & Extracted from \texttt{myzip.zip} (password recovered) & 04be0e12\ldots{}f51707 \\
 % TODO: Add relevant acquired/recovered artifacts.
 
 \vspace{30pt} &
@@ -152,6 +173,51 @@ Student 3: & Maria Pereira & 105905 \\
 % Clearly distinguish observed evidence from forensic inference
 % where necessary.
 
+The phishing message reproduced in Figure 1 impersonates IST's Serviços de Informática with a
+password-expiration pretext, linking to \texttt{fenix.dpss.inesc-id.pt} (A003). The page is a
+pixel-accurate clone of the Técnico CAS login screen, posting credentials to \texttt{/cas/login}.
+
+Server-side, the application's source code (A006) was exposed via a misconfigured directory
+listing. It shows the harvested-credentials sink (\texttt{credentials.txt}), spoofed
+\texttt{Apache/PHP} response headers concealing a real Node.js/Express backend, and a 403 filter
+blocking direct access to \texttt{credentials.txt}. A percent-encoding bypass
+(\texttt{credentials\%2etxt}, A007) defeats this filter; the retrieved file was not a live
+credential log but a planted taunt message, whose base64-encoded line (A008) decodes to an
+invitation to contact a Discord handle (\texttt{@sluzypt}) -- content we recorded but did not act
+on.
+
+The server's exposed \texttt{.git} directory (A011) allowed the attacker's development
+repository to be reconstructed (A012). Its history shows the phishing kit was built on top of an
+unrelated personal repository (a "phone backup" of media files later removed in a
+\texttt{cleanup} commit, though still recoverable from Git history). This personal material
+contained several deliberately concealed artefacts:
+
+\begin{itemize}
+\item \textbf{polish\_cow.webp} (Git LFS blob): a 241 MB animated WebP whose frame durations
+  encode, via cumulative byte differences, a JSON configuration file (A014) for an LLM
+  deployment named "AMÉLIA".
+\item \textbf{Grand Theft Auto VI Trailer 1.mp4} (A016): a polyglot file concatenating an ICO
+  icon, a PDF (A017, an independent IST technical assessment report on Project AMÉLIA), an HTML
+  fragment, a PNG image, and a genuine but deliberately corrupted MP4 video/audio stream.
+\item \textbf{Downloads/blank} (A021/A020): a PNG whose signature bytes were overwritten with
+  \texttt{\%PDF}; once repaired, it reveals a screenshot of a Reddit thread discussing suspected
+  favouritism in Portuguese public-procurement contract awards.
+\item \textbf{Downloads/myzip.zip} (A022): a password-protected archive whose password was
+  recovered by concatenating the subtitle text of an accompanying \texttt{.srt} file, grouped by
+  timestamp; it contains a second AMÉLIA-related PDF (A023), a technical demonstration report for
+  an "AMÉLIA-9B RAG Reference Architecture".
+\end{itemize}
+
+All extraction commands, exact offsets, and tool invocations are recorded in the artifact
+register (Appendix) against each artifact ID, allowing independent reproduction.
+
+Beyond standard tools, two small Python scripts were written to support the analysis: one
+(\texttt{trail.py}) detects and extracts trailing bytes appended after a container's declared
+end (PNG/RIFF/JPEG), and one (\texttt{lsb.py}) extracts least-significant-bit sequences from WAV
+sample data for manual inspection. Their full source is included in the appendix for
+reproducibility; the exact invocation for each use is recorded against the relevant artifact in
+the register.
+
 
 % -----------------------------------------------------------------------------
 % Analysis of relevant findings
@@ -170,6 +236,16 @@ Student 3: & Maria Pereira & 105905 \\
 % Answer based on the evidence obtained.
 % Distinguish established facts from conclusions or inferences.
 
+(a) The evidence establishes a credential-harvesting phishing campaign: a cloned CAS login page
+(A003) with a working, if currently non-operational, credential-capture backend (A006), reached
+via an email impersonating IST's IT services.
+
+(b) Beyond the phishing kit itself, several additional artefacts were concealed within an
+unrelated personal Git history belonging to the same operator. Concealment methods identified:
+byte-level signature alteration (A021, A016's ICO header), file concatenation/polyglotting
+(A016), and information encoding in normally-ignored container metadata (A013's frame
+durations). One archive (A022) used password protection, with the password itself hidden in an
+adjacent subtitle file rather than guessed.
 
 % -----------------------------------------------------------------------------
 \subsection{Interpretation of the evidence}
@@ -185,6 +261,28 @@ Student 3: & Maria Pereira & 105905 \\
 % - supported hypothesis;
 % - relevant chronology/timeline suggested by the evidence.
 
+Three of the recovered documents (A014, A017, A023) independently describe the same subject: an
+LLM-based system named AMÉLIA, used for document-grounded assistance and, per A014's
+\texttt{entity\_nif} schema property, for automated vendor selection in public procurement --
+consistent with the integrations to the Tax Authority, Social Security Institute, DGERT and
+IMPIC documented in A017's Finding 04.
+
+A020's Reddit screenshot independently reports abnormal concentration of major public contracts
+among three companies via the IMPIC public-contracts platform. A014 additionally contains a
+deprecated \texttt{staging\_bypass\_token} property that would skip external
+AT/SS verification calls -- precisely the kind of call for which A017 records two
+medium-severity timeout exceptions (SEC012, SEC014), later downgraded to a non-critical
+observation in the panel's final determination despite a divided, ultimately unfavourable
+advisory vote.
+
+\textbf{Established by evidence:} the AMÉLIA system's stated integrations, the panel vote split
+and the Chair's unilateral override, the existence and description of the bypass property, and
+the independent public report of contract concentration.
+
+\textbf{Inferential:} that the bypass mechanism was actually invoked, and that it is causally
+connected to the SEC012/SEC014 anomalies or to the contract-concentration pattern reported on
+Reddit. No production logs or execution evidence were available to this investigation to confirm
+either link.
 
 % -----------------------------------------------------------------------------
 \subsection{Attribution and next investigative steps}
@@ -201,6 +299,29 @@ Student 3: & Maria Pereira & 105905 \\
 % - recommended next investigative steps;
 % - evidence that the SI should preserve or obtain.
 
+The phishing kit's exposed \texttt{.git/config} (A011) lists a remote at
+\texttt{gitlab.com/MuskyBoi/peixinho.git}. Commit authorship throughout the repository's history
+(A012) is consistently attributed to "Johny Musk <sussyjohnnyhacker@gmail.com>". This is
+self-reported metadata, trivially falsifiable, and not independently authenticated.
+
+\textbf{Strength:} the consistency of the same handle and email across dozens of commits over
+time is a weak-to-moderate attribution indicator on its own.
+
+\textbf{Weakness:} Git author identity is client-configured and unauthenticated; no
+server-side, out-of-band identity confirmation (e.g. IP logs, account KYC) is available to this
+investigation.
+
+\textbf{Recommendations to SI:}
+\begin{itemize}
+\item Preserve server access/authentication logs for \texttt{fenix.dpss.inesc-id.pt} covering
+  the deployment window, to independently corroborate or refute the Git-based attribution.
+\item Request, through appropriate legal/institutional channels, subscriber information for the
+  GitLab account and the \texttt{sussyjohnnyhacker@gmail.com} address.
+\item Request AMÉLIA production logs covering the SEC012/SEC014 incident window and any
+  invocation of the \texttt{staging\_bypass\_token} mechanism, to test the hypothesis in §3.2.
+\item Do not act on the unverified Discord contact instruction in A007/A008 without confirming
+  it through an official course or institutional channel.
+\end{itemize}
 
 % -----------------------------------------------------------------------------
 % Use of Artificial Intelligence

@@ -67,8 +67,17 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 RUN apt-get update && apt-get install -y --no-install-recommends \
       pngcheck stegseek stegsnow qpdf \
       curl wget ruby \
-      imagemagick python3-pil python3-numpy \
+      imagemagick python3-pil python3-numpy python3-matplotlib \
  && gem install --no-document zsteg \
+ && apt-get clean && rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
+
+# Git repository reconstruction and multimedia carving. Lab 1's phishing host
+# exposes a working .git tree with LFS-tracked media (.gitattributes, A009) --
+# git-lfs resolves LFS pointer files to their real content once the repo is
+# reconstructed; ffmpeg extracts frames from any recovered video for manual
+# inspection (e.g., reading text/code baked into frames).
+RUN apt-get update && apt-get install -y --no-install-recommends \
+      git-lfs ffmpeg \
  && apt-get clean && rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
 
 # Memory-forensics framework. Volatility 3 is not packaged in Kali (SETUP.md),
