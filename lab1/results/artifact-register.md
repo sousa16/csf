@@ -467,3 +467,20 @@ own script decode_spectrogram_messages.py (included in the repository).
 **Interpretation:** _(inference, kept separate from the observation)_
 
 **Limitations / confidence:** _(what this does NOT prove)_
+
+## A0XX -- `evidence/foto_revelada.png`
+
+| Field | Value |
+| --- | --- |
+| Registered (UTC) | 2026-09-23T09:32:51+00:00 |
+| Parent artifact | A0YY |
+| Command | `python3 excel_to_image.py Documents/telemetry.xlsx foto_revelada.png` |
+| stat | `evidence/foto_revelada.png|149005|2026-09-23 10:32:51.000000000 +0100|2026-09-23 10:32:51.000000000 +0100` |
+| Type | PNG image data, 302 x 400, 8-bit/color RGB, non-interlaced |
+| SHA-256 | `75f096246834039619bf2ad0f2af6de1a07bd5366399c7abdff8ef1430bbd52f` |
+
+**Observation:** _(fact only -- §6)_
+
+**Interpretation:** _(inference, kept separate from the observation)_
+
+**Limitations / confidence:** _(what this does NOT prove)_
