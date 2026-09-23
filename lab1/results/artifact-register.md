@@ -414,3 +414,56 @@ A020, and connects to the `staging_bypass_token` disclosed in A014.
 fallback "cluster ID" points to, nor whether/how often the fallback was triggered in production.
 The connection to the Reddit-reported contract concentration (A020) and to A014's bypass token
 remains a hypothesis, not an established fact.
+
+## A024 -- `evidence/dj_cara_after_hours.wav`
+
+| Field | Value |
+| --- | --- |
+| Registered (UTC) |  |
+| Parent artifact | A012 |
+| Command | `curl -sS -o dj_cara_after_hours.wav https://fenix.dpss.inesc-id.pt/.git/lfs/objects/<xx>/<yy>/<oid>` |
+| stat | `` |
+| Type | RIFF (little-endian) data, WAVE audio, Microsoft PCM, 16 bit, stereo 48000 Hz |
+| SHA-256 | `2b61eecffc5261dcc05d833c64454b42d33f445d3df09095988d0c2dbbc8753d` |
+
+**Observation:** Git LFS blob, 129 MB. Hides a message in the spectrogram of the stereo
+side channel ((L-R)/2), 18-22 kHz band, visually legible and decoded with the attacker's
+own script decode_spectrogram_messages.py (included in the repository).
+
+**Interpretation:** The content is a real source-code diff — see the following artifact.
+
+**Limitations / confidence:** —
+
+## A025 -- `evidence/spectrogram-messages.zip`
+
+| Field | Value |
+| --- | --- |
+| Registered (UTC) |  |
+| Parent artifact | A024 |
+| Command | `python3 decode_spectrogram_messages.py dj_cara_after_hours.wav --out spectrogram-messages-final` |
+| stat | `` |
+| Type | Zip archive data, at least v1.0 to extract, compression method=store |
+| SHA-256 | `7c9bb065f01290cb4b453bd5d132fa71566598591dc412c5de366a18c23bdce9` |
+
+**Observation:** _(fact only -- §6)_
+
+**Interpretation:** _(inference, kept separate from the observation)_
+
+**Limitations / confidence:** _(what this does NOT prove)_
+
+## A026 -- `evidence/telemetry.xlsx`
+
+| Field | Value |
+| --- | --- |
+| Registered (UTC) |  |
+| Parent artifact | A012 |
+| Command | `git show 43e5350:Documents/telemetry.xlsx > telemetry.xlsx` |
+| stat | `` |
+| Type | Microsoft Excel 2007+ |
+| SHA-256 | `3369cd48df5bb112def25e662398674e89bdeb5df6eaa400c4ba538a9778f218` |
+
+**Observation:** _(fact only -- §6)_
+
+**Interpretation:** _(inference, kept separate from the observation)_
+
+**Limitations / confidence:** _(what this does NOT prove)_
