@@ -22,6 +22,18 @@
 \usepackage{fancyhdr}
 \usepackage{lastpage}
 \usepackage[hidelinks]{hyperref}
+\usepackage{seqsplit}
+\usepackage{xltabular}
+\usepackage{listings}
+
+\lstset{
+  basicstyle=\ttfamily\scriptsize,
+  breaklines=true,
+  breakindent=0pt,
+  columns=fullflexible,
+  keepspaces=true,
+  frame=single
+}
 
 \definecolor{IST_blue}{rgb}{0,0.1922,0.8863}
 
@@ -66,7 +78,7 @@
 \vspace{0.18cm}
 %{\large\itshape Forensics Cyber-Security\par}
 \vspace{0.35cm}
-{\large MEIC, METI\par}
+{\large MEIC\par}
 
 \vfill
 
@@ -78,7 +90,7 @@
 
 \renewcommand{\arraystretch}{1.35}
 \begin{tabularx}{0.82\textwidth}{>{\bfseries}l X r}
-Group: & \multicolumn{2}{l}{Group number} \\
+Group: & \multicolumn{2}{l}{5} \\
 \hline
 Student 1: & Diogo Cruz & 106591 \\
 Student 2: & João Sousa & 99991 \\
@@ -103,10 +115,9 @@ Student 3: & Maria Pereira & 105905 \\
 % For submitted artifacts, identify the filename, SHA-256 hash,
 % and source/provenance where applicable.
 
-\begin{center}
 \renewcommand{\arraystretch}{1.4}
 
-\begin{tabularx}{\textwidth}{
+\begin{xltabular}{\textwidth}{
 >{\centering\arraybackslash}p{0.25\textwidth}
 >{\centering\arraybackslash}p{0.22\textwidth}
 >{\centering\arraybackslash}X}
@@ -117,10 +128,23 @@ Student 3: & Maria Pereira & 105905 \\
 \textbf{SHA-256 Value}
 \\
 \hline
+\endhead
 
 csf2627-lab-assignment-1.pdf & Assignment handout (provided) & 7773735d\ldots{}13dbc25 \\
 \hline
 evidence/fig1-000.png & Extracted from A001 (\texttt{pdfimages}) & cfd8e534\ldots{}906e67 \\
+\hline
+evidence/server.js & Phishing backend source, exposed directory listing on fenix.dpss.inesc-id.pt & 2a014a11\ldots{}03abf863 \\
+\hline
+evidence/package.json & \texttt{curl} of the phishing host's manifest & f6297e61\ldots{}5e8464 \\
+\hline
+evidence/README.md & \texttt{curl} of the phishing host's README & bfffd2f4\ldots{}9c8a \\
+\hline
+evidence/credentials.txt & Retrieved via percent-encoding bypass of the 403 filter in A006 & 20f4af23\ldots{}9e044b276 \\
+\hline
+evidence/credentials-decoded-message.txt & Base64 decode of the second line of \texttt{credentials.txt} & 171ad0a9\ldots{}1044e508c \\
+\hline
+evidence/\seqsplit{9xQ3nM7kV2pR5sT8wY4zA6bC1dF0gHjL} & Planted file at \path{/.well-known/acme-challenge/} on the phishing host & 9ee8314a\ldots{}0731b849b \\
 \hline
 evidence/git-config & \texttt{.git/config} exposed on fenix.dpss.inesc-id.pt & 67853eb4\ldots{}c4b42 \\
 \hline
@@ -132,6 +156,12 @@ evidence/Grand Theft Auto VI Trailer 1.mp4 & Polyglot file, personal backup comm
 \hline
 evidence/trailer-embedded.pdf & Extracted from the polyglot MP4 above & 86e46929\ldots{}09265af \\
 \hline
+evidence/amelia-report.txt & \texttt{pdftotext} of \texttt{trailer-embedded.pdf} & 6250cba9\ldots{}fd0c359f8 \\
+\hline
+evidence/trailer-icon.png & Extracted from the polyglot MP4 above (ICO-referenced PNG) & 27427762\ldots{}1aa54e309d6 \\
+\hline
+evidence/trailer-embedded.mp4 & Extracted from the polyglot MP4 above (video/audio stream) & 529ff4b5\ldots{}9f0f413d3b \\
+\hline
 evidence/blank & Personal backup commit, PNG with altered signature & 23cd9800\ldots{}53bbec \\
 \hline
 evidence/blank-fixed.png & Signature-repaired version of the above & 76df9408\ldots{}5ee396b \\
@@ -139,21 +169,35 @@ evidence/blank-fixed.png & Signature-repaired version of the above & 76df9408\ld
 evidence/myzip.zip & Personal backup commit, password-protected & 9ddeef45\ldots{}39de4 \\
 \hline
 evidence/amelia2.pdf & Extracted from \texttt{myzip.zip} (password recovered) & 04be0e12\ldots{}f51707 \\
-evidence/dj\_cara\_after\_hours.wav & Personal backup commit, Git LFS blob & <SHA-256> \\
 \hline
-evidence/spectrogram-messages.zip & Extracted from the WAV's stereo side-channel spectrogram & <SHA-256> \\
+evidence/\seqsplit{dj\_cara\_after\_hours.wav} & Personal backup commit, Git LFS blob (129\,MB; not shipped in the repository, see \S\ref{sec:acquired_artifacts} note) & 2b61eecf\ldots{}c8753d \\
 \hline
-evidence/telemetry.xlsx & "telemetry files" commit, out of context in a phishing repo & <SHA-256> \\
-% TODO: Add relevant acquired/recovered artifacts.
+evidence/spectrogram-messages.zip & Extracted from the WAV's stereo side-channel spectrogram & 7c9bb065\ldots{}18c23bdce9 \\
+\hline
+evidence/Telemetry.xlsx & Personal backup commit, out of context in a phishing repo & 3369cd48\ldots{}9778f218 \\
+\hline
+evidence/foto\_revelada.png & Decoded from \texttt{Telemetry.xlsx} via the CIELAB key in A031 & 75f09624\ldots{}30bbd52f \\
+\hline
+evidence/aot-parts.json & Split manifest for the Attack on Titan video, from the attacker's repo & 4d8911da\ldots{}2982fd01 \\
+\hline
+evidence/\seqsplit{aot-telegram-chat.webp} & Recovered from fixed-position pixel LSBs across 33,701 frames of the AOT video & 5fb499e8\ldots{}29e50e10 \\
+\hline
+evidence/\seqsplit{look\_what\_they\_need\_to\_mimic\_a\_fraction\_of\_our\_power.png} & Personal backup commit; carries the CIELAB decode key & 64efe17b\ldots{}c1c7dd1c \\
+\hline
+evidence/\seqsplit{mr\_incredible\_becoming\_uncanny.png} & Personal backup commit; carries four integer-sequence definitions & 3cc4a9ca\ldots{}9e3aebca \\
+\hline
+evidence/IMG\_3041.webp & Third Git LFS object on the phishing host & 29178488\ldots{}6067f508 \\
+\hline
+evidence/\seqsplit{gta\_v\_iceberg\_unexplained.jpg} & Personal backup commit; examined, no payload recovered & 7d0f0c05\ldots{}163d173d \\
+\hline
+\end{xltabular}
 
-\vspace{30pt} &
-\vspace{30pt} &
-\vspace{30pt}
-\\
-
-\hline
-\end{tabularx}
-\end{center}
+\textit{Note:} three recovered artifacts exceed what the group's git remote accepts and are
+therefore not included in the repository the above hashes were computed from:
+\texttt{dj\_cara\_after\_hours.wav} (129\,MB, A024), \texttt{polish\_cow.webp} (241\,MB, A013),
+and the reassembled Attack on Titan video (6.2\,GB, A029). Each must be added to the submission
+ZIP by hand, or re-fetched from the host's Git LFS object store using the command recorded
+against it in the register, and its SHA-256 verified before submission.
 
 % -----------------------------------------------------------------------------
 % Report of all findings
@@ -213,15 +257,18 @@ contained several deliberately concealed artefacts:
   an "AMÉLIA-9B RAG Reference Architecture".
 \end{itemize}
 
-All extraction commands, exact offsets, and tool invocations are recorded in the artifact
-register (Appendix) against each artifact ID, allowing independent reproduction.
+All extraction commands, exact offsets, and tool invocations are recorded against each artifact
+ID in \texttt{results/artifact-register.md}, submitted alongside this report, allowing independent
+reproduction.
 
-Beyond standard tools, two small Python scripts were written to support the analysis: one
-(\texttt{trail.py}) detects and extracts trailing bytes appended after a container's declared
-end (PNG/RIFF/JPEG), and one (\texttt{lsb.py}) extracts least-significant-bit sequences from WAV
-sample data for manual inspection. Their full source is included in the appendix for
-reproducibility; the exact invocation for each use is recorded against the relevant artifact in
-the register.
+Nearly every artifact in \S\ref{sec:acquired_artifacts} was recovered with standard,
+widely-available tools -- \texttt{curl}, \texttt{wget}, \texttt{git show}, \texttt{git-dumper},
+\texttt{tail} / \texttt{head}, \texttt{printf} / \texttt{dd}, \texttt{pdftotext}, \texttt{unzip}
+with \texttt{john} -- with the exact invocation for each recorded against the relevant artifact
+in the register. The one exception is A024/A025: recovering the message hidden in
+\texttt{dj\_cara\_after\_hours.wav}'s stereo side channel required a purpose-written script
+(\texttt{decode\_spectrogram\_messages.py}, Appendix), since no standard tool renders a
+narrow-band spectrogram of an arbitrary channel difference directly to tiled images.
 
 
 % -----------------------------------------------------------------------------
@@ -255,8 +302,9 @@ adjacent subtitle file rather than guessed.
 A further, unrelated artefact from the same personal backup material yielded the most
 significant technical finding of the investigation. \texttt{Music/dj\_cara\_after\_hours.wav}
 (a Git LFS blob) hides a source-code diff in the spectrogram of its stereo side channel
-((L-R)/2, 18--22 kHz band), decodable with the attacker's own script
-\texttt{decode\_spectrogram\_messages.py}. The diff patches
+((L-R)/2, 18--22 kHz band), decodable with \texttt{decode\_spectrogram\_messages.py}, a script
+written by the authors for this purpose (\S\ref{sec:ai}, \S\ref{sec:appendices}). The diff
+patches
 \texttt{src/rag\_engine/query\_translator.py} to introduce
 \texttt{pickle.loads(base64.b64decode(os.getenv(\allowbreak "AMELIA\_ISOTROPY\_TENSORS")))}
 inside a function disguised as an embedding-whitening optimisation ("All-but-the-Top"
@@ -265,8 +313,8 @@ projection), together with a \texttt{cluster\_id} written from
 in prose by Section 11 of A023 (\S\ref{sec:amelia-docs}) -- the audio artefact supplies the
 actual code behind that report's "environmental fallback" description.
 
-Separately, \texttt{Documents/telemetry.xlsx} was found to encode a
-photograph across its three worksheets using the CIELAB colour space rather than sensor
+Separately, \texttt{Documents/ESP32\_ADXL345\_3Axis\_Telemetry.xlsx} (A026) was found to encode
+a photograph across its three worksheets using the CIELAB colour space rather than sensor
 readings. This finding was still being verified by the team at the time of writing and is
 flagged as open in the artifact register.
 
@@ -284,6 +332,7 @@ flagged as open in the artifact register.
 % - supported hypothesis;
 % - relevant chronology/timeline suggested by the evidence.
 
+\label{sec:amelia-docs}
 Three of the recovered documents (A014, A017, A023) independently describe the same subject: an
 LLM-based system named AMÉLIA, used for document-grounded assistance and, per A014's
 \texttt{entity\_nif} schema property, for automated vendor selection in public procurement --
@@ -345,7 +394,7 @@ links.
 % - evidence that the SI should preserve or obtain.
 
 The phishing kit's exposed \texttt{.git/config} (A011) lists a remote at
-\texttt{gitlab.com/MuskyBoi/peixinho.git}. Commit authorship throughout the repository's history
+\path{gitlab.com/MuskyBoi/peixinho.git}. Commit authorship throughout the repository's history
 (A012) is consistently attributed to "Johny Musk <sussyjohnnyhacker@gmail.com>". This is
 self-reported metadata, trivially falsifiable, and not independently authenticated.
 
@@ -388,10 +437,14 @@ purpose(s) for which they were used.}
 % TODO:
 % Answer ``No'', or identify the AI tool(s) used and the purpose(s) of use.
 
-Yes. Claude (Anthropic) was used throughout the investigation as a command-line assistant: to
-plan forensic commands and to draft this report's structure. All commands were reviewed and executed by the
-authors on their own systems; no AI tool had direct access to the evidence or the course
-infrastructure.
+Yes. Claude (Anthropic) was used throughout the investigation: to plan forensic commands, to draft
+and review this report's text and structure, and to draft
+\texttt{decode\_spectrogram\_messages.py} (\S\ref{sec:appendices}), the one supporting script
+that produced a reported finding (A024/A025). That script was read, tested, and understood by the
+authors before being relied on. Every command was reviewed and executed by the authors on their
+own systems; no AI tool had direct access to the evidence or the course
+infrastructure. The authors are able to explain, justify, and reproduce every finding in this
+report independently.
 
 
 % -----------------------------------------------------------------------------
@@ -400,14 +453,12 @@ infrastructure.
 \section{Appendices}
 \label{sec:appendices}
 
-% TODO:
-% Attach relevant supporting evidence, screenshots, commands,
-% tool outputs or other material useful to substantiate or
-% reproduce the findings.
+The full artifact register, with the exact command used to obtain or derive every artifact in
+\S\ref{sec:acquired_artifacts}, is submitted as \texttt{results/artifact-register.md}.
 
-\paragraph{A0XX -- Recovered patch (transcribed from spectrogram tiles)}
+\paragraph{A025 -- Recovered patch (transcribed from spectrogram tiles)}
 \begin{quote}
-\begin{verbatim}
+\begin{lstlisting}
 --- src/rag_engine/query_translator_original.py  2026-03-01 10:14:22.xxx +0000
 +++ src/rag_engine/query_translator_patched.py    2026-04-12 23:41:05.xxx +0100
 @@ -42,6 +42,26 @@
@@ -444,12 +495,16 @@ infrastructure.
          return filter_dict
 
 def build_pgvector_query(filters: Dict[str, Any]):
-\end{verbatim}
+\end{lstlisting}
 \end{quote}
 \textit{Partial transcription -- some lines were illegible in the source spectrogram; see
 the register's Limitations field for this artifact.}
 
 \paragraph{\texttt{decode\_spectrogram\_messages.py} -- extract hidden spectrogram text from a stereo WAV}
-Full source in \texttt{evidence/}; command used per the register entry.
+Written by the authors (AI-drafted, see \S\ref{sec:ai}) to render the spectrogram of
+\texttt{dj\_cara\_after\_hours.wav}'s stereo side channel and recover the patch transcribed
+above; this is the one supporting script actually used to produce a reported finding. Full
+source is submitted under \texttt{lab1/scripts/}, and the exact invocation is recorded against
+A024/A025 in the register.
 
 \end{document}
