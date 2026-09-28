@@ -136,11 +136,7 @@ evidence/fig1-000.png & Extracted from A001 (\texttt{pdfimages}) & cfd8e534\ldot
 \hline
 evidence/server.js & Phishing backend source, exposed directory listing on fenix.dpss.inesc-id.pt & 2a014a11\ldots{}03abf863 \\
 \hline
-evidence/package.json & \texttt{curl} of the phishing host's manifest & f6297e61\ldots{}5e8464 \\
-\hline
-evidence/README.md & \texttt{curl} of the phishing host's README & bfffd2f4\ldots{}9c8a \\
-\hline
-evidence/credentials.txt & Retrieved via percent-encoding bypass of the 403 filter in A006 & 20f4af23\ldots{}9e044b276 \\
+evidence/credentials.txt & Retrieved via percent-encoding bypass of the 403 filter in \texttt{server.js} & 20f4af23\ldots{}9e044b276 \\
 \hline
 evidence/credentials-decoded-message.txt & Base64 decode of the second line of \texttt{credentials.txt} & 171ad0a9\ldots{}1044e508c \\
 \hline
@@ -150,54 +146,49 @@ evidence/git-config & \texttt{.git/config} exposed on fenix.dpss.inesc-id.pt & 6
 \hline
 evidence/peixinho.bundle & Attacker's Git repository, dumped via exposed \texttt{.git/} & 9e9fd1ac\ldots{}ac2c5 \\
 \hline
+\multicolumn{3}{l}{\textbf{Secret 1 -- AMÉLIA tools configuration}} \\
+\hline
 evidence/polish\_cow-payload.json & Decoded from frame-duration channel in \texttt{polish\_cow.webp} (Git LFS blob) & 4cf80e2f\ldots{}101110 \\
+\hline
+\multicolumn{3}{l}{\textbf{Secret 2 -- Independent technical assessment report}} \\
 \hline
 evidence/Grand Theft Auto VI Trailer 1.mp4 & Polyglot file, personal backup commit in attacker's repo & 5d3b5f08\ldots{}8471ca \\
 \hline
 evidence/trailer-embedded.pdf & Extracted from the polyglot MP4 above & 86e46929\ldots{}09265af \\
 \hline
-evidence/amelia-report.txt & \texttt{pdftotext} of \texttt{trailer-embedded.pdf} & 6250cba9\ldots{}fd0c359f8 \\
-\hline
-evidence/trailer-icon.png & Extracted from the polyglot MP4 above (ICO-referenced PNG) & 27427762\ldots{}1aa54e309d6 \\
-\hline
-evidence/trailer-embedded.mp4 & Extracted from the polyglot MP4 above (video/audio stream) & 529ff4b5\ldots{}9f0f413d3b \\
+\multicolumn{3}{l}{\textbf{Secret 3 -- Reddit thread (public-procurement concerns)}} \\
 \hline
 evidence/blank & Personal backup commit, PNG with altered signature & 23cd9800\ldots{}53bbec \\
 \hline
 evidence/blank-fixed.png & Signature-repaired version of the above & 76df9408\ldots{}5ee396b \\
 \hline
+\multicolumn{3}{l}{\textbf{Secret 4 -- AMÉLIA-9B RAG reference architecture}} \\
+\hline
 evidence/myzip.zip & Personal backup commit, password-protected & 9ddeef45\ldots{}39de4 \\
 \hline
 evidence/amelia2.pdf & Extracted from \texttt{myzip.zip} (password recovered) & 04be0e12\ldots{}f51707 \\
 \hline
-evidence/\seqsplit{dj\_cara\_after\_hours.wav} & Personal backup commit, Git LFS blob (129\,MB; not shipped in the repository, see \S\ref{sec:acquired_artifacts} note) & 2b61eecf\ldots{}c8753d \\
+\multicolumn{3}{l}{\textbf{Secret 5 -- Patched query-translator source code}} \\
 \hline
-evidence/spectrogram-messages.zip & Extracted from the WAV's stereo side-channel spectrogram & 7c9bb065\ldots{}18c23bdce9 \\
+evidence/\seqsplit{dj\_cara\_after\_hours.wav} & Personal backup commit, Git LFS blob (129\,MB; not shipped in the ZIP, see note) & 2b61eecf\ldots{}c8753d \\
 \hline
-evidence/Telemetry.xlsx & Personal backup commit, out of context in a phishing repo & 3369cd48\ldots{}9778f218 \\
+evidence/query-translator-diff-transcript.txt & Manually transcribed from the WAV's stereo side-channel spectrogram & \textit{[fill in]} \\
 \hline
-evidence/foto\_revelada.png & Decoded from \texttt{Telemetry.xlsx} via the CIELAB key in A031 & 75f09624\ldots{}30bbd52f \\
+\multicolumn{3}{l}{\textbf{Secret 6 -- Telegram conversation}} \\
 \hline
 evidence/aot-parts.json & Split manifest for the Attack on Titan video, from the attacker's repo & 4d8911da\ldots{}2982fd01 \\
 \hline
-evidence/\seqsplit{aot-telegram-chat.webp} & Recovered from fixed-position pixel LSBs across 33,701 frames of the AOT video & 5fb499e8\ldots{}29e50e10 \\
+evidence/\seqsplit{aot-reassembled.mkv} & Reassembled from 4 Git LFS parts per the manifest above (6.2\,GB; not shipped in the ZIP, see note) & \textit{[fill in]} \\
 \hline
-evidence/\seqsplit{look\_what\_they\_need\_to\_mimic\_a\_fraction\_of\_our\_power.png} & Personal backup commit; carries the CIELAB decode key & 64efe17b\ldots{}c1c7dd1c \\
-\hline
-evidence/\seqsplit{mr\_incredible\_becoming\_uncanny.png} & Personal backup commit; carries four integer-sequence definitions & 3cc4a9ca\ldots{}9e3aebca \\
-\hline
-evidence/IMG\_3041.webp & Third Git LFS object on the phishing host & 29178488\ldots{}6067f508 \\
-\hline
-evidence/\seqsplit{gta\_v\_iceberg\_unexplained.jpg} & Personal backup commit; examined, no payload recovered & 7d0f0c05\ldots{}163d173d \\
+evidence/\seqsplit{aot-telegram-chat.webp} & Recovered from fixed-position pixel LSBs across 33{,}701 frames of the reassembled video & 5fb499e8\ldots{}29e50e10 \\
 \hline
 \end{xltabular}
 
-\textit{Note:} three recovered artifacts exceed what the group's git remote accepts and are
-therefore not included in the repository the above hashes were computed from:
-\texttt{dj\_cara\_after\_hours.wav} (129\,MB, A024), \texttt{polish\_cow.webp} (241\,MB, A013),
-and the reassembled Attack on Titan video (6.2\,GB, A029). Each must be added to the submission
-ZIP by hand, or re-fetched from the host's Git LFS object store using the command recorded
-against it in the register, and its SHA-256 verified before submission.
+\textit{Note:} \texttt{dj\_cara\_after\_hours.wav} (129\,MB) and the reassembled Attack on
+Titan video (6.2\,GB) exceed practical size limits for the submission ZIP and are not
+included. Both can be reproduced exactly using the commands recorded against them in this
+Appendix and in \texttt{results/artifact-register.md}, and their SHA-256 values verified
+against the values above.
 
 % -----------------------------------------------------------------------------
 % Report of all findings
@@ -255,6 +246,14 @@ contained several deliberately concealed artefacts:
   recovered by concatenating the subtitle text of an accompanying \texttt{.srt} file, grouped by
   timestamp; it contains a second AMÉLIA-related PDF (A023), a technical demonstration report for
   an "AMÉLIA-9B RAG Reference Architecture".
+\item \textbf{Videos/Attack on Titan -- S01E01} (A028/A029): a four-part Git LFS split of an
+  anime episode, manifested by \texttt{aot-parts.json}. The video is encoded in pure RGB
+  (\texttt{libx264rgb}, High 4:4:4 Predictive, \texttt{gbrp} pixel format) with no chroma
+  subsampling -- an unusual choice for an anime rip that leaves every colour channel's
+  least-significant bit intact for hiding data. A fixed set of 32 pixel positions per frame,
+  across 33{,}701 frames, encodes a length-prefixed payload in its LSBs, decoded with a
+  purpose-written script (\texttt{video\_lsb\_extract.py}, Appendix) into a valid WebP image
+  (A030) containing a screenshotted Telegram conversation.
 \end{itemize}
 
 All extraction commands, exact offsets, and tool invocations are recorded against each artifact
@@ -269,6 +268,9 @@ in the register. The one exception is A024/A025: recovering the message hidden i
 \texttt{dj\_cara\_after\_hours.wav}'s stereo side channel required a purpose-written script
 (\texttt{decode\_spectrogram\_messages.py}, Appendix), since no standard tool renders a
 narrow-band spectrogram of an arbitrary channel difference directly to tiled images.
+The two exceptions are A024/A025 (spectrogram decoding) and A028--A030 (Git LFS part
+reassembly and per-frame pixel-LSB extraction from raw RGB video), each requiring a
+purpose-written script (Appendix) since no standard tool performs these specific operations.
 
 
 % -----------------------------------------------------------------------------
@@ -318,6 +320,12 @@ a photograph across its three worksheets using the CIELAB colour space rather th
 readings. This finding was still being verified by the team at the time of writing and is
 flagged as open in the artifact register.
 
+A fourth concealment method was identified: least-significant-bit steganography across fixed
+pixel coordinates in an uncompressed-chroma video stream (A028--A030), a technique that
+survives lossy video compression only because the source encoding avoided chroma subsampling
+entirely -- itself a signal that the video was prepared for this purpose rather than for
+normal viewing.
+
 % -----------------------------------------------------------------------------
 \subsection{Interpretation of the evidence}
 % -----------------------------------------------------------------------------
@@ -364,6 +372,18 @@ operator-controlled environment variable. This upgrades the finding from a docum
 design limitation to a concrete, exploitable code-level vulnerability (CWE-502, insecure
 deserialisation) embedded in the very component responsible for routing procurement-related
 queries.
+
+A030's recovered image shows a screenshotted messaging conversation whose content, if
+genuine, describes an offer to sell access credentials to an AMÉLIA-related database, a
+partial cryptocurrency payment, a proposal to inject modified model weights and poisoned
+data, and a suggestion to attribute any resulting anomalies to systems administrators rather
+than to the parties involved. None of this is independently corroborated: the image is a
+screenshot, not a server-side export: its timestamps carry no date or timezone, its
+participants are not identified by real names in the recovered content, and no technical
+evidence in this investigation confirms that any such transaction, weight injection, or data
+poisoning actually occurred. It is presented here as a recovered artifact and a hypothesis
+worth investigating further, not as an established fact or an accusation against any
+identified individual.
 
 \textbf{Established by evidence:} the AMÉLIA system's stated integrations, the existence and
 documented behaviour of the cluster-ID fallback (self-disclosed in A023, Section 11), the
@@ -422,6 +442,10 @@ investigation.
   \texttt{AMELIA\_ISOTROPY\_TENSORS} and \texttt{DEFAULT\_EVAL\_CLUSTER} environment
   variables referenced in the recovered patch, to determine whether the insecure
   deserialisation path was ever reachable or exploited in production.
+\item Treat the conversation recovered in A030 as an unauthenticated lead only: request
+  platform-level records (with proper legal authorisation) for any account plausibly linked
+  to the recovered handles, and do not name or accuse any individual based on the screenshot
+  alone.
 \end{itemize}
 
 % -----------------------------------------------------------------------------
@@ -506,5 +530,17 @@ Written by the authors (AI-drafted, see \S\ref{sec:ai}) to render the spectrogra
 above; this is the one supporting script actually used to produce a reported finding. Full
 source is submitted under \texttt{lab1/scripts/}, and the exact invocation is recorded against
 A024/A025 in the register.
+
+\paragraph{\texttt{fetch\_and\_reassemble\_aot.py} -- download and verify Git LFS video parts}
+Written by the authors to fetch the four LFS parts of the Attack on Titan video from the
+exposed \texttt{.git/lfs/objects/} store, verify each against \texttt{aot-parts.json}, and
+reassemble the whole file with a final hash check. Full source under \texttt{lab1/scripts/};
+invocation recorded against A028/A029 in the register.
+
+\paragraph{\texttt{video\_lsb\_extract.py} -- extract a length-prefixed payload from fixed pixel LSBs}
+Written by the authors to extract data hidden in the least-significant bits of 32 fixed pixel
+positions per frame across the reassembled, uncompressed-chroma (\texttt{gbrp}) video, given
+that the source used no chroma subsampling specifically to preserve LSB integrity. Full
+source under \texttt{lab1/scripts/}; invocation recorded against A030 in the register.
 
 \end{document}
