@@ -1,0 +1,6 @@
+Host fenix-prod
+    HostName 146.193.41.109
+    IdentityFile ~/.ssh/muskyboi
+    User muskyboi
+    Port 22
+    StrictHostKeyChecking no
