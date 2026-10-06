@@ -107,3 +107,42 @@ Format per Good-Practice Manual §3/§4. IDs prefixed `B0xx` to avoid collision 
 - Observation: origin = https://fenix.dpss.inesc-id.pt/.git/ (subdomínio real do grupo de investigação DPSS do INESC-ID/IST), distinto do URL do GitLab usado pelo deploy.sh; commit de merge tem autor "Johny Musk <sussyjohnnyhacker@gmail.com>"
 - Interpretation: possível proveniência via técnica de .git exposto (como no Lab 1) contra um projeto IST/INESC-ID não relacionado; email pessoal reforça atribuição independentemente
 - Limitations: não foi possível confirmar se o .git em fenix.dpss.inesc-id.pt ainda está exposto, nem a natureza exata desse projeto, dentro do tempo disponível
+
+## B020 — D: volume decrypted (FVEK from memory)
+- Parent: B002 (windows_laptop_memory.raw) + B001 (D:, offset 21880635392)
+- Command: `git clone github.com/lorelyai/volatility3-bitlocker`;
+  `vol -vvv -p results/work/plugins -f windows_laptop_memory.raw windows.bitlocker.BitlockerFVEKScan --tags FVEc Cngb None --dislocker`;
+  `dislocker -v -k 0x<off>-Dislocker.fvek -V <loop @ 21880635392> /mnt/dislocker`; `mount -t ntfs-3g -o ro /mnt/dislocker/dislocker-file /mnt/dvol`
+- Observation: scan devolveu 3 candidatos; só o de tag `None` é um par AES-XTS-128 completo (FVEK + tweak); os Cngb não têm tweak. Com essa chave o dislocker monta a D: read-only; boot sector lê `NTFS`, `$MFT` record 0 lê `FILE`.
+- Interpretation: a D: desbloqueia pela FVEK residente em memória (volume de dados com auto-unlock), sem a password de utilizador. A nota manuscrita NÃO foi necessária para abrir a D:. Corrige o B005–B007, onde a D: ficou por abrir.
+- Limitations: os bytes da FVEK são material de chave; guardados em ficheiro de scratch gitignored, não committados.
+
+## B021 — mom-photo.jpg (parte 3 da nota)
+- File: `/Users/johnny/Pictures/mom-photo.jpg` na D: (inode 939)
+- SHA-256: `fe8f99ce75f92a4aee463d5b535d2737e0e042d8bfb59bf44d123c9704f6be55`
+- Command: `cp` da D: montada; `sha256sum`
+- Observation: JPEG 474x266; cena anime de plataforma de estação — comboio com display "8 CARS" e multidão em fatos de Halloween (chifres, capuzes). Sem EXIF de GPS/câmara.
+- Interpretation: é o "Shibuya Incident" de Jujutsu Kaisen (Estação de Shibuya, 31 out). O "JJK picture / My Blue Eyes thing" (Gojo Satoru) da nota nomeia a sua região: parte 3 = `shibuya`.
+- Limitations: o nome do ficheiro não corresponde ao conteúdo; a identificação é por reconhecimento da cena. Confirmado criptograficamente em B024.
+
+## B022 — hate-this-place.jpg (parte 5 da nota)
+- File: `/Users/johnny/Pictures/hate-this-place.jpg` na D: (inode 938)
+- SHA-256: `c323d401bd25fd8a6ae6e3b8f7dba724ce95d51c886b15653a2f5a0863c800c8`
+- Command: `cp` da D: montada; `sha256sum`
+- Observation: JPEG 1200x900; edifício amarelo de um piso, telhado de telha, esplanada com chapéus-de-sol e mesas sob pinheiros, pátio em calçada. Sem EXIF de GPS/câmara; sem placa legível.
+- Interpretation: é o restaurante **Maria Pimenta** na Fábrica da Pólvora de Barcarena (corresponde às fotos públicas do restaurante). O "Mom's photo of Fábrica de Pólvora … the spot itself of the restaurant" da nota nomeia-o: parte 5 = `pimenta`.
+- Limitations: o nome não está escrito na imagem; identificação por reconhecimento do edifício/local. Confirmado criptograficamente em B024.
+
+## B023 — esteganálise das imagens (negativo)
+- Parent: B021, B022
+- Command: `python3 results/scripts/image_steg_check.py <img>` (markers COM/EXIF, trailing após FFD9, LSB espacial em várias ordens); `steghide info`; `steghide extract -p ""`; `stegseek <img> rockyou.txt`
+- Observation: sem comentário COM; EXIF é só 64 B de orientação (mom-photo) ou inexistente (hate-this-place); 0 bytes após o FFD9 final; sem payload LSB espacial em nenhuma ordem; steghide/stegseek não encontraram dados nem passphrase em nenhuma das imagens.
+- Interpretation: as partes 3 e 5 NÃO estão escondidas por esteganografia nas imagens. São estabelecidas por reconhecimento da cena/local (B021, B022) e confirmadas pelo oráculo (B024). Resultado negativo registado (§5).
+- Limitations: ferramentas transform-domain além do steghide (outguess, jsteg, F5) são o último passo; registar o seu resultado se corridas.
+
+## B024 — partes 3 e 5 confirmadas contra o stash.zip
+- Parent: B021, B022, B012 (stash.zip, ZipCrypto)
+- Command: `python3 results/scripts/decode_note_parts.py results/work/zip/stash.zip`
+- Observation: fixando as partes 1/2/4 (`johnny-pc`,`elliot`,`fsociety`), a recipe `sha256(johnny-pc_elliot_shibuya_fsociety_pimenta)` = `ab99749a576b8070ddf665ce139afd43e7c2a3f5b55b3173e98791c281c1454d` é o único par (p3,p5) candidato que abre o arquivo; o primeiro membro encriptado lê com CRC válido.
+- Interpretation: partes 3 = `shibuya` e 5 = `pimenta` ficam unicamente confirmadas pelo arquivo recuperado. String completa da password: `johnny-pc_elliot_shibuya_fsociety_pimenta`. Nota: a parte 2 é `elliot` (wallpaper Mr. Robot) e a parte 4 é `fsociety` (hash NT `fb06de73…2934`, não vazio) — corrige qualquer leitura anterior de password vazia.
+- Limitations: o oráculo confirma a string de cinco partes como conjunto; o significado de cada parte assenta na sua fonte (B021/B022 para 3/5). O ZIP foi lido, nunca modificado.
