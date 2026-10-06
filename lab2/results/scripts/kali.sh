@@ -21,6 +21,17 @@
 #                              TSK body file + mactime CSV for one filesystem
 #   hashmatch <dir>            hash every file under <dir>, report any that match
 #                              the 16 Stage I hashes (lab1-hashes.sha256)
+#   bl-scan                    Volatility BitLocker FVEK scan of the memory image
+#                              (third-party plugin, staged + SHA-256 checked)
+#   bl-verify <fvek-hex>       check a key decrypts the D: volume header and $MFT;
+#                              the key is saved to results/work/fvek-D.hex (0600)
+#   creds                      Volatility hashdump (SAM) + cached domain creds
+#                              (LSA secrets) from the memory image -> results/analysis/creds/
+#   hives                      extract SAM/SYSTEM/SECURITY/SOFTWARE from the C: NTFS
+#                              partition (sector 239616) and run offline secretsdump
+#   note-pw <zip>              test the handwritten note's ZIP password candidates
+#   bl-decrypt                 decrypt the whole D: partition to results/work/
+#                              (needs bl-verify first; ~5.6 GB, gitignored)
 #
 # Timestamps: the Linux image is treated as created 2026-08-24, so every
 # absolute timestamp found in it gets -27 days in the report and timeline. This
@@ -112,6 +123,66 @@ step_hashmatch() {
     echo "matches: $(wc -l < "$OUT/30_matches_$(basename "$dir").txt")"
 }
 
+# --- BitLocker (D: = partition at sector 42735616, 11788288 sectors) ---
+D_START=42735616
+D_SECTORS=11788288
+PLUGIN_SHA="1cda3c680e665898051dba1f9a638c42a4a711b65da74c8539995ad543a7ffb7"
+BL_PY="$HERE/bitlocker.py"
+KEYFILE="results/work/fvek-D.hex"
+
+step_bl_scan() {
+    need_file "$MEM" && have vol || return 0
+    echo "$PLUGIN_SHA  results/work/plugins/windows/bitlocker.py" | sha256sum -c - >/dev/null \
+        || { echo "plugin hash mismatch -- refusing to run" >&2; return 1; }
+    mkdir -p "$OUT/bitlocker"
+    vol -vv -p results/work/plugins -o "$OUT/bitlocker" -f "$MEM" \
+        windows.bitlocker.BitlockerFVEKScan --tags FVEc Cngb None \
+        > "$OUT/bitlocker/run.log" 2>&1
+    tr -d '\000' < "$OUT/bitlocker/run.log" | grep -E '\[FVEK\] (Address|Cipher|FVEK)'
+}
+
+step_bl_verify() {
+    local key="${1:?bl-verify: needs the FVEK hex}"
+    need_file "$WIN" || return 0
+    mkdir -p results/work
+    ( umask 077; printf '%s\n' "$key" > "$KEYFILE" )
+    python3 "$BL_PY" verify "$WIN" "$D_START" "$key" | tee "$OUT/40_bl_verify.txt"
+}
+
+step_bl_decrypt() {
+    need_file "$WIN" && [ -f "$KEYFILE" ] || { echo "run bl-verify first" >&2; return 1; }
+    python3 "$BL_PY" decrypt "$WIN" "$D_START" "$D_SECTORS" "$(cat "$KEYFILE")" results/work/D-decrypted.raw
+}
+
+step_creds() {
+    need_file "$MEM" && have vol || return 0
+    mkdir -p "$OUT/creds"
+    # These plugins read registry hives out of memory, so they run on the image only.
+    # Output contains password hashes/secrets: gitignored, never committed.
+    for p in windows.registry.hivelist windows.hashdump windows.cachedump windows.lsadump; do
+        vol -q -f "$MEM" "$p" > "$OUT/creds/${p}.txt" 2> "$OUT/creds/${p}.err" || echo "  $p failed -- see .err" >&2
+    done
+}
+
+step_hives() {
+    need_file "$WIN" && have impacket-secretsdump || return 0
+    local o=239616 h=results/work/hives name ino
+    mkdir -p "$h" "$OUT/creds"
+    for name in SAM SYSTEM SECURITY SOFTWARE; do
+        ino=$(fls -o "$o" -r -p "$WIN" 2>/dev/null | awk -v n="Windows/System32/config/$name" -F'\t' '$2==n {print $1}' | awk '{print $2}' | cut -d- -f1)
+        [ -n "$ino" ] && icat -o "$o" "$WIN" "$ino" > "$h/$name"
+    done
+    sha256sum "$h"/SAM "$h"/SYSTEM "$h"/SECURITY "$h"/SOFTWARE | tee "$OUT/creds/hive_hashes.txt"
+    impacket-secretsdump -sam "$h/SAM" -system "$h/SYSTEM" -security "$h/SECURITY" LOCAL \
+        2>&1 | tee "$OUT/creds/secretsdump_offline.txt"
+}
+
+step_note_pw() {
+    local z="${1:?note-pw: needs a zip under results/work/}"
+    mkdir -p "$OUT/zip"
+    python3 "$HERE/note_password.py" "$z" | tee "$OUT/zip/note_pw_$(basename "$z").txt"
+}
+
 step="${1:-}"
 [ $# -gt 0 ] && shift
 case "$step" in
@@ -120,5 +191,11 @@ case "$step" in
     layout)    step_layout "$@" ;;
     timeline)  step_timeline "$@" ;;
     hashmatch) step_hashmatch "$@" ;;
-    *)         sed -n '2,29p' "${BASH_SOURCE[0]}"; [ -z "$step" ] && exit 1 || exit 0 ;;
+    creds)      step_creds ;;
+    hives)      step_hives ;;
+    note-pw)    step_note_pw "$@" ;;
+    bl-scan)    step_bl_scan ;;
+    bl-verify)  step_bl_verify "$@" ;;
+    bl-decrypt) step_bl_decrypt ;;
+    *)         sed -n '2,42p' "${BASH_SOURCE[0]}"; [ -z "$step" ] && exit 1 || exit 0 ;;
 esac
