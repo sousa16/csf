@@ -138,6 +138,7 @@ The eight source artifacts of Table~1 and the hidden files of Table~2 of the ass
 \begin{enumerate}
   \item The Windows laptop's BitLocker-protected D: volume was decrypted with the volume's FVEK, recovered from memory (A108, A107). The key was validated on the NTFS boot sector and the \$MFT record.
   \item The password of the handwritten note is \texttt{johnny-pc\_elliot\_shibuya\_fsociety\_pimenta}. It opens \texttt{stash.zip} from the Linux workstation (A124, A125). The five parts are confirmed together by the archive's CRC check. The Windows password \texttt{fsociety} is confirmed independently by the SAM hash (A118).
+  \item Note parts~3 and~5 name a region shown in a \emph{Jujutsu Kaisen} picture and a restaurant in a family photograph. Neither word is written in, or steganographically hidden in, the two images recovered from the D: volume (\texttt{mom-photo.jpg}, \texttt{hate-this-place.jpg}; in-band steganalysis negative, A154). They were identified by reverse image search: \texttt{mom-photo.jpg} is a scene from the ``Shibuya Incident'' arc, set at Shibuya Station (part~3 = \texttt{shibuya}), and \texttt{hate-this-place.jpg} is the restaurant \emph{Maria Pimenta} at the Fábrica da Pólvora de Barcarena (part~5 = \texttt{pimenta}). Both readings are corroborated cryptographically, as the two words are among the five parts whose SHA-256 opens \texttt{stash.zip} (A152, A153, A125).
   \item The Linux workstation holds a copy of the phishing server source (\texttt{server.js}, same hash as Stage~I A006), a git clone of the phishing host (\texttt{fenix.dpss.inesc-id.pt}), the phishing campaign's acme-challenge token (A149), and an encrypted archive of seven of the eight Stage~I source artifacts (A126).
   \item Shell history on the Linux workstation records the steps used to hide the Stage~I files inside media (A129), the encryption of the archive, secure deletion (\texttt{srm}) of the working directories, and a \texttt{git rm} and commit on the production server \texttt{fenix-prod} (A131).
   \item On the Windows laptop, a PowerShell script block copies files into place and resets their timestamps from a supplied table, that is, timestomping (A139). It ran over WinRM on 22~August 2026 (10:29 WEST), the last day of the reported phishing window.
@@ -282,6 +283,6 @@ AI assistance was used in this work: an AI coding assistant (Claude, Anthropic) 
 
 \textbf{Appendix B: timeline.} \texttt{lab2/report-and-timeline/timeline-events.csv} (rows E1--E20, T1--T3, M1--M17).
 
-\textbf{Appendix C: scripts.} \texttt{lab2/results/scripts/}: \texttt{kali.sh} (all steps), \texttt{bitlocker.py}, \texttt{note\_password.py}, \texttt{search\_volume.py}, \texttt{compare\_xlsx.py}, \texttt{evtx\_dump.py}, \texttt{generate\_candidates.py}.
+\textbf{Appendix C: scripts.} \texttt{lab2/results/scripts/}: \texttt{kali.sh} (all steps), \texttt{bitlocker.py}, \texttt{note\_password.py}, \texttt{search\_volume.py}, \texttt{compare\_xlsx.py}, \texttt{evtx\_dump.py}, \texttt{generate\_candidates.py}, \texttt{image\_steg\_check.py} (steganalysis of the part-3/5 photos), \texttt{extract\_d\_images.sh} (D: image recovery).
 
 \end{document}

@@ -984,3 +984,26 @@ Entries B001–B013 kept as the colleague recorded them. Where they overlap with
 **Interpretation:** Hidden file f4.pdf is embedded in the GTA trailer (polyglot), as the bash history indicates (A129: polyglot_create.sh with Technical_Assurance.pdf).
 
 **Limitations / confidence:** Hash equality with Table 2 is the verification. The one trailing newline after %%EOF was needed to match; other trimming gave other hashes.
+
+## A152 -- `evidence/windows/mom-photo.jpg` (note part 3 identified)
+- Parent: A111 (same file, recovered from D: `\Users\johnny\Pictures\mom-photo.jpg`, inode 939)
+- SHA-256: `fe8f99ce75f92a4aee463d5b535d2737e0e042d8bfb59bf44d123c9704f6be55`
+- Command: `cp` from the decrypted D: (A109); committed to `evidence/windows/`; identification by reverse image search (search-by-image on the picture).
+- Observation: 474x266 JPEG; an anime train-platform scene (a train with an "8 CARS" head-car display and a crowd in Halloween costumes). A152 reverse image search returns this as a still from the anime *Jujutsu Kaisen*, "Shibuya Incident" arc, set at Shibuya Station.
+- Interpretation: this is the "JJK picture" of note part 3; its region is Shibuya, so part 3 = `shibuya`. This supplies the external source that A111 left open ("not established").
+- Limitations: the identification rests on an external image search, not on content inside the file; it is corroborated cryptographically by the note-password oracle (A125), where `shibuya` is one of the five parts that open stash.zip.
+
+## A153 -- `evidence/windows/hate-this-place.jpg` (note part 5 identified)
+- Parent: A112 (same file, recovered from D: `\Users\johnny\Pictures\hate-this-place.jpg`, inode 938)
+- SHA-256: `c323d401bd25fd8a6ae6e3b8f7dba724ce95d51c886b15653a2f5a0863c800c8`
+- Command: `cp` from the decrypted D: (A109); committed to `evidence/windows/`; identification by reverse image search.
+- Observation: 1200x900 JPEG; a yellow single-storey building with a terracotta-tiled roof and a terrace under pine trees. A153 reverse image search returns this building as the restaurant "Maria Pimenta", located inside the Fábrica da Pólvora de Barcarena (Oeiras).
+- Interpretation: this is the restaurant photo of note part 5 ("Mom's photo of Fábrica de Pólvora ... the spot itself of the restaurant"); the restaurant is Maria Pimenta, so part 5 = `pimenta`. This supplies the external source that A112 left open ("no source yet").
+- Limitations: the name is not written in the image; the identification rests on an external image search and is corroborated cryptographically by the note-password oracle (A125), where `pimenta` is one of the five parts that open stash.zip.
+
+## A154 -- image steganalysis of the two part-3/part-5 photos (negative)
+- Parent: A152, A153
+- Command: `python3 results/scripts/image_steg_check.py <img>` (JPEG COM/EXIF markers, trailing data after FFD9, spatial-LSB class-baseline over channel/bit orders); plus `steghide info`, `steghide extract -p ""`, `stegseek <img> rockyou.txt`.
+- Observation: no COM comment; EXIF is 64 bytes of orientation only (mom-photo) or absent (hate-this-place); 0 bytes after the final FFD9; no spatial-LSB payload in any order; steghide/stegseek found no embedded data or passphrase on either image.
+- Interpretation: the words "shibuya" and "pimenta" are not hidden inside the images by steganography; they are read by recognising the depicted scene/place (A152, A153). Negative finding recorded per Good-Practice Manual §5.
+- Limitations: transform-domain tools beyond steghide (outguess, jsteg) were not installed on the analysis host and could not be run; recorded as a limitation.
