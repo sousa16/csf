@@ -882,3 +882,54 @@ Entries B001–B013 kept as the colleague recorded them. Where they overlap with
 **Interpretation:** Shows the user and logon type for each session; johnny on 22 Aug, Administrator on 25 Aug.
 
 **Limitations / confidence:** Table derived from the Security log; the IP field is '-' throughout.
+
+## A146 -- `results/analysis/30_matches_cfiles.txt`
+
+| Field | Value |
+| --- | --- |
+| Registered (UTC) | 2026-10-06T08:50:14+00:00 |
+| Parent artifact | A101 |
+| Command | `kali.sh hashmatch results/work/cfiles (570 files from C: Users, ProgramData, Windows/Temp, Recovery)` |
+| stat | `results/analysis/30_matches_cfiles.txt|0|2026-10-06 08:50:14.211910507 +0000|2026-10-06 08:50:14.211910507 +0000` |
+| Type | empty |
+| SHA-256 | `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855` |
+
+**Observation:** Hash-match of 570 regular files from C: Users/, ProgramData/, Windows/Temp/ and Recovery/ against the 16 Stage I hashes: 0 matches.
+
+**Interpretation:** None of the Stage I files is present as a live, readable file on the C: partition.
+
+**Limitations / confidence:** Live files only; Windows System32, WinSxS and deleted content were not searched. Matching is by SHA-256 of the whole file, so modified or partial copies would not match.
+
+## A147 -- `results/analysis/journal_grep.txt`
+
+| Field | Value |
+| --- | --- |
+| Registered (UTC) | 2026-10-06T10:11:56+00:00 |
+| Parent artifact | A103 |
+| Command | `jls/jcat dump of the ext4 journal (results/work/journal/journal.bin), grep for workspace and Stage I names` |
+| stat | `results/analysis/journal_grep.txt|63|2026-10-06 10:11:56.682577757 +0000|2026-10-06 10:11:56.682577757 +0000` |
+| Type | ASCII text |
+| SHA-256 | `ced3b7093a798b3701a102bc7d464b21d347e5f80e62024e2b98a961ffcedb1a` |
+
+**Observation:** ext4 journal of the Linux disk (268 MB, 65,535 blocks): no occurrence of 'ducky', 'hidings', 'stash.zip', 'check-later' or any Stage I filename. 'repos', 'blank', 'subtitles' occur only in unrelated package names; 'peixinho' occurs twice as a directory entry.
+
+**Interpretation:** The journal does not keep the names of the directories removed with srm. The 'peixinho' hits are consistent with A134/A135 and do not add a new event.
+
+**Limitations / confidence:** The journal is a rolling log; older transactions may already be overwritten. Only the blocks in the journal were searched, not unallocated space.
+
+## A148 -- `results/analysis/30_matches_lfiles.txt`
+
+| Field | Value |
+| --- | --- |
+| Registered (UTC) | 2026-10-06T10:11:57+00:00 |
+| Parent artifact | A103 |
+| Command | `kali.sh hashmatch results/work/lfiles (81 files from Linux home/, excluding snap/cache)` |
+| stat | `results/analysis/30_matches_lfiles.txt|0|2026-10-06 10:11:44.441693463 +0000|2026-10-06 10:11:44.441779588 +0000` |
+| Type | empty |
+| SHA-256 | `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855` |
+
+**Observation:** Hash-match of 81 regular files under Linux home/ (excluding snap, cache and Firefox profile) against the 16 Stage I hashes: 0 matches.
+
+**Interpretation:** No Stage I file is stored unencrypted in the user's home directory. The sources are only present inside stash.zip (A126), which is encrypted.
+
+**Limitations / confidence:** Live files only; Firefox profile and deleted content not searched. Matching is by whole-file SHA-256.
