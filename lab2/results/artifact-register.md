@@ -729,3 +729,156 @@ Entries B001–B013 kept as the colleague recorded them. Where they overlap with
 - Observation: origin = https://fenix.dpss.inesc-id.pt/.git/ (subdomínio real do grupo de investigação DPSS do INESC-ID/IST), distinto do URL do GitLab usado pelo deploy.sh; commit de merge tem autor "Johny Musk <sussyjohnnyhacker@gmail.com>"
 - Interpretation: possível proveniência via técnica de .git exposto (como no Lab 1) contra um projeto IST/INESC-ID não relacionado; email pessoal reforça atribuição independentemente
 - Limitations: não foi possível confirmar se o .git em fenix.dpss.inesc-id.pt ainda está exposto, nem a natureza exata desse projeto, dentro do tempo disponível
+
+## A137 -- `results/work/cdrive/Security.evtx`
+
+| Field | Value |
+| --- | --- |
+| Registered (UTC) | 2026-10-06T08:15:51+00:00 |
+| Parent artifact | 239616 |
+| Command | `icat -o 239616 images/windows_laptop_disk.dd 89098` |
+| stat | `results/work/cdrive/Security.evtx|3215360|2026-10-06 08:12:10.550602501 +0000|2026-10-06 08:12:10.550602501 +0000` |
+| Type | MS Windows 10-11 Event Log, version  3.2, 48 chunks (no. 47 in use), next record no. 4406 |
+| SHA-256 | `29e6a0df28080267b2e470e946a202dd1ff27598b6deedbd593b7e7ad49ba36f` |
+
+**Observation:** Security event log (C:, inode 89098). 900 logon events (4624), 880 special-privilege events (4672), 786 explicit-credential events (4648). Logons on 22 Aug 09:29-09:31 UTC and 25 Aug 21:02-21:03 UTC are WinRM-style network logons (type 3, Negotiate, ws JOHNNY-PC, IpAddress '-').
+
+**Interpretation:** Two WinRM sessions on these dates: 22 Aug authenticated as johnny; 25 Aug as Administrator. The same logon pattern appears for both.
+
+**Limitations / confidence:** IpAddress '-' is how this log records WinRM network logons here. It does not prove the origin is local. The 25 Aug session is shown to be remote by the memory netscan (A101).
+
+## A138 -- `results/work/cdrive/Microsoft-Windows-WinRM_Operational.evtx`
+
+| Field | Value |
+| --- | --- |
+| Registered (UTC) | 2026-10-06T08:15:51+00:00 |
+| Parent artifact | 239616 |
+| Command | `icat -o 239616 ... 90414` |
+| stat | `results/work/cdrive/Microsoft-Windows-WinRM_Operational.evtx|1052672|2026-10-06 08:12:10.634927761 +0000|2026-10-06 08:12:10.634927761 +0000` |
+| Type | MS Windows 10-11 Event Log, version  3.2, 13 chunks (no. 12 in use), next record no. 1943 |
+| SHA-256 | `3e368494f50bf4cc35d1bb31bbe7eb91217c9d2eb94fb7311c36381ec6706872` |
+
+**Observation:** WinRM Operational log (inode 90414): 611 + 610 + 589 events (IDs 145, 132, 254) and 110 session-created events (ID 91). The session-created events fall on 28 Jul (101), 22 Aug (5, 09:30:31-09:30:38 UTC) and 25 Aug (4, 21:02:39-21:02:57 UTC).
+
+**Interpretation:** Three separate WinRM activity periods. 28 Jul looks like provisioning; 22 Aug and 25 Aug are the sessions of interest.
+
+**Limitations / confidence:** The event does not record the client address. The 22 Aug client origin is not confirmed.
+
+## A139 -- `results/work/cdrive/Microsoft-Windows-PowerShell_Operational.evtx`
+
+| Field | Value |
+| --- | --- |
+| Registered (UTC) | 2026-10-06T08:15:51+00:00 |
+| Parent artifact | 239616 |
+| Command | `icat -o 239616 ... 90170` |
+| stat | `results/work/cdrive/Microsoft-Windows-PowerShell_Operational.evtx|69632|2026-10-06 08:12:10.687534163 +0000|2026-10-06 08:12:10.687534163 +0000` |
+| Type | MS Windows 10-11 Event Log, version  3.2, 1 chunks (no. 0 in use), next record no. 595 |
+| SHA-256 | `2467ae88d623459f9244ad633b3943feb8adcf73b67fac63eac9408c307739a7` |
+
+**Observation:** PowerShell Operational log (inode 90170). One script-block event (4104, record 585, 22 Aug 09:29:36 UTC): a block that copies files into a destination folder and then sets CreationTime, LastWriteTime and LastAccessTime from a metadata table. Path C:\Windows\Temp\Modules\Forensics.psm1. Also 9 engine-lifecycle events (40961/40962/53504) at 22 Aug 09:30:31-09:30:37 UTC.
+
+**Interpretation:** Timestomping: the script overwrites file times from supplied metadata, so the injected files would show the chosen dates. Executed over WinRM on 22 Aug at the end of the reported phishing window.
+
+**Limitations / confidence:** Only the script block is recorded; the module file itself is not in the live listing or found as a deleted entry, so the injected files are unknown. Who wrote the script is not established.
+
+## A140 -- `results/work/cdrive/System.evtx`
+
+| Field | Value |
+| --- | --- |
+| Registered (UTC) | 2026-10-06T08:15:51+00:00 |
+| Parent artifact | 239616 |
+| Command | `icat -o 239616 ... 89094` |
+| stat | `results/work/cdrive/System.evtx|1118208|2026-10-06 08:12:10.741788895 +0000|2026-10-06 08:12:10.741788895 +0000` |
+| Type | MS Windows 10-11 Event Log, version  3.2, 4 chunks (no. 3 in use), next record no. 532 |
+| SHA-256 | `1da2c58c5738b96c86f40c17fee02e11f26b70e2423e71e37d682c0c36093126` |
+
+**Observation:** System log (inode 89094). Contains one 'log file cleared' event (ID 104) on 28 Jul 2026 20:16:35 UTC, subject johnny (JOHNNY-PC), channel Microsoft-Windows-PowerShell/Operational. Otherwise routine service and driver events.
+
+**Interpretation:** The PowerShell Operational log was cleared by johnny on 28 Jul, the same second as the deletion of background.jpg in the USN journal (A122). This is an anti-forensic action on the Windows laptop.
+
+**Limitations / confidence:** Only one clearing record exists; the Security log has no 1102 (cleared) event. Whether other logs were cleared without a record is not known.
+
+## A141 -- `results/work/cdrive/WINRSHOST.EXE-DD38ED4A.pf`
+
+| Field | Value |
+| --- | --- |
+| Registered (UTC) | 2026-10-06T08:15:51+00:00 |
+| Parent artifact | 239616 |
+| Command | `icat -o 239616 ... 90438` |
+| stat | `results/work/cdrive/WINRSHOST.EXE-DD38ED4A.pf|3432|2026-10-06 08:12:10.772938920 +0000|2026-10-06 08:12:10.772938920 +0000` |
+| Type | data |
+| SHA-256 | `2a5e57c55a5a5692a0a90ae42ee0a2ff0f65e1495ed4d1ec5459908cf29ff25e` |
+
+**Observation:** Prefetch WINRSHOST.EXE: 13 runs. Last runs: 22 Aug 09:30:31.32 and 09:30:31.18 UTC; then a burst on 28 Jul 20:10-20:14 UTC.
+
+**Interpretation:** winrshost.exe ran on 22 Aug at the same time as the timestomping script. Prefetch does not show the 25 Aug run seen in memory.
+
+**Limitations / confidence:** Prefetch keeps only the last 8 run times, and the 25 Aug run is missing, so Prefetch and memory disagree; not explained yet.
+
+## A142 -- `results/work/cdrive/POWERSHELL.EXE-CA1AE517.pf`
+
+| Field | Value |
+| --- | --- |
+| Registered (UTC) | 2026-10-06T08:15:51+00:00 |
+| Parent artifact | 239616 |
+| Command | `icat -o 239616 ... 90453` |
+| stat | `results/work/cdrive/POWERSHELL.EXE-CA1AE517.pf|35615|2026-10-06 08:12:10.799034997 +0000|2026-10-06 08:12:10.799034997 +0000` |
+| Type | data |
+| SHA-256 | `fbf8f0b5ff58fea3a8d0d11d37de4ae4de6532cca266b5952ef3bec29b0ef340` |
+
+**Observation:** Prefetch POWERSHELL.EXE: 11 runs. Last run 22 Aug 09:30:31.44 UTC; then a burst on 28 Jul 20:10-20:14 UTC.
+
+**Interpretation:** Consistent with A139 (PowerShell used at 09:30 on 22 Aug).
+
+**Limitations / confidence:** Same caveat as A141: no 25 Aug run recorded.
+
+## A143 -- `results/work/cdrive/setupapi.dev.log`
+
+| Field | Value |
+| --- | --- |
+| Registered (UTC) | 2026-10-06T08:15:51+00:00 |
+| Parent artifact | 239616 |
+| Command | `icat -o 239616 ... 90261` |
+| stat | `results/work/cdrive/setupapi.dev.log|11096|2026-10-06 08:12:10.826896986 +0000|2026-10-06 08:12:10.826896986 +0000` |
+| Type | Generic INItialization configuration [BeginLog] |
+| SHA-256 | `c026d59a4c79d211bdf6fa6b0a40d203780595a746677fc6cb0ff9e1fb2238a6` |
+
+**Observation:** setupapi.dev.log (133 lines): one driver install (Microsoft Print To PDF) at boot session 28 Jul 21:11 UTC. No USB mass-storage device installation. The SYSTEM hive has no 'Disk&Ven' entries.
+
+**Interpretation:** The USB drive labelled TEARSINRAIN (bash history, A129) was never connected to this Windows laptop. Copying the Stage I material was done on the Linux workstation.
+
+**Limitations / confidence:** Absence of records. The PowerShell log was cleared on 28 Jul (A140), so a device could have been plugged in before that without a record in the logs that survive; setupapi is not cleared by that event, so the absence here is still informative.
+
+## A144 -- `results/analysis/evtx/ps4104.txt`
+
+| Field | Value |
+| --- | --- |
+| Registered (UTC) | 2026-10-06T08:15:51+00:00 |
+| Parent artifact | A139 |
+| Command | `evtx_dump.py show PowerShell_Operational.evtx 4104` |
+| stat | `results/analysis/evtx/ps4104.txt|1872|2026-10-06 08:15:45.548040211 +0000|2026-10-06 08:15:45.548040211 +0000` |
+| Type | ASCII text |
+| SHA-256 | `00b9e927c28f00deea7b75f8d4dea841933047cd401e0f03e7c60e0324cc3651` |
+
+**Observation:** PowerShell 4104 record in full (A139), exported to text.
+
+**Interpretation:** See A139.
+
+**Limitations / confidence:** See A139.
+
+## A145 -- `results/analysis/evtx/logons_0822_0825.txt`
+
+| Field | Value |
+| --- | --- |
+| Registered (UTC) | 2026-10-06T08:15:51+00:00 |
+| Parent artifact | A137 |
+| Command | `evtx_dump.py / pyevtx: 4624/4648 for 22 Aug 09:2x-09:3x and 25 Aug 21:0x` |
+| stat | `results/analysis/evtx/logons_0822_0825.txt|11146|2026-10-06 08:15:45.956856199 +0000|2026-10-06 08:15:45.956856199 +0000` |
+| Type | ASCII text |
+| SHA-256 | `6fa40928e7f33a0a3a5711a9eee49b348f54b82de20f12ec0b5bce691795d10a` |
+
+**Observation:** Logon events 4624/4648 on 22 Aug 09:20-09:40 and 25 Aug 21:00-21:10 UTC, extracted to a table (121 lines).
+
+**Interpretation:** Shows the user and logon type for each session; johnny on 22 Aug, Administrator on 25 Aug.
+
+**Limitations / confidence:** Table derived from the Security log; the IP field is '-' throughout.
