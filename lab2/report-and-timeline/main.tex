@@ -50,7 +50,7 @@
 
 \begin{minipage}[c]{0.18\textwidth}
   \centering
-  \includegraphics[width=\linewidth]{figures/NewLogoIST.eps}
+  \includegraphics[width=\linewidth]{figures/NewLogoIST.pdf}
 \end{minipage}
 \hfill
 \begin{minipage}[c]{0.76\textwidth}
@@ -76,13 +76,14 @@
 
 \vspace{1.2cm}
 
+% TODO: Update group number, student names and IST numbers.
 \renewcommand{\arraystretch}{1.35}
 \begin{tabularx}{0.82\textwidth}{>{\bfseries}l X r}
-Group: & \multicolumn{2}{l}{5} \\
+Group: & \multicolumn{2}{l}{Group number} \\
 \hline
-Student 1: & Diogo Cruz & 106591 \\
-Student 2: & João Sousa & 99991 \\
-Student 3: & Maria Pereira & 105905 \\
+Student 1: & Name 1 & Number 1 \\
+Student 2: & Name 2 & Number 2 \\
+Student 3: & Name 3 & Number 3 \\
 \end{tabularx}
 
 \vfill
@@ -99,33 +100,12 @@ Student 3: & Maria Pereira & 105905 \\
 \section{Acquired artifacts}
 \label{sec:acquired_artifacts}
 
-The Stage II evidence set consists of the three items below, acquired from João Musk's residence under judicial authorization and made available by the course, together with the handwritten note reproduced in the assignment statement.
-
-\renewcommand{\arraystretch}{1.3}
-\begin{tabularx}{\textwidth}{>{\ttfamily\footnotesize}l X}
-\hline
-\textbf{Filename} & \textbf{SHA-256 / Provenance} \\
-\hline
-windows\_laptop\_disk.dd & \texttt{\footnotesize 5eca1f65df49ccf5bddeb8c5c3a44fe1a8a9e6faab04ed601d565b915bbaa6a8} --- forensic image of the seized Windows laptop (27\,917\,287\,424 bytes). \\
-windows\_laptop\_memory.raw & \texttt{\footnotesize c0b66a9ec5ff16d8c01726a8717648f729857fa059ba7485c5c1717587892be3} --- live memory capture of the same laptop, taken while powered on at seizure (1\,090\,326\,235 bytes). \\
-linux\_workstation\_disk.dd & \texttt{\footnotesize b31261098d901de0be201f4f78f5816c946490b9eb4ae2c94dc2fcf4af4e3368} --- forensic image of the seized Linux workstation (20\,976\,780\,288 bytes). \\
-\hline
-\end{tabularx}
-
-\vspace{0.4cm}
-
-In addition to the primary evidence above, the following items were recovered during analysis and are submitted alongside this report (see \texttt{evidence/} and the artifact register):
-
-\renewcommand{\arraystretch}{1.3}
-\begin{tabularx}{\textwidth}{>{\ttfamily\footnotesize}l X}
-\hline
-\textbf{Filename} & \textbf{SHA-256 / Provenance} \\
-\hline
-peixinho/ (backup copy) & Git repository recovered from \texttt{/home/johnnymusk/backups/peixinho} on the Linux disk; contains the phishing website's server-side source code and its full commit history. \\
-stash.zip (decrypted) & ZipCrypto-protected archive recovered from \texttt{/home/johnnymusk/backups/stash.zip}; decrypted via a known-plaintext attack (Section~\ref{sec:report-of-all-findings}). Its eight non-plaintext members are SHA-256 identical to the Stage I source artifacts listed in the Lab Assignment II statement, including \texttt{gta\_v\_iceberg\_unexplained.jpg}, not recovered during Lab Assignment I. \\
-.ssh/config & SSH client configuration recovered from \texttt{/home/johnnymusk/.ssh/config}; identifies the production host alias \texttt{fenix-prod} (146.193.41.109, user \texttt{muskyboi}). \\
-\hline
-\end{tabularx}
+% TODO:
+% Identify the relevant acquired or recovered evidence artifacts submitted.
+% For each artifact, give its filename, SHA-256 hash (where a stable
+% byte-exact representation is available), and source/provenance.
+% Include the relevant Stage II disk and memory evidence and any recovered
+% items, referencing the Stage I artifacts where applicable.
 
 
 % -----------------------------------------------------------------------------
@@ -134,54 +114,21 @@ stash.zip (decrypted) & ZipCrypto-protected archive recovered from \texttt{/home
 \section{Report of all findings (Investigation and Evidence Analysis)}
 \label{sec:report-of-all-findings}
 
-All analysis was performed read-only, on loop-mounted copies of the supplied images, following the course's Good-Practice Manual; commands and SHA-256 values for every artifact discussed below are recorded in the submitted artifact register.
-
-% -----------------------------------------------------------------------------
-\subsection{Windows laptop disk image}
-% -----------------------------------------------------------------------------
-
-\texttt{windows\_laptop\_disk.dd} is a GUID Partition Table (GPT) disk with five partitions: an EFI system partition, a Microsoft Reserved partition, and three NTFS-type partitions. The protective MBR in sector 0 reports generic ``Windows 7'' boot-error strings; this is boilerplate text present in the protective MBR of any GPT disk and is not evidence of the installed OS version, which \texttt{fsstat} identifies independently per partition.
-
-Each NTFS-type partition's role was established from its boot-sector OEM ID and \texttt{fsstat} output rather than assumed from size: the largest (offset 239\,616 sectors) is the \texttt{C:} volume (OEM ID \texttt{NTFS}, volume name ``Windows''); a smaller partition (offset 41\,199\,616) is a Windows Recovery partition; the last (offset 42\,735\,616) returns OEM ID \texttt{-FVE-FS-} and is confirmed BitLocker-encrypted (\texttt{fsstat}: ``Encryption detected (BitLocker)''). This is the \texttt{D:} volume referenced in the handwritten note.
-
-\texttt{C:} was mounted read-only. The registry (\texttt{SYSTEM} hive, \texttt{ControlSet001\textbackslash Control\textbackslash ComputerName}, with \texttt{ControlSet001} confirmed active via \texttt{Select\textbackslash Current = 1}) gives \texttt{ComputerName = JOHNNY-PC}. A SAM dump (\texttt{samdump2}) shows the local account \texttt{johnny} (RID 1000, not disabled) with NT hash \texttt{31d6cfe0d16ae931b73c59d7e0c089c0}, the well-known hash of an empty string; this is an observation that the account's SAM-stored password is blank. It does not establish that no credential at all protects sign-in, since Windows 10/11 commonly uses Windows Hello (a PIN or biometric, stored outside the SAM) for interactive logon.
-
-The registry \texttt{ProfileList} key (\texttt{SOFTWARE} hive) lists an entry for \texttt{johnny}'s SID alongside a second, \texttt{.bak}-suffixed entry for the same SID. The live entry carries no \texttt{ProfileImagePath} value; the \texttt{.bak} entry gives \texttt{ProfileImagePath = D:\textbackslash Users\textbackslash johnny}. No \texttt{johnny} folder exists under \texttt{C:\textbackslash Users} (only \texttt{Administrator} is present). The observation is that \texttt{johnny}'s user profile resides on the encrypted \texttt{D:} volume, not on \texttt{C:}; one plausible interpretation is that Windows regenerated an incomplete profile-list entry after a failed profile load, leaving the original (complete) entry as a \texttt{.bak} copy, though this could not be independently confirmed from \texttt{C:} alone.
-
-Three independent attempts were made to decrypt \texttt{D:} (candidate passphrases derived from the handwritten note; strings recovered from a memory dump of the WMI provider process; a search for a BitLocker/FVEK-recovery Volatility plugin); all three were unsuccessful. \texttt{D:} therefore remains locked and could not be examined further; see Section~\ref{sec:anti-forensic} for details of these attempts.
-
-% -----------------------------------------------------------------------------
-\subsection{Windows live memory capture}
-% -----------------------------------------------------------------------------
-
-\texttt{windows\_laptop\_memory.raw} was analysed with Volatility~3; \texttt{windows.info} confirmed correct OS symbol resolution before any other plugin was trusted.
-
-\texttt{windows.pslist} shows no \texttt{explorer.exe} process at capture time: no interactive desktop session was active. Session~2 shows \texttt{winlogon.exe} and \texttt{LogonUI.exe} running, consistent with the machine sitting at the Windows sign-in/lock screen. Despite the absence of a local session, a \texttt{cmd.exe} and a \texttt{powershell.exe} process are present, parented by \texttt{winrshost.exe} (the WinRM remote-shell host); \texttt{windows.netscan} confirms TCP port 5985 (WinRM) listening, with one connection from \texttt{10.0.2.2} (the host/gateway address of the virtualised network) already closed by capture time. The observation is that a short-lived WinRM/PowerShell-Remoting session, originating from the host machine rather than from a logged-in local user, was active immediately before the memory capture. The specific command executed in that session was inspected and found to be unrelated to the suspect or to the phishing investigation; it is accordingly not treated as case evidence and is omitted here.
-
-Process creation times (\texttt{CreateTime}, UTC, converted to WEST by adding one hour) place the laptop's boot at 2026-08-25 22:00 WEST and the WinRM session at approximately 2026-08-25 23:02--23:03 WEST; see the submitted timeline for the full chronology.
-
-% -----------------------------------------------------------------------------
-\subsection{Linux workstation disk image}
-% -----------------------------------------------------------------------------
-
-\texttt{linux\_workstation\_disk.dd} is a GPT disk with an EFI/boot partition (FAT32) and a root partition (Ext4, Ubuntu 24.04.5 LTS, hostname \texttt{johnny-dev}). \texttt{/etc/passwd} shows a single non-system account, \texttt{johnnymusk} (UID 1000), directly tying this machine to João Musk, the person of interest.
-
-\textbf{Methodological note.} Listing the mounted Ext4 image with \texttt{ls -la} resolves numeric UIDs/GIDs against the analysis workstation's own \texttt{/etc/passwd}, not the image's. Early in the examination this produced misleading owner names (e.g.\ UID 1000 displaying as the analyst's own account). All user attributions in this report were verified against the numeric UID and the image's own \texttt{/etc/passwd}, not raw \texttt{ls} output.
-
-\texttt{johnnymusk}'s shell history (\texttt{\textasciitilde/.bash\_history}) records installation of the \texttt{secure-delete} package followed by \texttt{srm -ll -r} invocations against two directories, \texttt{\textasciitilde/ducky} and \texttt{\textasciitilde/repos}. \texttt{/var/log/apt/history.log} timestamps the \texttt{secure-delete} installation at 2026-09-21 16:02:25 (raw); applying the assignment's instructed $-27$-day correction for this disk gives 2026-08-25 16:02:25 WEST, the same calendar day as the WinRM session observed in the Windows memory capture (Section~\ref{sec:provenance}). This activity is discussed as anti-forensic evidence in Section~\ref{sec:anti-forensic}.
-
-The deletion of \texttt{\textasciitilde/repos} did not remove a sibling directory, \texttt{\textasciitilde/backups}, which survived and was recovered in full:
-
-\begin{itemize}
-\item \texttt{\textasciitilde/.ssh/config} defines host alias \texttt{fenix-prod} $\rightarrow$ \texttt{146.193.41.109}, user \texttt{muskyboi}, identity file \texttt{\textasciitilde/.ssh/muskyboi}. The username matches the \texttt{MuskyBoi} GitHub/GitLab account already identified during Lab Assignment~I.
-\item \texttt{\textasciitilde/myscripts/deploy.sh} deploys the website by cloning/pulling \texttt{git@gitlab.com:MuskyBoi/peixinho.git} into \texttt{\textasciitilde/fenix} on \texttt{fenix-prod} and running \texttt{docker compose up -d --build}.
-\item \texttt{\textasciitilde/backups/peixinho/} is a git working copy of that same repository. Its \texttt{server.js} implements an Express application that serves a look-alike login page at \texttt{/cas/login}, appends every submitted \texttt{username}/\texttt{password} pair to a local \texttt{credentials.txt} file, and redirects the visitor to the genuine \url{https://fenix.tecnico.ulisboa.pt/} --- a standard credential-harvesting phishing pattern. The server additionally forges \texttt{Server}/\texttt{X-Powered-By} HTTP response headers to impersonate an Apache/PHP stack despite running Node.js/Express, and blocks direct HTTP access to \texttt{credentials.txt} and to \texttt{/node\_modules}. The repository's final commit (message ``cleanup'') removes several personal-looking folders from version control and rewrites \texttt{README.md} to read ``\texttt{peixinho / Fenix authentication frontend}'' --- an explicit, first-party statement that this codebase impersonates Técnico's Fenix authentication portal.
-\item \texttt{\textasciitilde/backups/stash.zip} is a ZipCrypto-encrypted (legacy ``PKZIP'') archive. Its directory listing names the eight Stage~I source artifacts plus \texttt{subtitles.srt}. Because ZipCrypto is vulnerable to a known-plaintext attack, and the course-provided \texttt{subtitles.srt} is a byte-for-byte plaintext candidate for the corresponding (DEFLATE-compressed) entry, \texttt{bkcrack} was used to recover the archive's internal keys (\texttt{aa67c5cd~982388d2~08fdc364}) and decrypt it without recovering a human password. Eight of the nine decrypted members are SHA-256 identical to the official Stage~I source artifacts listed in the Lab Assignment~II statement (Table~1), including \texttt{gta\_v\_iceberg\_unexplained.jpg}, which had not been recovered during Lab Assignment~I.
-\end{itemize}
-
-A full-disk SHA-256 sweep of every file reachable on the mounted Windows \texttt{C:} and Linux boot/root filesystems, compared against the sixteen known Stage~I source/hidden-file hashes, returned no matches beyond the \texttt{stash.zip} contents above: no unmodified copy of any Stage~I artifact exists elsewhere on either system's live filesystem.
-
-The recovered repository's own \texttt{.git/config} names a remote, \texttt{origin}, at \texttt{https://fenix.dpss.inesc-id.pt/.git/} --- a subdomain of INESC-ID's Distributed, Parallel and Secure Systems (DPSS) research group, a real academic entity affiliated with IST, and distinct from the \texttt{gitlab.com:MuskyBoi/peixinho.git} URL used by \texttt{deploy.sh}. The two URLs are not in conflict (a repository's \texttt{origin} need not be its deployment target), but the discrepancy is worth preserving for further inquiry: see Section~\ref{sec:new-discoveries}. Separately, the merge commit in this repository's history (Section~\ref{sec:provenance}) carries author identity \texttt{Johny Musk <sussyjohnnyhacker@gmail.com>}, a personal e-mail address embedded in git's own commit metadata, independent of any filesystem- or registry-derived attribution evidence.
+% TODO:
+% Document the forensic examination of the Windows workstation disk image,
+% its live-memory capture, and the Linux laptop disk image, using the Stage I
+% website and recovered artifacts as reference evidence.
+%
+% Include, where applicable:
+% - relevant file systems, partitions, and the BitLocker-encrypted D: partition;
+% - traces of the phishing website and copies/traces of Stage I artifacts;
+% - relevant source code, repositories, scripts, logs, and configuration files;
+% - file provenance, user activity, deleted/residual data, and memory evidence;
+% - evidence of concealment or anti-forensic activity;
+% - tools, commands, methods, and paths needed to reproduce material findings;
+% - timestamps, their sources, and any time-zone assumptions.
+%
+% Clearly distinguish direct observations from forensic inferences.
 
 
 % -----------------------------------------------------------------------------
@@ -196,87 +143,44 @@ The recovered repository's own \texttt{.git/config} names a remote, \texttt{orig
 
 \textit{Do the seized systems contain traces of the phishing website and/or the hidden files recovered during Lab Assignment I? If so, identify the relevant evidence, its location, and its SHA-256 value where applicable.}
 
-Yes. The Linux workstation holds both the website's source code and a recovered copy of the Stage~I hidden-file source set.
-
-\textbf{Phishing website source.} \texttt{/home/johnnymusk/backups/peixinho/} is a git working copy of \texttt{git@gitlab.com:MuskyBoi/peixinho.git} (identified from \texttt{/home/johnnymusk/myscripts/deploy.sh}), containing the \texttt{server.js} credential-harvesting application described in Section~\ref{sec:report-of-all-findings}. \texttt{/home/johnnymusk/.ssh/config} names the deployment target, \texttt{fenix-prod} (146.193.41.109, user \texttt{muskyboi}).
-
-\textbf{Stage~I artifacts.} \texttt{/home/johnnymusk/backups/stash.zip}, recovered and decrypted as described in Section~\ref{sec:report-of-all-findings}, contains eight files whose SHA-256 values are identical to the official Stage~I source artifacts (Table~1 of the assignment statement):
-
-\renewcommand{\arraystretch}{1.25}
-\begin{tabularx}{\textwidth}{>{\ttfamily\footnotesize}X l}
-\hline
-\textbf{Filename (in stash.zip)} & \textbf{Match} \\
-\hline
-blank & Identical (SHA-256 match) \\
-dj\_cara\_after\_hours.wav & Identical (SHA-256 match) \\
-{[}Erai-raws{]} Shingeki no Kyojin - 01 [720p][Dual Audio].mkv & Identical (SHA-256 match) \\
-Grand Theft Auto VI Trailer 1.mp4 & Identical (SHA-256 match) \\
-gta\_v\_iceberg\_unexplained.jpg & Identical (SHA-256 match) --- not recovered in Lab~I \\
-myzip.zip & Identical (SHA-256 match) \\
-polish\_cow.webp & Identical (SHA-256 match) \\
-ESP32\_ADXL345\_3Axis\_Telemetry.xlsx & Identical (SHA-256 match) \\
-\hline
-\end{tabularx}
-
-\vspace{0.3cm}
-
-(\texttt{subtitles.srt}, the ninth member, was used as the known plaintext for decryption and is not part of the Stage~I reference set; it is not itself a match candidate.) A full-disk SHA-256 sweep of the remaining, live filesystem content on both seized systems found no further matches: beyond \texttt{stash.zip}, no unmodified Stage~I artifact is present elsewhere on either machine.
+% TODO:
+% Answer using evidence from the seized systems and live-memory capture.
+% Identify relevant locations, provenance, and SHA-256 values where possible.
 
 
 % -----------------------------------------------------------------------------
 \subsection{Provenance and temporal reconstruction}
-\label{sec:provenance}
 % -----------------------------------------------------------------------------
 
 \textit{Can you reconstruct the provenance and handling of these files? Provide a timeline of relevant events showing how the phishing website was developed and operated, and how the hidden files were handled on the seized systems.}
 
-The full, sourced chronology is provided in the separately submitted timeline spreadsheet (21 events, WEST throughout); it is summarised here in four phases.
-
-\textbf{Setup (corrected 2026-07-21/22).} The \texttt{peixinho} repository's earliest substantive commits add the website's production deployment configuration. All timestamps from this disk in this phase are raw \texttt{git} author dates with the assignment's $-27$-day correction applied (e.g.\ raw \texttt{2026-08-18 17:05} $\rightarrow$ corrected \texttt{2026-07-22 17:05}).
-
-\textbf{Staging (corrected 2026-07-29).} A cluster of six commits, roughly three weeks before the campaign, merges content from an \texttt{upstream} remote and then removes it again: commit messages \emph{``telemetry files''} and \emph{``phone backup''} name categories matching Stage~I hidden-artifact types, and the final commit of the cluster (\emph{``cleanup''}) removes personal-looking folders from tracking and rewrites \texttt{README.md} to the ``Fenix authentication frontend'' text quoted in Section~\ref{sec:report-of-all-findings}. This is $\mathbf{git}$-internal history management (an object remains recoverable from a parent commit); it is distinct from the later, disk-level deletion described in Section~\ref{sec:anti-forensic}.
-
-\textbf{Campaign (2026-08-19 to 2026-08-22).} Per the Lab Assignment~I report, the phishing website was live during this window. No commits in the recovered repository fall inside it, consistent with the site running unchanged in production while active.
-
-\textbf{Cleanup (corrected 2026-08-25).} Three days after the campaign ended, and on the same calendar day as the WinRM session observed on the Windows laptop, the Linux workstation's \texttt{apt} log and shell history record installation of \texttt{secure-delete} and its use to wipe \texttt{\textasciitilde/repos} and \texttt{\textasciitilde/ducky}. The Ext4 superblock's last write (corrected 2026-08-27) falls shortly after.
-
-Two time-zone/offset conventions apply throughout: Windows memory-capture timestamps are UTC and were converted to WEST by adding one hour; every absolute timestamp sourced from \texttt{linux\_workstation\_disk.dd} carries the assignment's instructed $-27$-day correction, noted individually in the timeline's Source column together with the raw value.
+% TODO:
+% Explain the provenance and handling of relevant files and artifacts.
+% Refer to the separately submitted timeline; support significant events
+% with evidence, timestamp sources, and time-zone conversions as applicable.
 
 
 % -----------------------------------------------------------------------------
 \subsection{Anti-forensic activity}
-\label{sec:anti-forensic}
 % -----------------------------------------------------------------------------
 
 \textit{Did you find evidence of anti-forensic activity? If so, describe the techniques observed and the evidence supporting your conclusions.}
 
-\textbf{Secure deletion (confirmed).} \texttt{johnnymusk}'s shell history records \texttt{sudo apt install secure-delete} followed by \texttt{srm -ll -r \textasciitilde/ducky} and \texttt{srm -ll -r \textasciitilde/repos}. \texttt{secure-delete} overwrites file contents before unlinking them, specifically to defeat file-carving recovery; installing it immediately before use indicates it was not already part of the system's toolset and was fetched for this purpose. The \texttt{apt} log timestamps the installation at corrected 2026-08-25 16:02 WEST (Section~\ref{sec:provenance}), three days after the phishing campaign ended. This is a direct observation of deliberate, tool-assisted evidence destruction; it was however incomplete, as the sibling \texttt{\textasciitilde/backups} directory was left untouched and yielded the recoveries in Section~\ref{sec:report-of-all-findings}.
-
-\textbf{HTTP fingerprint spoofing (confirmed).} \texttt{server.js} sets \texttt{Server: Apache/2.4.41 (Ubuntu)} and \texttt{X-Powered-By: PHP/7.4.3} on every response despite running Node.js/Express. This is a deliberate attempt to mislead passive fingerprinting of the hosting stack, independent of the file-deletion finding above.
-
-\textbf{Access blocking (confirmed).} The same file explicitly returns HTTP 403 for direct requests to \texttt{/credentials.txt} and to any path under \texttt{/node\_modules}, prior to the static-file handler that would otherwise serve them --- a concealment measure aimed at casual inspection of the live site rather than at forensic examination of the server's filesystem.
-
-\textbf{BitLocker-protected volume (inconclusive).} The \texttt{D:} partition of the Windows laptop remains encrypted. Whether this constitutes anti-forensic action specific to this investigation, as opposed to ordinary disk encryption predating it, could not be established: three independent decryption attempts (candidates derived from the handwritten note; memory-resident strings associated with the WMI volume-encryption provider; a search for a dedicated key-recovery tool) were all unsuccessful, and the note's own relevance to the case is explicitly left open by the assignment. This is reported as an inconclusive, attempted line of investigation rather than a supported finding.
-
-\textbf{Not attributed to the suspect.} A WinRM-originated remote shell session was active on the Windows laptop at capture time (Section~\ref{sec:report-of-all-findings}). Its content was examined and found unrelated to this case; it is not included among the anti-forensic findings above.
+% TODO:
+% Identify any supported anti-forensic or concealment findings.
+% Distinguish observed actions from hypotheses and alternative explanations.
 
 
 % -----------------------------------------------------------------------------
 \subsection{New discoveries and investigative interpretation}
-\label{sec:new-discoveries}
 % -----------------------------------------------------------------------------
 
 \textit{What new discoveries emerge from the Stage II evidence that were not visible during Lab Assignment I? Do these findings strengthen or weaken the attribution of the phishing attack to João Musk, or point to other relevant actors or infrastructure? Based on your analysis, what hypotheses can you formulate about the larger scheme suggested by the hidden files, and what further investigative steps would you recommend to the Polícia Judiciária?}
 
-\textbf{New discoveries.} Stage~II adds: (i) the website's server-side source code and its credential-harvesting mechanism, not visible from Stage~I's client-side artifacts alone; (ii) a named, reachable production host (\texttt{146.193.41.109}, user \texttt{muskyboi}) rather than only a domain or front-end URL; (iii) a first-party written admission, in the repository's own \texttt{README.md}, that the site impersonates Técnico's Fenix portal; (iv) direct, timestamped evidence of deliberate post-campaign evidence destruction; and (v) the repository's \texttt{origin} remote, \texttt{https://fenix.dpss.inesc-id.pt/.git/}, a subdomain of a real IST-affiliated research group (INESC-ID's Distributed, Parallel and Secure Systems area), distinct from the GitLab URL used to deploy it.
-
-\textbf{Attribution.} These findings strengthen the attribution to João Musk considerably: the Linux workstation's sole user account (\texttt{johnnymusk}), its SSH identity (\texttt{muskyboi}), the \texttt{MuskyBoi} GitLab repository, and a git commit author identity of \texttt{Johny Musk <sussyjohnnyhacker@gmail.com>} all converge, and the \texttt{ComputerName} \texttt{JOHNNY-PC} independently ties the Windows laptop to the same person. No evidence recovered in Stage~II contradicts this attribution.
-
-\textbf{Open question: the \texttt{origin}/\texttt{upstream} remotes.} Two distinct discrepancies were not resolved within the available time. First, the \texttt{upstream} remote merged into \texttt{peixinho} during the staging phase (Section~\ref{sec:provenance}) no longer exists in the recovered copy's \texttt{.git/config}, so its own origin could not be traced from this evidence alone. Second, and separately, the repository's \emph{current} \texttt{origin} points to an INESC-ID/DPSS subdomain rather than to GitLab. A plausible hypothesis --- not established by this evidence --- is that this \texttt{.git} endpoint was itself obtained via the same exposed-\texttt{.git} technique used against the suspect's own infrastructure in Lab Assignment~I (cf.\ \texttt{scripts/git\_dump.py}), which would suggest the suspect sourced some of \texttt{peixinho}'s structure or content from a real, unrelated IST-affiliated project rather than writing it from scratch. This would not weaken attribution of the deployed phishing site to João Musk, but it does raise the possibility of a second, unwitting party (the owner of the INESC-ID repository) whose own exposure should be assessed. Neither discrepancy was pursued further given the time available for this assignment.
-
-\textbf{Hypotheses.} The setup/staging/campaign/cleanup structure in Section~\ref{sec:provenance} is consistent with a single-actor operation: infrastructure prepared roughly a month in advance, Stage~I artifacts organised and then removed from live tracking (but not from disk) around the same time, a short live campaign, and a post-campaign cleanup pass that was not fully effective. The encrypted \texttt{D:} partition and the handwritten note's unresolved five-item clue may point to further material (the note explicitly ties its clues to "my Windows password" and other laptop-specific facts); this remains a hypothesis, not a finding.
-
-\textbf{Recommended next steps for the Polícia Judiciária.} (1) Seek judicial authorization to obtain logs, hosting records, and any available snapshot from the server at \texttt{146.193.41.109}, including \texttt{credentials.txt} if still present, to identify victims and assess real-world impact. (2) Request GitLab/GitHub account and access-log records for \texttt{MuskyBoi} to resolve the \texttt{upstream} remote and confirm sole or shared authorship. (3) Pursue BitLocker recovery for \texttt{D:} through a digital-forensics vendor or Microsoft/manufacturer key-escrow channels, since on-disk and in-memory recovery attempts were exhausted here. (4) Notify Instituto Superior Técnico so that any credentials actually submitted to the impersonated Fenix login can be identified and the affected users protected. (5) Contact INESC-ID regarding the \texttt{fenix.dpss.inesc-id.pt} \texttt{origin} remote, to determine whether a \texttt{.git} directory was (or still is) exposed on that host and, if so, to assess any unrelated third-party exposure.
+% TODO:
+% Discuss new findings, their significance, and supported hypotheses.
+% Assess attribution with supporting and contradictory evidence.
+% Identify further investigative steps and evidence to preserve or obtain.
 
 
 % -----------------------------------------------------------------------------
@@ -303,7 +207,5 @@ Two time-zone/offset conventions apply throughout: Windows memory-capture timest
 % scripts, notes, or other material useful to substantiate or reproduce findings.
 % Submit evidence artifacts, auxiliary items, and the timeline as required
 % in the separate deliverables.
-
-The full command log, tool output, and per-artifact SHA-256/provenance records referenced throughout this report are provided in \texttt{results/artifact-register.md} (entries B001--B0XX), alongside the environment record required by Manual \S1. The recovered \texttt{peixinho} repository and the decrypted \texttt{stash.zip} contents are submitted under \texttt{evidence/}.
 
 \end{document}

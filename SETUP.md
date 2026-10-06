@@ -58,8 +58,11 @@ Ripper with the packaged wordlists, and a LaTeX toolchain for the reports.
   (`mmls`, `fls`, `icat`) straight on the image file — that reads the filesystem
   without mounting it, which is the forensically correct route and what the
   course teaches anyway.
-- **Volatility is not packaged in Kali.** When a memory-forensics lab lands, add
-  `pipx install volatility3` to the Containerfile as its own layer.
+- **Volatility 3 is not packaged in Kali**, so the Containerfile installs it
+  with pipx. Run it as `vol -f image.raw windows.pslist` (not `python3 vol.py`).
+  The Windows symbol pack (`windows.zip`) is baked into the image, since the
+  container has no network; the first run of a plugin builds the symbol cache
+  in `/home/kali`, so it is slow once.
 - On macOS, if a build fails right after starting the podman machine with a
   repo-signature error ("not live until…"), the VM's clock has not synced yet —
   wait a few seconds and retry.

@@ -89,6 +89,30 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # installed under the build-time home. /usr/local/bin is on every user's PATH.
 RUN PIPX_HOME=/opt/pipx PIPX_BIN_DIR=/usr/local/bin pipx install volatility3
 
+# What Tutorial 2 needs on top of the bare install. The tutorial's
+# ".[full]" is not usable here: it drags in leechcorepyc (live hardware
+# acquisition), which has no arm64 wheel and nothing in the course uses. Inject
+# the other four extras instead: yara-python (yarascan), capstone (malfind
+# disassembly), pycryptodome and pillow. yara-python has no arm64 wheel for
+# this Python, so it compiles from source; the toolchain is installed and
+# purged inside the same RUN so it does not stay in the layer.
+# windows.zip is the Windows symbol pack, without which every windows.*
+# plugin fails. It is downloaded here because the container runs with no
+# network. It lives beside the package, not under ~/.cache, so the /home/kali
+# volume does not mask it; only the symbol *cache* is built at first run, in
+# that volume. Own layer so a change here does not redo the layers above.
+RUN apt-get update && apt-get install -y --no-install-recommends \
+      build-essential python3-dev libssl-dev pkg-config \
+ && PIPX_HOME=/opt/pipx PIPX_BIN_DIR=/usr/local/bin \
+      pipx inject volatility3 yara-python capstone pycryptodome pillow \
+ && SYM="$(/opt/pipx/venvs/volatility3/bin/python -c \
+      'import os, volatility3; print(os.path.join(os.path.dirname(volatility3.__file__), "symbols"))')" \
+ && curl -fsSL https://downloads.volatilityfoundation.org/volatility3/symbols/windows.zip \
+      -o "$SYM/windows.zip" \
+ && unzip -tq "$SYM/windows.zip" \
+ && apt-get purge -y --auto-remove build-essential python3-dev libssl-dev pkg-config \
+ && apt-get clean && rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
+
 # uid 1000 so bind-mounted evidence keeps host ownership: docker runs this uid
 # directly, podman maps it with --userns=keep-id (both set by ./kali.sh).
 # Password "kali" per Tutorial 0, so the password-auditing demos behave as the
