@@ -30,6 +30,8 @@
 #   hives                      extract SAM/SYSTEM/SECURITY/SOFTWARE from the C: NTFS
 #                              partition (sector 239616) and run offline secretsdump
 #   note-pw <zip>              test the handwritten note's ZIP password candidates
+#   linux-extract <path...>    extract files from the Linux image (ext4, sector
+#                              2203648) by path into results/work/linux/, read-only
 #   bl-decrypt                 decrypt the whole D: partition to results/work/
 #                              (needs bl-verify first; ~5.6 GB, gitignored)
 #
@@ -183,6 +185,22 @@ step_note_pw() {
     python3 "$HERE/note_password.py" "$z" | tee "$OUT/zip/note_pw_$(basename "$z").txt"
 }
 
+LIN_START=2203648
+step_linux_extract() {
+    need_file "$LIN" || return 0
+    local list="$OUT/linux_fls_${LIN_START}.txt" dst="results/work/linux" p ino base
+    [ -f "$list" ] || fls -r -p -o "$LIN_START" "$LIN" > "$list" 2>/dev/null
+    mkdir -p "$dst"
+    for p in "$@"; do
+        # fls -p lines look like "r/r 954731:<TAB>path" (ext4: no -128 suffix)
+        ino=$(awk -F'\t' -v n="$p" '$2==n {print $1}' "$list" | head -1 | awk '{print $2}' | tr -d ':' | cut -d- -f1)
+        if [ -z "$ino" ]; then echo "not found: $p" >&2; continue; fi
+        base="$(echo "$p" | sed 's#/#__#g')"
+        icat -o "$LIN_START" "$LIN" "$ino" > "$dst/$base" || { echo "icat failed: $p" >&2; continue; }
+        echo "$(sha256sum "$dst/$base" | cut -c1-64)  $p (inode $ino)"
+    done
+}
+
 step="${1:-}"
 [ $# -gt 0 ] && shift
 case "$step" in
@@ -192,10 +210,11 @@ case "$step" in
     timeline)  step_timeline "$@" ;;
     hashmatch) step_hashmatch "$@" ;;
     creds)      step_creds ;;
+    linux-extract) step_linux_extract "$@" ;;
     hives)      step_hives ;;
     note-pw)    step_note_pw "$@" ;;
     bl-scan)    step_bl_scan ;;
     bl-verify)  step_bl_verify "$@" ;;
     bl-decrypt) step_bl_decrypt ;;
-    *)         sed -n '2,42p' "${BASH_SOURCE[0]}"; [ -z "$step" ] && exit 1 || exit 0 ;;
+    *)         sed -n '2,44p' "${BASH_SOURCE[0]}"; [ -z "$step" ] && exit 1 || exit 0 ;;
 esac

@@ -472,8 +472,144 @@ Per Tutorial 1, Good-Practice Manual §3.
 | Type | ASCII text |
 | SHA-256 | `524d6b2810b94490ca93c03aaea6e34800b05b0c30364520c8f5baeef8a0807e` |
 
-**Observation:** The stash copy and the Lab 1 Telemetry.xlsx (published hash 3369cd48...) have identical cell values in all three sheets (120800 cells each); differences are only in the last 1-2 floating-point digits (max relative 9e-16 to 5e-11). Document properties differ: created/modified 2026-08-25 14:06:47 UTC in the stash copy vs 12:01:06 UTC in the Lab 1 copy.
+**Observation:** The stash copy and the Lab 1 Telemetry.xlsx (published hash 3369cd48...) have identical cell values in all three sheets (120800 cells each); differences are only in the last 1-2 floating-point digits (max relative 9e-16 to 5e-11). Document properties differ: created/modified 2026-08-25 14:06:47 UTC in the stash copy vs 12:01:06 UTC in the Lab 1 copy. The stash copy is an image file, so its embedded timestamp falls under the −27 day rule: 2026-07-29 14:06:47 UTC (timeline E10).
 
 **Interpretation:** The stash copy was re-saved (about two hours later) by a tool that writes floating-point values differently, without changing the data. The data are the same, so this is not a content tampering. Whether the suspect or someone else re-saved it is open.
 
 **Limitations / confidence:** Compared cell values and properties only, not formatting, hidden sheets or the workbook's other parts. The Lab 1 copy's provenance is the published assignment file.
+
+## A129 -- `results/work/linux/home__johnnymusk__.bash_history`
+
+| Field | Value |
+| --- | --- |
+| Registered (UTC) | 2026-10-06T07:43:44+00:00 |
+| Parent artifact | A103 |
+| Command | `linux-extract home/johnnymusk/.bash_history` |
+| stat | `results/work/linux/home__johnnymusk__.bash_history|3988|2026-10-06 07:42:51.140289366 +0000|2026-10-06 07:42:51.140289366 +0000` |
+| Type | ASCII text, with very long lines (335) |
+| SHA-256 | `8aa347a60c42893f9fca7e34e6a85228a021e50e9393fe11cb2c9cde150f5d0e` |
+
+**Observation:** Bash history of user johnnymusk on the Linux workstation (about 100 lines). Records: mounting and copying a USB drive labelled TEARSINRAIN to ~/ducky; encoding scripts embedding files into media (polyglot, LSB, DCT, WAV, video); creating ~/backups/stash.zip with zip -e; secure deletion with srm -ll -r of ~/ducky and ~/repos; installing secure-delete; ssh to fenix-prod and running git rm -r of the site content plus a 'cleanup' commit on the server.
+
+**Interpretation:** Shows the suspect built the hidden-file set, encrypted the archive, removed the working directories and changed a live server. Commands are observed; the intent is an inference.
+
+**Limitations / confidence:** Bash history was not timestamped (no HISTTIMEFORMAT). Times come from the inode (A103), adjusted −27 days. Commands may not all have run successfully; the history does not show output.
+
+## A130 -- `results/work/linux/home__johnnymusk__Documents__todo-list.txt`
+
+| Field | Value |
+| --- | --- |
+| Registered (UTC) | 2026-10-06T07:43:45+00:00 |
+| Parent artifact | A103 |
+| Command | `linux-extract home/johnnymusk/Documents/todo-list.txt` |
+| stat | `results/work/linux/home__johnnymusk__Documents__todo-list.txt|391|2026-10-06 07:42:51.190690688 +0000|2026-10-06 07:42:51.190690688 +0000` |
+| Type | ASCII text |
+| SHA-256 | `2cbf3502525442df287da87eba76f58ef72bcd8f911723ff1839f2a0c4a9a126` |
+
+**Observation:** todo-list.txt: 'back up peixinho (doing now)'; 'Prepare for the exam. LN exam is on my windows bitlocker drive.'
+
+**Interpretation:** Links the Linux user to the BitLocker-locked D: volume and the Exams_LN folder found there (A102, A122).
+
+**Limitations / confidence:** Single text file; no other proof that the note refers to the same drive.
+
+## A131 -- `results/work/linux/home__johnnymusk__.ssh__config`
+
+| Field | Value |
+| --- | --- |
+| Registered (UTC) | 2026-10-06T07:43:45+00:00 |
+| Parent artifact | A103 |
+| Command | `linux-extract home/johnnymusk/.ssh/config` |
+| stat | `results/work/linux/home__johnnymusk__.ssh__config|135|2026-10-06 07:42:51.236411686 +0000|2026-10-06 07:42:51.236411686 +0000` |
+| Type | ASCII text |
+| SHA-256 | `5d0995bbddf7472bbadcf9e8bd322e0104a20f5b1aa455bac6057aa43375ec41` |
+
+**Observation:** SSH config: Host fenix-prod, HostName 146.193.41.109, user muskyboi, IdentityFile ~/.ssh/muskyboi, StrictHostKeyChecking no.
+
+**Interpretation:** The suspect uses the 'muskyboi' identity to administer the production host. Related to the MuskyBoi accounts in the assignment.
+
+**Limitations / confidence:** The IP is not the phishing host in Lab 1 (146.193.41.5); the link is by hostname and username only. The key files are in the same directory and are not registered here.
+
+## A132 -- `results/work/linux/home__johnnymusk__backups__peixinho__server.js`
+
+| Field | Value |
+| --- | --- |
+| Registered (UTC) | 2026-10-06T07:43:45+00:00 |
+| Parent artifact | A103 |
+| Command | `linux-extract home/johnnymusk/backups/peixinho/server.js` |
+| stat | `results/work/linux/home__johnnymusk__backups__peixinho__server.js|2212|2026-10-06 07:42:51.440955347 +0000|2026-10-06 07:42:51.440955347 +0000` |
+| Type | JavaScript source, ASCII text |
+| SHA-256 | `2a014a1168968989cf36488ac8a7f218f8b3591dabeea50199c6f26e03abf863` |
+
+**Observation:** server.js on the Linux disk has SHA-256 2a014a1168968989cf36488ac8a7f218f8b3591dabeea50199c6f26e03abf863, the same as server.js in Lab 1 (A006).
+
+**Interpretation:** The phishing server source was kept in ~/backups/peixinho, so the suspect's machine holds the phishing kit.
+
+**Limitations / confidence:** Same file content; the Lab 1 copy was recovered from the public site. Which copy came first is not established.
+
+## A133 -- `results/work/linux/home__johnnymusk__backups__peixinho__.git__config`
+
+| Field | Value |
+| --- | --- |
+| Registered (UTC) | 2026-10-06T07:43:45+00:00 |
+| Parent artifact | A103 |
+| Command | `linux-extract .../peixinho/.git/config` |
+| stat | `results/work/linux/home__johnnymusk__backups__peixinho__.git__config|302|2026-10-06 07:42:51.486200345 +0000|2026-10-06 07:42:51.486200345 +0000` |
+| Type | ASCII text |
+| SHA-256 | `dd138156547b37e8615e3d4b8acd593958c63aa3f3b2367f247192f766d4cde5` |
+
+**Observation:** Git config of the peixinho clone: remote origin = https://fenix.dpss.inesc-id.pt/.git/ (the phishing host of Lab 1).
+
+**Interpretation:** The clone comes from the same host as the phishing site.
+
+**Limitations / confidence:** Config only; the packed objects were not parsed in this step.
+
+## A134 -- `results/work/linux/home__johnnymusk__backups__peixinho__.git__logs__HEAD`
+
+| Field | Value |
+| --- | --- |
+| Registered (UTC) | 2026-10-06T07:43:45+00:00 |
+| Parent artifact | A103 |
+| Command | `linux-extract .../peixinho/.git/logs/HEAD` |
+| stat | `results/work/linux/home__johnnymusk__backups__peixinho__.git__logs__HEAD|189|2026-10-06 07:42:51.529890681 +0000|2026-10-06 07:42:51.529890681 +0000` |
+| Type | Unicode text, UTF-8 text |
+| SHA-256 | `c4ece29ffa88b579686831445634fefc4c75214b1cbd747e09e175df433cd76b` |
+
+**Observation:** Git reflog: single entry, clone of https://fenix.dpss.inesc-id.pt/.git/ by 'António Alves <antonio@alves.at.eu.org>', epoch 1789858295 = 2026-09-19 22:51:35 UTC in the image, 2026-08-23 22:51:35 after the −27 day rule.
+
+**Interpretation:** The clone happened on 23 Aug (adjusted). The author on the reflog is a different person from the suspect's account, and their role is open.
+
+**Limitations / confidence:** Reflog shows the clone only; later fetches or merges are not recorded in this copy.
+
+## A135 -- `results/work/linux/home__johnnymusk__snap__firefox__common__.mozilla__firefox__d98inpg9.default__places.sqlite`
+
+| Field | Value |
+| --- | --- |
+| Registered (UTC) | 2026-10-06T07:43:45+00:00 |
+| Parent artifact | A103 |
+| Command | `linux-extract places.sqlite (+ -wal)` |
+| stat | `results/work/linux/home__johnnymusk__snap__firefox__common__.mozilla__firefox__d98inpg9.default__places.sqlite|5242880|2026-10-06 07:43:33.691718293 +0000|2026-10-06 07:43:33.691718293 +0000` |
+| Type | SQLite 3.x database, user version 87 (0x57), last written using SQLite version 3053004, page size 32768, writer version 2, read version 2, file counter 2, database pages 53, cookie 0x2d, schema 4, UTF-8, version-valid-for 2 |
+| SHA-256 | `d4d4198760119bbddaef5939e50e89e8a394a6f3006608cd61782c1676e6fec9` |
+
+**Observation:** Firefox places.sqlite (with WAL) of the Linux user: 60 visits from 2026-09-21 11:23 to 14:48 (image time); searches and pages on steganography, polyglot files, JPEG DCT, LSB in video, spectrograms, CIELAB, CyberChef, file magic numbers, plus Portuguese and Russian news and a Portuguese SIS espionage alert.
+
+**Interpretation:** Research on concealment techniques matches the methods in the bash history (A129); the news browsing is context, not proof of intent.
+
+**Limitations / confidence:** Visit times are image times, to be shifted −27 days. Only the visits in this database are counted.
+
+## A136 -- `results/work/linux/home__johnnymusk__myscripts__deploy.sh`
+
+| Field | Value |
+| --- | --- |
+| Registered (UTC) | 2026-10-06T07:43:45+00:00 |
+| Parent artifact | A103 |
+| Command | `linux-extract home/johnnymusk/myscripts/deploy.sh` |
+| stat | `results/work/linux/home__johnnymusk__myscripts__deploy.sh|647|2026-10-06 07:43:33.789970985 +0000|2026-10-06 07:43:33.789970985 +0000` |
+| Type | Bourne-Again shell script, ASCII text executable |
+| SHA-256 | `b9d1f803f23aa66c512a8b1c5c7bd818471a2137d1632353e02f183bb3b519a5` |
+
+**Observation:** deploy.sh from ~/myscripts (the file is in the Linux image; its content is registered here).
+
+**Interpretation:** Part of the same personal automation as autosync.sh and automerge.sh; relevant to how the phishing site was deployed. Not read in detail yet.
+
+**Limitations / confidence:** Scripts not analysed beyond the header in this step.
