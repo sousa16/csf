@@ -933,3 +933,20 @@ Entries B001–B013 kept as the colleague recorded them. Where they overlap with
 **Interpretation:** No Stage I file is stored unencrypted in the user's home directory. The sources are only present inside stash.zip (A126), which is encrypted.
 
 **Limitations / confidence:** Live files only; Firefox profile and deleted content not searched. Matching is by whole-file SHA-256.
+
+## A149 -- `results/work/linux/acme_token.txt`
+
+| Field | Value |
+| --- | --- |
+| Registered (UTC) | 2026-10-06T11:11:59+00:00 |
+| Parent artifact | A103 |
+| Command | `icat -o 2203648 images/linux_workstation_disk.dd (home/johnnymusk/backups/peixinho/.well-known/acme-challenge/9xQ3...)` |
+| stat | `results/work/linux/acme_token.txt|65|2026-10-06 11:11:43.468070724 +0000|2026-10-06 11:11:43.468070724 +0000` |
+| Type | ASCII text |
+| SHA-256 | `69296b1d98e75e397d885f5c9caef8650676094188e05484b57011ba2ea11643` |
+
+**Observation:** Same token as Lab 1 A005 (9xQ3nM7kV2pR5sT8wY4zA6bC1dF0gHjL.N4vY7uP2qW9mK5sR8xT3zB6cD1fG0hJ). The bytes differ only in the line ending: CRLF in A005 (66 bytes, SHA 9ee8314a...) and LF here (65 bytes, SHA 69296b1d...).
+
+**Interpretation:** The file in the suspect's repository is the planted acme-challenge file from the phishing site (A005). The line-ending difference suggests the repository copy and the copy served by the site were saved by different tools.
+
+**Limitations / confidence:** Content comparison only. Which copy was written first is not established.

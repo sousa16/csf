@@ -76,14 +76,14 @@
 
 \vspace{1.2cm}
 
-% TODO: Update group number, student names and IST numbers.
+% Group, names and IST numbers: to be filled by the group.
 \renewcommand{\arraystretch}{1.35}
 \begin{tabularx}{0.82\textwidth}{>{\bfseries}l X r}
-Group: & \multicolumn{2}{l}{Group number} \\
+Group: & \multicolumn{2}{l}{Group 00 (to be filled)} \\
 \hline
-Student 1: & Name 1 & Number 1 \\
-Student 2: & Name 2 & Number 2 \\
-Student 3: & Name 3 & Number 3 \\
+Student 1: & Student name 1 (to be filled) & IST number \\
+Student 2: & Student name 2 (to be filled) & IST number \\
+Student 3: & Student name 3 (to be filled) & IST number \\
 \end{tabularx}
 
 \vfill
@@ -94,107 +94,184 @@ Student 3: & Name 3 & Number 3 \\
 
 \clearpage
 
+
 % -----------------------------------------------------------------------------
 % Acquired artifacts
 % -----------------------------------------------------------------------------
 \section{Acquired artifacts}
-\label{sec:acquired_artifacts}
+\label{sec:artifacts}
 
-% TODO:
-% Identify the relevant acquired or recovered evidence artifacts submitted.
-% For each artifact, give its filename, SHA-256 hash (where a stable
-% byte-exact representation is available), and source/provenance.
-% Include the relevant Stage II disk and memory evidence and any recovered
-% items, referencing the Stage I artifacts where applicable.
+Every artifact below is identified by its SHA-256 and its register entry (\texttt{lab2/results/artifact-register.md}). Evidence images were verified against the hashes recorded before analysis. Derived items (the decrypted volume, extracted files, keys, hive copies) are working copies, not evidence, and are kept out of the repository.
 
+\begin{center}
+\renewcommand{\arraystretch}{1.15}
+\small
+\begin{tabularx}{\textwidth}{l l X}
+\textbf{ID} & \textbf{File} & \textbf{SHA-256} \\
+\hline
+\texttt{A101} & windows\_laptop\_memory.raw & \texttt{c0b66a9ec5ff16d8c01726a8717648f729857fa059ba7485c5c1717587892be3} \\
+\texttt{A102} & windows\_laptop\_disk.dd & \texttt{5eca1f65df49ccf5bddeb8c5c3a44fe1a8a9e6faab04ed601d565b915bbaa6a8} \\
+\texttt{A103} & linux\_workstation\_disk.dd & \texttt{b31261098d901de0be201f4f78f5816c946490b9eb4ae2c94dc2fcf4af4e3368} \\
+\texttt{A104} & handwritten-note-fig1.png (Figure 1) & \texttt{d259e34bfc965a1aea720ffa7b9443ebfde54b6fdb78d26811fd5c44149b6896} \\
+\texttt{A124} & stash.zip (Linux, \texttt{backups/}) & \texttt{d0544dcbcbccbce302ad5f811de9f59ee786d94e7b311b2d3ae6f3b153a0c308} \\
+\texttt{A132} & server.js (Linux, \texttt{backups/peixinho/}) & \texttt{2a014a1168968989cf36488ac8a7f218f8b3591dabeea50199c6f26e03abf863} \\
+\texttt{A133} & peixinho .git/config (Linux) & \texttt{dd138156547b37e8615e3d4b8acd593958c63aa3f3b2367f247192f766d4cde5} \\
+\texttt{A149} & acme-challenge token (Linux repo) & \texttt{69296b1d98e75e397d885f5c9caef8650676094188e05484b57011ba2ea11643} \\
+\texttt{A137} & Security.evtx (C:) & \texttt{29e6a0df28080267b2e470e946a202dd1ff27598b6deedbd593b7e7ad49ba36f} \\
+\texttt{A139} & PowerShell Operational.evtx (C:) & \texttt{2467ae88d623459f9244ad633b3943feb8adcf73b67fac63eac9408c307739a7} \\
+\texttt{A140} & System.evtx (C:) & \texttt{1da2c58c5738b96c86f40c17fee02e11f26b70e2423e71e37d682c0c36093126} \\
+\texttt{A138} & WinRM Operational.evtx (C:) & \texttt{3e368494f50bf4cc35d1bb31bbe7eb91217c9d2eb94fb7311c36381ec6706872} \\
+\texttt{A141} & WINRSHOST.EXE prefetch (C:) & \texttt{2a5e57c55a5a5692a0a90ae42ee0a2ff0f65e1495ed4d1ec5459908cf29ff25e} \\
+\texttt{A142} & POWERSHELL.EXE prefetch (C:) & \texttt{fbf8f0b5ff58fea3a8d0d11d37de4ae4de6532cca266b5952ef3bec29b0ef340} \\
+\texttt{A143} & setupapi.dev.log (C:) & \texttt{c026d59a4c79d211bdf6fa6b0a40d203780595a746677fc6cb0ff9e1fb2238a6} \\
+\end{tabularx}
+\end{center}
+
+The eight source artifacts of Table~1 and the hidden files of Table~2 of the assignment were checked against the seized systems as described in Section~\ref{sec:q1}.
 
 % -----------------------------------------------------------------------------
 % Report of all findings
 % -----------------------------------------------------------------------------
 \section{Report of all findings (Investigation and Evidence Analysis)}
-\label{sec:report-of-all-findings}
+\label{sec:findings}
 
-% TODO:
-% Document the forensic examination of the Windows workstation disk image,
-% its live-memory capture, and the Linux laptop disk image, using the Stage I
-% website and recovered artifacts as reference evidence.
-%
-% Include, where applicable:
-% - relevant file systems, partitions, and the BitLocker-encrypted D: partition;
-% - traces of the phishing website and copies/traces of Stage I artifacts;
-% - relevant source code, repositories, scripts, logs, and configuration files;
-% - file provenance, user activity, deleted/residual data, and memory evidence;
-% - evidence of concealment or anti-forensic activity;
-% - tools, commands, methods, and paths needed to reproduce material findings;
-% - timestamps, their sources, and any time-zone assumptions.
-%
-% Clearly distinguish direct observations from forensic inferences.
+\textbf{Summary.}
+\begin{enumerate}
+  \item The Windows laptop's BitLocker-protected D: volume was decrypted with the volume's FVEK, recovered from memory (A108, A107). The key was validated on the NTFS boot sector and the \$MFT record.
+  \item The password of the handwritten note is \texttt{johnny-pc\_elliot\_shibuya\_fsociety\_pimenta}. It opens \texttt{stash.zip} from the Linux workstation (A124, A125). The five parts are confirmed together by the archive's CRC check. The Windows password \texttt{fsociety} is confirmed independently by the SAM hash (A118).
+  \item The Linux workstation holds a copy of the phishing server source (\texttt{server.js}, same hash as Stage~I A006), a git clone of the phishing host (\texttt{fenix.dpss.inesc-id.pt}), the phishing campaign's acme-challenge token (A149), and an encrypted archive of seven of the eight Stage~I source artifacts (A126).
+  \item Shell history on the Linux workstation records the steps used to hide the Stage~I files inside media (A129), the encryption of the archive, secure deletion (\texttt{srm}) of the working directories, and a \texttt{git rm} and commit on the production server \texttt{fenix-prod} (A131).
+  \item On the Windows laptop, a PowerShell script block copies files into place and resets their timestamps from a supplied table, that is, timestomping (A139). It ran over WinRM on 22~August 2026 (10:29 WEST), the last day of the reported phishing window.
+  \item The PowerShell operational log was cleared on 28~July 2026 by the account \texttt{johnny} (A140), in the same second that \texttt{background.jpg} was deleted (E2).
+\end{enumerate}
 
+Timestamps are in WEST (UTC+1). Linux image timestamps have the assignment's 27-day correction applied, and each such row says so. Windows timestamps need no correction. The full timeline is in \texttt{report-and-timeline/timeline-events.csv} (rows E1--E20, T1--T3, M1--M17).
+
+\textbf{Methods and tools.} Sleuth Kit (\texttt{mmls}, \texttt{fsstat}, \texttt{fls}, \texttt{icat}, \texttt{istat}, \texttt{jls}, \texttt{jcat}); Volatility~3 2.28.2 with \texttt{windows.bitlocker} (third-party plugin, reviewed and SHA-256 checked before use); \texttt{cryptography} for AES-XTS decryption; \texttt{pyevtx} (libevtx) for event logs; \texttt{pyscca} for Prefetch; Impacket \texttt{secretsdump} for offline SAM and LSA parsing; \texttt{foremost} for carving; \texttt{exiftool}. Scripts are in \texttt{results/scripts/} and every step is reproducible from \texttt{kali.sh}. Symbol tables for the memory image were obtained over the network (\texttt{--net}); only the public kernel PDB identifier was sent.
 
 % -----------------------------------------------------------------------------
-% Analysis of relevant findings
+% Analysis
 % -----------------------------------------------------------------------------
 \section{Analysis of relevant findings}
-\label{sec:analysis-of-relevant-findings}
+\label{sec:analysis}
 
-% -----------------------------------------------------------------------------
 \subsection{Phishing website and recovered artifacts}
-% -----------------------------------------------------------------------------
+\label{sec:q1}
 
-\textit{Do the seized systems contain traces of the phishing website and/or the hidden files recovered during Lab Assignment I? If so, identify the relevant evidence, its location, and its SHA-256 value where applicable.}
+\textbf{Question 1.} \textit{Do the seized systems contain traces of the phishing website and/or the hidden files recovered during Lab Assignment I?}
 
-% TODO:
-% Answer using evidence from the seized systems and live-memory capture.
-% Identify relevant locations, provenance, and SHA-256 values where possible.
+\textbf{Observations.}
+\begin{itemize}
+  \item \textit{Linux workstation.} \texttt{home/johnnymusk/backups/peixinho/server.js} has SHA-256 \texttt{2a014a11\ldots} (A132), the same hash as the phishing server recovered in Lab~1 (A006). Its \texttt{.git/config} names \texttt{https://fenix.dpss.inesc-id.pt/.git/} as the remote (A133), which is the host of the phishing page in Lab~1. Its reflog records a single clone of that host on 23~August 2026 (A134, E14).
+  \item \textit{The acme-challenge token.} The repository contains \texttt{.well-known/acme-challenge/9xQ3\ldots} with the same token as Lab~1 A005. The bytes differ only in the line ending (LF here, CRLF in A005) (A149).
+  \item \textit{Stage~I source artifacts.} \texttt{stash.zip} (A124) holds nine files; seven of them match the Table~1 hashes of the assignment (A126): \texttt{myzip.zip}, the anime \texttt{.mkv}, the GTA iceberg image, the GTA trailer, the \texttt{dj\_cara} WAV, \texttt{blank} and \texttt{polish\_cow.webp}. The telemetry workbook is in the archive with the same values as the published file but a different hash (A127, A128). The source sample named \texttt{ESP32\_ADXL345\_3Axis\_Telemetry.xlsx} is therefore not byte-identical to the published version.
+  \item \textit{Windows laptop.} No Stage~I file is present as a live, readable file on C: or on the user area of D: (A113, A146). The \texttt{Users/johnny/Pictures} folder on D: holds two images (A111, A112). Neither is a Stage~I file.
+\end{itemize}
 
+\textbf{Interpretation.} The phishing kit (server source, acme token and git remote) was stored on the suspect's personal Linux workstation, and that workstation was used to package the Stage~I files. The Lab~1 hidden files (Table~2) were not found as standalone files. The shell history indicates they were embedded into media files with encoding scripts (A129). We did not extract and verify those embedded copies in this stage; the Lab~1 recovery is the basis for their hashes.
 
-% -----------------------------------------------------------------------------
 \subsection{Provenance and temporal reconstruction}
-% -----------------------------------------------------------------------------
+\label{sec:q2}
 
-\textit{Can you reconstruct the provenance and handling of these files? Provide a timeline of relevant events showing how the phishing website was developed and operated, and how the hidden files were handled on the seized systems.}
+\textbf{Question 2.} \textit{Can you reconstruct the provenance and handling of these files?}
 
-% TODO:
-% Explain the provenance and handling of relevant files and artifacts.
-% Refer to the separately submitted timeline; support significant events
-% with evidence, timestamp sources, and time-zone conversions as applicable.
+The table lists the events that bear on provenance. Windows times are native; Linux times are corrected by $-27$ days. All times are WEST.
 
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.1}
+\begin{tabularx}{\textwidth}{l l X}
+\textbf{Time (WEST)} & \textbf{Event} & \textbf{Source} \\
+\hline
+2026-04-15 21:17 & Earliest commit in the \texttt{peixinho} repository & M1 \\
+2026-07-28 21:16 & PowerShell operational log cleared by \texttt{johnny} & T1, A140 \\
+2026-07-28 21:16 & \texttt{background.jpg} deleted on D: & E2, A122 \\
+2026-07-28 22:44 & \texttt{hate-this-place.jpg}, \texttt{mom-photo.jpg} created on D: & E3, A122 \\
+2026-08-19 to 22 & Reported phishing campaign window & M14, M15 \\
+2026-08-22 10:29 & Timestomping script executed over WinRM & T2, A139 \\
+2026-08-22 10:30 & \texttt{winrshost.exe} and \texttt{powershell.exe} run & T3, A141, A142 \\
+2026-08-23 23:51 & \texttt{peixinho} repository cloned from \texttt{fenix.dpss.inesc-id.pt} & E14, A134 \\
+2026-08-25 13:01 & Published \texttt{Telemetry.xlsx} copy saved & E9 \\
+2026-08-25 15:06 & Telemetry copy inside \texttt{stash.zip} saved (embedded date, corrected) & E10 \\
+2026-08-25 15:56 & \texttt{stash.zip} created (\texttt{zip -e}) & E18, A129 \\
+2026-08-25 22:02 & WinRM session from \texttt{10.0.2.2} port 5985 (memory, state CLOSED) & M17, A101 \\
+2026-08-26 10:29 & Shell history last written & E20, A129 \\
+\end{tabularx}
+\end{center}
 
-% -----------------------------------------------------------------------------
+\textbf{Observations.} The archive was created on 25~August, using files from the hidden-file staging folder, and encrypted with \texttt{zip -e} (A129). The archive password was derived from five values that all appear in evidence (Section~\ref{sec:findings}). The repository was cloned on 23~August, the day after the reported window (19--22~August) had ended, and before the archive was built. The timestomping script ran on 22~August, within that window.
+
+\textbf{Interpretation.} The sequence is consistent with: clone of the phishing host (23~Aug), staging and encoding of the Stage~I files and packaging of the archive (25~Aug). The timestomping on 22~Aug is more likely part of the phishing-period activity than of the staging, but the logs do not show which files it injected.
+
 \subsection{Anti-forensic activity}
-% -----------------------------------------------------------------------------
+\label{sec:q3}
 
-\textit{Did you find evidence of anti-forensic activity? If so, describe the techniques observed and the evidence supporting your conclusions.}
+\textbf{Question 3.} \textit{Did you find evidence of anti-forensic activity?}
 
-% TODO:
-% Identify any supported anti-forensic or concealment findings.
-% Distinguish observed actions from hypotheses and alternative explanations.
+\textbf{Yes.} The following techniques were observed. Each is recorded with its evidence.
 
+\begin{enumerate}
+  \item \textbf{Timestomping.} A PowerShell script block (\texttt{C:\textbackslash{}Windows\textbackslash{}Temp\textbackslash{}Modules\textbackslash{}Forensics.psm1}) copies files into a destination and sets their creation, write and access times from a supplied table (A139, T2). The module file itself is not in the live listing or among deleted entries (A139).
+  \item \textbf{Event-log clearing.} The PowerShell operational log was cleared on 28~July by \texttt{johnny} (A140, event 104, T1). The Security log has no clearing event. Other logs may have been cleared without a record.
+  \item \textbf{Secure deletion.} The Linux history shows \texttt{srm -ll -r} on the working directories, after installing \texttt{secure-delete} (A129). Both directories are absent from the live filesystem (A103). The ext4 journal no longer holds their names (A147).
+  \item \textbf{Concealment in media.} The Stage~I files were embedded into media files with purpose-built encoding scripts (LSB, DCT, polyglot and WAV encoders; A129). The browsing history for the same days covers those techniques (A135).
+  \item \textbf{Encrypted archive.} The archive was created with \texttt{zip -e}, and its source files were moved into it with \texttt{zip -m} (A129, E18, E19).
+  \item \textbf{Remote history rewrite.} On the production host \texttt{fenix-prod}, the suspect ran \texttt{git rm -r} on the site content and committed it as ``cleanup'' (A129). The local bundle of the repository contains that commit (M13).
+\end{enumerate}
 
-% -----------------------------------------------------------------------------
+\textbf{Limitations.} Anti-forensic actions that left no record cannot be identified. The Prefetch files do not record the 25~August run that memory shows, so Prefetch and memory disagree on that point and this is not explained.
+
 \subsection{New discoveries and investigative interpretation}
+\label{sec:q4}
+
+\textbf{Question 4.} \textit{Do these findings strengthen or weaken the attribution of the phishing attack to João Musk, or point to other relevant actors?}
+
+\textbf{Strengthening indicators.}
+\begin{itemize}
+  \item The Windows laptop belongs to the user \texttt{johnny} and the computer is \texttt{JOHNNY-PC} (A101, A137). The Linux workstation belongs to \texttt{johnnymusk} (A103). The handwritten note's first password part is the laptop name, \texttt{johnny-pc}.
+  \item The Linux user holds the SSH identity \texttt{muskyboi} for the production host \texttt{fenix-prod} (A131). The assignment links the \texttt{MuskyBoi} accounts to the suspect.
+  \item The user's to-do note says ``back up peixinho'' and points to the BitLocker-locked D: volume for an exam (A130). That volume is the one decrypted in this analysis, and it holds the \texttt{Exams\_LN} folder (A122).
+  \item The phishing kit (A132, A133, A149) and the archive of Stage~I sources (A126) are both on the same workstation.
+\end{itemize}
+
+\textbf{Weakening or competing indicators.}
+\begin{itemize}
+  \item The reflog records the clone as authored by \texttt{António Alves} (A134). This may be the upstream author of the repository, but it is a second person, and the role is not established.
+  \item The production host address in the SSH config (\texttt{146.193.41.109}) differs from the phishing host address in Lab~1 (\texttt{146.193.41.5}). The two are linked by hostname and account name only.
+  \item Two different accounts were used for remote sessions on the laptop: \texttt{johnny} on 22~August and \texttt{Administrator} on 25~August (A137). The logs do not show who used each one.
+\end{itemize}
+
+\textbf{Assessment.} The evidence supports the view that the phishing kit and the Stage~I material were under the control of the suspect's personal accounts. It does not by itself establish who ran the remote sessions on the laptop or who injected files. An external actor with access to the laptop cannot be excluded on the present evidence.
+
+\textbf{Hypotheses on the wider scheme (not established).} Names in the shell history (\texttt{ama\_api\_tokens.json}, \texttt{amelia\_tools\_config.json}, \texttt{rag\_poisoning\_patch.diff}, \texttt{train\_anisotropic\_override.py}) suggest that the hidden material concerns an AI assistant: its access tokens, its tool configuration, a retrieval-poisoning patch and a training script. The stash also contains a cloud service credential file (Table~2, f6). If these are the contents of the hidden files, the scheme may aim at credential theft and manipulation of an AI system, rather than only phishing. We have not verified the contents of the hidden files, so this is a hypothesis.
+
+\textbf{Recommended next steps for the Polícia Judiciária.}
+\begin{enumerate}
+  \item Obtain the production host's logs (\texttt{fenix-prod}) for the 'cleanup' commit and for the SSH key \texttt{muskyboi}.
+  \item Obtain account records for the GitHub and GitLab \texttt{MuskyBoi} accounts and the upstream repository history.
+  \item Obtain network and authentication logs for the laptop around 22 and 25~August, including the address \texttt{10.0.2.2}.
+  \item Recover the module file \texttt{Forensics.psm1} and the files it injected from backups, shadow copies or the cloud, and verify their content.
+  \item Confirm the BitLocker recovery key through the account that owns it, and check whether the USB device \texttt{TEARSINRAIN} was ever connected to any other machine.
+  \item Verify the content of the hidden files (Table~2) and the contents of the encrypted archive against the register.
+\end{enumerate}
+
+\subsection{Limitations and open items}
+
+\begin{itemize}
+  \item The hidden files of Table~2 were not extracted from the sources and verified in this stage.
+  \item Unallocated space on the Linux disk was not carved.
+  \item Times in the Linux history and the zip members have no stated time zone; WEST was applied as recorded.
+  \item The C: partition's third volume (768\,MB, sector 41199616) was only checked at the top level.
+  \item The Security log is intact apart from the PowerShell clearing; logs on other machines were not available.
+\end{itemize}
+
 % -----------------------------------------------------------------------------
-
-\textit{What new discoveries emerge from the Stage II evidence that were not visible during Lab Assignment I? Do these findings strengthen or weaken the attribution of the phishing attack to João Musk, or point to other relevant actors or infrastructure? Based on your analysis, what hypotheses can you formulate about the larger scheme suggested by the hidden files, and what further investigative steps would you recommend to the Polícia Judiciária?}
-
-% TODO:
-% Discuss new findings, their significance, and supported hypotheses.
-% Assess attribution with supporting and contradictory evidence.
-% Identify further investigative steps and evidence to preserve or obtain.
-
-
-% -----------------------------------------------------------------------------
-% Use of Artificial Intelligence
+% AI use
 % -----------------------------------------------------------------------------
 \section{Use of Artificial Intelligence}
 \label{sec:ai}
 
-\textit{Did you use Artificial Intelligence (AI) tools in the preparation of this report? If so, identify the tool(s) used and briefly state the purpose(s) for which they were used.}
-
-% TODO:
-% Answer ``No'', or identify the AI tool(s) used and the purpose(s) of use.
-% Independently verify any AI-assisted investigation or report content.
-
+AI assistance was used in this work: an AI coding assistant (Claude, Anthropic) was used to write and debug the analysis scripts and to draft text. All findings were checked against the evidence, and every claim in this report is tied to a register entry. The group must confirm this declaration against the Técnico guidelines and list the tools and purposes as required.
 
 % -----------------------------------------------------------------------------
 % Appendices
@@ -202,10 +279,10 @@ Student 3: & Name 3 & Number 3 \\
 \section{Appendices}
 \label{sec:appendices}
 
-% TODO:
-% Attach relevant supporting evidence, screenshots, commands, tool outputs,
-% scripts, notes, or other material useful to substantiate or reproduce findings.
-% Submit evidence artifacts, auxiliary items, and the timeline as required
-% in the separate deliverables.
+\textbf{Appendix A: register.} Full register with observations, interpretations and limitations: \texttt{lab2/results/artifact-register.md} (entries A101--A149).
+
+\textbf{Appendix B: timeline.} \texttt{lab2/report-and-timeline/timeline-events.csv} (rows E1--E20, T1--T3, M1--M17).
+
+\textbf{Appendix C: scripts.} \texttt{lab2/results/scripts/}: \texttt{kali.sh} (all steps), \texttt{bitlocker.py}, \texttt{note\_password.py}, \texttt{search\_volume.py}, \texttt{compare\_xlsx.py}, \texttt{evtx\_dump.py}, \texttt{generate\_candidates.py}.
 
 \end{document}
