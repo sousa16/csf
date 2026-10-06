@@ -167,7 +167,7 @@ Timestamps are in WEST (UTC+1). Linux image timestamps have the assignment's 27-
   \item \textit{Windows laptop.} No Stage~I file is present as a live, readable file on C: or on the user area of D: (A113, A146). The \texttt{Users/johnny/Pictures} folder on D: holds two images (A111, A112). Neither is a Stage~I file.
 \end{itemize}
 
-\textbf{Interpretation.} The phishing kit (server source, acme token and git remote) was stored on the suspect's personal Linux workstation, and that workstation was used to package the Stage~I files. The Lab~1 hidden files (Table~2) were not found as standalone files. The shell history indicates they were embedded into media files with encoding scripts (A129). We did not extract and verify those embedded copies in this stage; the Lab~1 recovery is the basis for their hashes.
+\textbf{Interpretation.} The phishing kit (server source, acme token and git remote) was stored on the suspect's personal Linux workstation, and that workstation was used to package the Stage~I files. The Lab~1 hidden files (Table~2) were not found as standalone files. The shell history indicates they were embedded into media files with encoding scripts (A129). Five of the eight hidden files are verified by hash: f1.png, f2.json, amelia.pdf and f8.webp against the Lab~1 recovery (A150), and f4.pdf carved from the GTA trailer (A151). The remaining three (f5.py, f6.json and f7.diff) are embedded with bit-level encoders whose scripts were removed (A129), so they are not verified.
 
 \subsection{Provenance and temporal reconstruction}
 \label{sec:q2}
@@ -257,7 +257,7 @@ The table lists the events that bear on provenance. Windows times are native; Li
 \subsection{Limitations and open items}
 
 \begin{itemize}
-  \item The hidden files of Table~2 were not extracted from the sources and verified in this stage.
+  \item Three hidden files of Table~2 (f5.py, f6.json, f7.diff) remain unverified: they are embedded with bit-level encoders, and the decoders were removed from the suspect's machine.
   \item Unallocated space on the Linux disk was not carved.
   \item Times in the Linux history and the zip members have no stated time zone; WEST was applied as recorded.
   \item The C: partition's third volume (768\,MB, sector 41199616) was only checked at the top level.

@@ -950,3 +950,37 @@ Entries B001–B013 kept as the colleague recorded them. Where they overlap with
 **Interpretation:** The file in the suspect's repository is the planted acme-challenge file from the phishing site (A005). The line-ending difference suggests the repository copy and the copy served by the site were saved by different tools.
 
 **Limitations / confidence:** Content comparison only. Which copy was written first is not established.
+
+## A150 -- `results/analysis/30_matches_lab1all.txt`
+
+| Field | Value |
+| --- | --- |
+| Registered (UTC) | 2026-10-06T12:20:09+00:00 |
+| Parent artifact | A103 |
+| Command | `kali.sh hashmatch results/work/lab1all (114 Lab 1 evidence and results files, flat copy)` |
+| stat | `results/analysis/30_matches_lab1all.txt|829|2026-10-06 12:19:21.588679251 +0000|2026-10-06 12:19:21.588679251 +0000` |
+| Type | ASCII text |
+| SHA-256 | `d4eead55ac291519fbb58178b154bd6ef4cd90ddbc6d87d188f78cc7083c0551` |
+
+**Observation:** Hash-match of 114 Lab 1 evidence and results files against the 16 Stage I hashes: 12 matches. Table 2 hidden files f1.png (blank-fixed.png), f2.json (polish_cow-payload.json), amelia.pdf (amelia2.pdf) and f8.webp (aot-telegram-chat.webp, aot_payload.webp) are present. The published Telemetry.xlsx matches Table 1.
+
+**Interpretation:** Four of the eight hidden files are verified against the Lab 1 recovery. The remaining hidden files f4, f5, f6 and f7 are not in Lab 1 by hash.
+
+**Limitations / confidence:** Whole-file SHA-256 match only.
+
+## A151 -- `results/work/stash/../hidden_f4_candidate.pdf`
+
+| Field | Value |
+| --- | --- |
+| Registered (UTC) | 2026-10-06T12:20:09+00:00 |
+| Parent artifact | A124 |
+| Command | `carved from Grand Theft Auto VI Trailer 1.mp4 at byte 9357945 to EOF; trimmed after %%EOF (+1 byte)` |
+| stat | `results/work/stash/../hidden_f4_candidate.pdf|85981|2026-10-06 12:19:41.442893653 +0000|2026-10-06 12:19:41.442893653 +0000` |
+| Type | PDF document, version 1.5 |
+| SHA-256 | `86e469294263367ad841b7c91f405e658a437229d5c7ec15ebefee19109265af` |
+
+**Observation:** PDF carved from byte 9357945 of the GTA trailer (A016 in Lab 1 / A124 stash copy), trimmed at the final %%EOF plus one newline. Title: 'Independent External Technical Assessment Report - Project AMELIA'. SHA-256 0a4ac4174b6e68c7e92912c588e67dbf351a332d201c857f592fedb0397d005f, matching Table 2 f4.pdf.
+
+**Interpretation:** Hidden file f4.pdf is embedded in the GTA trailer (polyglot), as the bash history indicates (A129: polyglot_create.sh with Technical_Assurance.pdf).
+
+**Limitations / confidence:** Hash equality with Table 2 is the verification. The one trailing newline after %%EOF was needed to match; other trimming gave other hashes.
