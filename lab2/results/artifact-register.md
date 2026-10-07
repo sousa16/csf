@@ -1007,3 +1007,48 @@ Entries B001–B013 kept as the colleague recorded them. Where they overlap with
 - Observation: no COM comment; EXIF is 64 bytes of orientation only (mom-photo) or absent (hate-this-place); 0 bytes after the final FFD9; no spatial-LSB payload in any order; steghide/stegseek found no embedded data or passphrase on either image.
 - Interpretation: the words "shibuya" and "pimenta" are not hidden inside the images by steganography; they are read by recognising the depicted scene/place (A152, A153). Negative finding recorded per Good-Practice Manual §5.
 - Limitations: transform-domain tools beyond steghide (outguess, jsteg) were not installed on the analysis host and could not be run; recorded as a limitation.
+
+## A155 -- `evidence/windows/ConsoleHost_history.txt` (PowerShell command history, D:)
+- File: `/Users/johnny/AppData/Roaming/Microsoft/Windows/PowerShell/PSReadLine/ConsoleHost_history.txt` on D: (MFT inode 1102)
+- SHA-256: `53dcd531d211c2a219df6ff859357c9ce018296e53106a0b097c9d3356314372`
+- Parent: A109 (decrypted D: volume)
+- Command: `sudo icat /mnt/dislocker/dislocker-file 1102 > evidence/windows/ConsoleHost_history.txt` (inode from `stat`/`fls` of the mounted D:)
+- Observation: three PowerShell commands, in entry order:
+  1. `ssh muskyboi@146.193.41.109 "cat ~/fenix/peixinho/credentials.txt"`
+  2. `ssh ist101337@sigma.ist.utl.pt`
+  3. `scp ist101337@sigma.ist.utl.pt:~/Linguagem_Natural/Exams/Natural_Language_MAP1_2026-2027.pdf D:\Users\johnny\Desktop\Exams_LN\`
+- Interpretation: command 1 is the laptop user connecting to the production phishing host (`146.193.41.109`, user `muskyboi` -- the host and account from the SSH config A010 / deploy.sh) and reading the harvested `credentials.txt`, i.e. operating/monitoring the phishing campaign from this laptop. Commands 2-3 use the account `ist101337` to log in to `sigma.ist.utl.pt` and copy an LN exam PDF into `Desktop\Exams_LN\` on D: -- exfiltration of exam material. This matches the exam file recorded in the USN journal (A122, E4) and the to-do note (A130). `ist101337` is a new identifier not seen before in the case.
+- Limitations: PSReadLine history is not timestamped, so the order is entry order, not proven wall-clock times, and the file does not show whether each command succeeded. Whether `ist101337` is the suspect's own IST account or a credential obtained through the phishing campaign is not established by this file alone.
+
+## A156 -- Browser history (D:): phishing planning trail
+- Files: `/Users/johnny/AppData/Roaming/Opera Software/Opera GX Stable/History` (MFT inode 1525) and `/Users/johnny/AppData/Local/Microsoft/Edge/User Data/Default/History` (inode 835), on D:
+- SHA-256: operagx_History `3890e8ed751cb39632ee7a73461db812745b98e768a40b3ba7b9717aee15cf8e`; edge_History `34977f57c1f75b5bff31d71ccb5db189265635bb4bbf28d0c0ae97633a80d165`  (run `sha256sum` on the committed copies)
+- Parent: A109 (decrypted D:)
+- Command: `sudo icat /mnt/dislocker2/dislocker-file 1525 > operagx_History`; `sudo icat … 835 > edge_History`; `sqlite3 <db> "select datetime(last_visit_time/1000000-11644473600,'unixepoch'),url,title from urls order by last_visit_time;"`  (read from a local copy of the image; the hgfs-backed mount gave I/O errors on these files)
+- Observation: Edge has one visit, a Google search `download opera gx` (2026-07-28 20:37:56 UTC). Opera GX has 10 visits: `download discord` (2026-07-28 21:00 UTC), `memes to laugh`, `gta 6 news`; then on 2026-08-10 `how does phishing works` (10:00), `social engineering` (10:05), `chatgpt` and `chatgpt.com/?q=how to create a phishing website` (10:50); and on 2026-08-19 `how to send email as someone else` (10:30) and a visit to `emkei.cz` (10:37), a web mail-spoofing service.
+- Interpretation: the Opera GX history on the laptop records research into phishing and social engineering, a ChatGPT query asking how to build a phishing website (10 Aug), and, on 19 Aug (the first day of the reported campaign window, M14), a search for sending e-mail as someone else and a visit to a mail-spoofing service -- consistent with how the impersonated IST e-mail was sent. The `download discord` search and the installed Discord app (empty message cache) show Discord was obtained but hold no recoverable message content.
+- Limitations: visit times are Chromium UTC; +1h for WEST. Windows image, so no -27-day correction. A search query shows interest, not that any instruction returned was followed. Discord message content is server-side and was not in the client cache (0-byte Cache_Data).
+
+## A157 -- Discord conversation recovered from the client cache (D:)
+- Files: `/Users/johnny/AppData/Roaming/discord/Cache/Cache_Data/f_000001` .. `f_000009` on D: (HTTP cache blobs; gzip, except `f_000005` = Ogg/Opus audio, the voice note referenced in `f_000004`).
+- SHA-256 (blobs):
+  - f_000001 `f63f1b0aa059c51f5286c93ada16bffb6af5f8fc9aaa24f1c75361b6e1bb85d0`
+  - f_000002 `cee74887189dab0d8bd3bea37e437390bb78f639d832bf8c06426349a89c9c8f`
+  - f_000003 `4368ecda87cef73720da384fd9167951547096ec85e7a99c7c7cb69698286f90`
+  - f_000004 `c25c32d4c61b498624369264c216a19b2782a31868f94a7537c1cdec4fc7274b`
+  - f_000005 `a4fda2c29a82d461a709cdc3ea4707651549a89d9782f3d1e696b81833edeccc` (Ogg/Opus)
+  - f_000006 `835d330d451afb4f9d47bde6dc9f1615a24001a1a82c6a10046a306a358d2ae8`
+  - f_000007 `bf0d6c3cd0d8eca1d5e538359ca90292b6230f53b63dd1bd17a18bdb677f38b6`
+  - f_000008 `39f7d8562d46c0fe4ba272df373e7071684afb71654bee4080d6afa0988edc27`
+  - f_000009 `81822b1efac7713c3d355cfd5aa4097483ac3e305aa83ad25de650077325d7a2`
+- Parent: A109 (decrypted D:). The blobs read as 0 bytes through the hgfs-backed dislocker mount (an I/O artefact of that mount); they were recovered with real content from a LOCAL copy of the image (cf. A156).
+- Command: `cp Cache_Data/f_* .`; `file f_*`; `sha256sum f_*`; `for f in f_00000{1,2,3,4,6,7,8,9}; do gzip -cd "$f" > "$f.json"; done`; parsed to `discord-extracted/` and merged to `discord-messages.txt` (parser in results/scripts). `f_000005` identified with `ffprobe` (Ogg/Opus, mono 48 kHz).
+- Observation: 144 messages, timestamps already in WEST (+01:00). The participants are `Johnny` and `DuckyDonald` (direct messages) and a group chat with several handles. Content, by blob:
+  - f_000001/002 (28-29 Jul): DMs; `DuckyDonald` is a long-time online contact ("~2 years", never met) who mentored `Johnny` in "illegal stuff"; `DuckyDonald` says he interns "at AMA" doing AI work.
+  - f_000003 (10 Aug): group chat; `Johnny`: "I'm gonna try to get the solved exams from someone in the LN team"; later: "You know that email we get to reset our IST passwords? Well I'm gonna run a phishing attempt using that email as a base."
+  - f_000004 (18 Aug): DM; `DuckyDonald`, alarmed by a Russian-language Telegram image he reads as a warning, asks `Johnny` to hide files for him and to run the hiding scripts; says: "i will send a usb to the Locky locker in the Alameda Metro. the locker is number 3 and the code is 676767 ... check the locker everyday starting from day 22"; "if something happens to me those files can open an investigation in AMA"; includes a locker-site image URL.
+  - f_000006 (23 Aug): group chat; `Johnny`: "guess who just got the credentials of a TA from Natural Language"; "Spun up a quick phishing page and some people just ... droped their creds"; "I alredy pulled the exams from that guy's drive"; names the TA as "Tiago"; motive discussed as revenge; asks whether "Tiago" interns at AMA.
+  - f_000007/008 (25 Aug): DMs; `Johnny` collects the USB, sees files "api tokens, a RAG patch, some python training script, PDFs about AMÉLIA"; `DuckyDonald` instructs: run each hiding script on the matching file, save into the password zip, then delete the loose files with the secure-delete tool. `Johnny` reports it done ("hidden inside the personal files ... a zip with a password ... on my linux dev machine"), then realises the folder auto-commits and pushes to git ("you hid them and then you uploaded them ... you published them"), and that his site "merges from there". `DuckyDonald` reveals his identity: "Tiago Sintaxe". He tells `Johnny` to keep the USB offline and, if he disappears, take it to the police.
+  - f_000009 (25 Aug): group chat; `Johnny` recounts that `DuckyDonald` is Tiago Sintaxe, the same TA he phished; says he will throw the USB "in the Tejo" and will not go to the police.
+- Interpretation: the conversation is first-person account tying the laptop's user to (1) the phishing of an IST TA's credentials and the theft of LN exams from that TA's drive (matches A155, A156), and (2) receiving, hiding and encrypting a set of AMA/"AMÉLIA" files supplied by `DuckyDonald`/"Tiago Sintaxe" and inadvertently publishing them through an auto-push git repository (matches the recovered `peixinho` history and the exposed `.git`). It names a second actor (`DuckyDonald` = Tiago Sintaxe, an AMA intern) as the source of the hidden-file set, and states intent to destroy the USB. It supports the hypothesis that the hidden material concerns an AI system at AMA and originated outside this suspect, who packaged and encrypted it.
+- Limitations: these are client-cached chat messages, not server records; authorship of each handle is as displayed in the cache and is not independently verified. The voice note (`f_000005`) is audio and was not transcribed. Statements in chat are claims by the participants, not independently proven facts; the exams' and AMA files' content was not inspected here. Real identities behind the handles are for the Polícia Judiciária to establish.

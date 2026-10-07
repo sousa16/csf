@@ -9,6 +9,7 @@
 \usepackage{lmodern}
 \usepackage{microtype}
 \usepackage{times}
+\usepackage{seqsplit}
 
 
 % -----------------------------------------------------------------------------
@@ -50,7 +51,7 @@
 
 \begin{minipage}[c]{0.18\textwidth}
   \centering
-  \includegraphics[width=\linewidth]{figures/NewLogoIST.pdf}
+  \includegraphics[width=\linewidth]{NewLogoIST.pdf}
 \end{minipage}
 \hfill
 \begin{minipage}[c]{0.76\textwidth}
@@ -100,7 +101,7 @@ Student 3: & Maria Pereira & 105905 \\
 \section{Acquired artifacts}
 \label{sec:artifacts}
 
-Every artifact below is identified by its SHA-256 and its register entry (\texttt{lab2/results/artifact-register.md}). Evidence images were verified against the hashes recorded before analysis. Derived items (the decrypted volume, extracted files, keys, hive copies) are working copies, not evidence, and are kept out of the repository.
+Every artifact below is identified by its SHA-256 (the complete manifest of submitted files is in Appendix~D) and by a reference ID (\texttt{A1xx}) used throughout this report. Evidence images were verified against the hashes recorded before analysis. Derived items (the decrypted volume, extracted files, keys, hive copies) are working copies, not evidence, and are kept out of the submission.
 
 \begin{center}
 \renewcommand{\arraystretch}{1.15}
@@ -108,25 +109,30 @@ Every artifact below is identified by its SHA-256 and its register entry (\textt
 \begin{tabularx}{\textwidth}{l l X}
 \textbf{ID} & \textbf{File} & \textbf{SHA-256} \\
 \hline
-\texttt{A101} & windows\_laptop\_memory.raw & \texttt{c0b66a9ec5ff16d8c01726a8717648f729857fa059ba7485c5c1717587892be3} \\
-\texttt{A102} & windows\_laptop\_disk.dd & \texttt{5eca1f65df49ccf5bddeb8c5c3a44fe1a8a9e6faab04ed601d565b915bbaa6a8} \\
-\texttt{A103} & linux\_workstation\_disk.dd & \texttt{b31261098d901de0be201f4f78f5816c946490b9eb4ae2c94dc2fcf4af4e3368} \\
-\texttt{A104} & handwritten-note-fig1.png (Figure 1) & \texttt{d259e34bfc965a1aea720ffa7b9443ebfde54b6fdb78d26811fd5c44149b6896} \\
-\texttt{A124} & stash.zip (Linux, \texttt{backups/}) & \texttt{d0544dcbcbccbce302ad5f811de9f59ee786d94e7b311b2d3ae6f3b153a0c308} \\
-\texttt{A132} & server.js (Linux, \texttt{backups/peixinho/}) & \texttt{2a014a1168968989cf36488ac8a7f218f8b3591dabeea50199c6f26e03abf863} \\
-\texttt{A133} & peixinho .git/config (Linux) & \texttt{dd138156547b37e8615e3d4b8acd593958c63aa3f3b2367f247192f766d4cde5} \\
-\texttt{A149} & acme-challenge token (Linux repo) & \texttt{69296b1d98e75e397d885f5c9caef8650676094188e05484b57011ba2ea11643} \\
-\texttt{A137} & Security.evtx (C:) & \texttt{29e6a0df28080267b2e470e946a202dd1ff27598b6deedbd593b7e7ad49ba36f} \\
-\texttt{A139} & PowerShell Operational.evtx (C:) & \texttt{2467ae88d623459f9244ad633b3943feb8adcf73b67fac63eac9408c307739a7} \\
-\texttt{A140} & System.evtx (C:) & \texttt{1da2c58c5738b96c86f40c17fee02e11f26b70e2423e71e37d682c0c36093126} \\
-\texttt{A138} & WinRM Operational.evtx (C:) & \texttt{3e368494f50bf4cc35d1bb31bbe7eb91217c9d2eb94fb7311c36381ec6706872} \\
-\texttt{A141} & WINRSHOST.EXE prefetch (C:) & \texttt{2a5e57c55a5a5692a0a90ae42ee0a2ff0f65e1495ed4d1ec5459908cf29ff25e} \\
-\texttt{A142} & POWERSHELL.EXE prefetch (C:) & \texttt{fbf8f0b5ff58fea3a8d0d11d37de4ae4de6532cca266b5952ef3bec29b0ef340} \\
-\texttt{A143} & setupapi.dev.log (C:) & \texttt{c026d59a4c79d211bdf6fa6b0a40d203780595a746677fc6cb0ff9e1fb2238a6} \\
+\texttt{A101} & windows\_laptop\_memory.raw & \texttt{\seqsplit{c0b66a9ec5ff16d8c01726a8717648f729857fa059ba7485c5c1717587892be3}} \\
+\texttt{A102} & windows\_laptop\_disk.dd & \texttt{\seqsplit{5eca1f65df49ccf5bddeb8c5c3a44fe1a8a9e6faab04ed601d565b915bbaa6a8}} \\
+\texttt{A103} & linux\_workstation\_disk.dd & \texttt{\seqsplit{b31261098d901de0be201f4f78f5816c946490b9eb4ae2c94dc2fcf4af4e3368}} \\
+\texttt{A104} & handwritten-note-fig1.png (Figure 1) & \texttt{\seqsplit{d259e34bfc965a1aea720ffa7b9443ebfde54b6fdb78d26811fd5c44149b6896}} \\
+\texttt{A124} & stash.zip (Linux, \texttt{backups/}) & \texttt{\seqsplit{d0544dcbcbccbce302ad5f811de9f59ee786d94e7b311b2d3ae6f3b153a0c308}} \\
+\texttt{A132} & server.js (Linux, \texttt{backups/peixinho/}) & \texttt{\seqsplit{2a014a1168968989cf36488ac8a7f218f8b3591dabeea50199c6f26e03abf863}} \\
+\texttt{A133} & peixinho .git/config (Linux) & \texttt{\seqsplit{dd138156547b37e8615e3d4b8acd593958c63aa3f3b2367f247192f766d4cde5}} \\
+\texttt{A149} & acme-challenge token (Linux repo) & \texttt{\seqsplit{69296b1d98e75e397d885f5c9caef8650676094188e05484b57011ba2ea11643}} \\
+\texttt{A137} & Security.evtx (C:) & \texttt{\seqsplit{29e6a0df28080267b2e470e946a202dd1ff27598b6deedbd593b7e7ad49ba36f}} \\
+\texttt{A139} & PowerShell Operational.evtx (C:) & \texttt{\seqsplit{2467ae88d623459f9244ad633b3943feb8adcf73b67fac63eac9408c307739a7}} \\
+\texttt{A140} & System.evtx (C:) & \texttt{\seqsplit{1da2c58c5738b96c86f40c17fee02e11f26b70e2423e71e37d682c0c36093126}} \\
+\texttt{A138} & WinRM Operational.evtx (C:) & \texttt{\seqsplit{3e368494f50bf4cc35d1bb31bbe7eb91217c9d2eb94fb7311c36381ec6706872}} \\
+\texttt{A141} & WINRSHOST.EXE prefetch (C:) & \texttt{\seqsplit{2a5e57c55a5a5692a0a90ae42ee0a2ff0f65e1495ed4d1ec5459908cf29ff25e}} \\
+\texttt{A142} & POWERSHELL.EXE prefetch (C:) & \texttt{\seqsplit{fbf8f0b5ff58fea3a8d0d11d37de4ae4de6532cca266b5952ef3bec29b0ef340}} \\
+\texttt{A143} & setupapi.dev.log (C:) & \texttt{\seqsplit{c026d59a4c79d211bdf6fa6b0a40d203780595a746677fc6cb0ff9e1fb2238a6}} \\
+\texttt{A152} & mom-photo.jpg (D:, note part 3) & \texttt{\seqsplit{fe8f99ce75f92a4aee463d5b535d2737e0e042d8bfb59bf44d123c9704f6be55}} \\
+\texttt{A153} & hate-this-place.jpg (D:, note part 5) & \texttt{\seqsplit{c323d401bd25fd8a6ae6e3b8f7dba724ce95d51c886b15653a2f5a0863c800c8}} \\
+\texttt{A155} & ConsoleHost\_history.txt (D:, PowerShell) & \texttt{\seqsplit{53dcd531d211c2a219df6ff859357c9ce018296e53106a0b097c9d3356314372}} \\
+\texttt{A156} & edge\_History / operagx\_History (D:) & \texttt{\seqsplit{34977f57c1f75b5bff31d71ccb5db189265635bb4bbf28d0c0ae97633a80d165}} / \texttt{\seqsplit{3890e8ed751cb39632ee7a73461db812745b98e768a40b3ba7b9717aee15cf8e}}  \\
+\texttt{A157} & Discord cache (D:, 9 blobs \texttt{f\_000001--9}) & nine SHA-256 in the manifest (Appendix~D) \\
 \end{tabularx}
 \end{center}
 
-The eight source artifacts of Table~1 and the hidden files of Table~2 of the assignment were checked against the seized systems as described in Section~\ref{sec:q1}.
+The eight source artifacts of Table~1 and the hidden files of Table~2 of the assignment were checked against the seized systems as described in Section~\ref{sec:q1}. The complete SHA-256 of every file submitted in the ZIP is listed in Appendix~D, and the exact commands that recovered the main artifacts are in Appendix~E; the three seized images (A101--A103) and \texttt{stash.zip} (A124) are too large for the archive and are referenced by hash only.
 
 % -----------------------------------------------------------------------------
 % Report of all findings
@@ -166,9 +172,11 @@ Timestamps are in WEST (UTC+1). Linux image timestamps have the assignment's 27-
   \item \textit{The acme-challenge token.} The repository contains \texttt{.well-known/acme-challenge/9xQ3\ldots} with the same token as Lab~1 A005. The bytes differ only in the line ending (LF here, CRLF in A005) (A149).
   \item \textit{Stage~I source artifacts.} \texttt{stash.zip} (A124) holds nine files; seven of them match the Table~1 hashes of the assignment (A126): \texttt{myzip.zip}, the anime \texttt{.mkv}, the GTA iceberg image, the GTA trailer, the \texttt{dj\_cara} WAV, \texttt{blank} and \texttt{polish\_cow.webp}. The telemetry workbook is in the archive with the same values as the published file but a different hash (A127, A128). The source sample named \texttt{ESP32\_ADXL345\_3Axis\_Telemetry.xlsx} is therefore not byte-identical to the published version.
   \item \textit{Windows laptop.} No Stage~I file is present as a live, readable file on C: or on the user area of D: (A113, A146). The \texttt{Users/johnny/Pictures} folder on D: holds two images (A111, A112). Neither is a Stage~I file.
+  \item \textit{PowerShell history on D:.} \texttt{ConsoleHost\_history.txt} (A155) records \texttt{\seqsplit{ssh muskyboi@146.193.41.109 "cat \textasciitilde/fenix/peixinho/credentials.txt"}}: the laptop user connecting to the production host named in the SSH config and \texttt{deploy.sh} and reading the harvested \texttt{credentials.txt}.
+  \item \textit{Recovered Discord chat on D:.} The client cache (A157) holds a conversation in which the laptop user describes running the phishing page, capturing a TA's credentials, and both receiving and hiding the set of files later found embedded in the media artefacts --- a first-person account of the traces above (developed in Section~\ref{sec:q4}).
 \end{itemize}
 
-\textbf{Interpretation.} The phishing kit (server source, acme token and git remote) was stored on the suspect's personal Linux workstation, and that workstation was used to package the Stage~I files. The Lab~1 hidden files (Table~2) were not found as standalone files. The shell history indicates they were embedded into media files with encoding scripts (A129). Five of the eight hidden files are verified by hash: f1.png, f2.json, amelia.pdf and f8.webp against the Lab~1 recovery (A150), and f4.pdf carved from the GTA trailer (A151). The remaining three (f5.py, f6.json and f7.diff) are embedded with bit-level encoders whose scripts were removed (A129), so they are not verified.
+\textbf{Interpretation.} The phishing kit (server source, acme token and git remote) was stored on the suspect's personal Linux workstation, and that workstation was used to package the Stage~I files. The PowerShell history additionally ties the Windows laptop to the \emph{operation} of the live site: the user read the campaign's harvested \texttt{credentials.txt} on the production host (A155). The Lab~1 hidden files (Table~2) were not found as standalone files. The shell history indicates they were embedded into media files with encoding scripts (A129). Five of the eight hidden files are verified by hash: f1.png, f2.json, amelia.pdf and f8.webp against the Lab~1 recovery (A150), and f4.pdf carved from the GTA trailer (A151). The remaining three (f5.py, f6.json and f7.diff) are embedded with bit-level encoders whose scripts were removed (A129), so they are not verified.
 
 \subsection{Provenance and temporal reconstruction}
 \label{sec:q2}
@@ -217,6 +225,7 @@ The table lists the events that bear on provenance. Windows times are native; Li
   \item \textbf{Concealment in media.} The Stage~I files were embedded into media files with purpose-built encoding scripts (LSB, DCT, polyglot and WAV encoders; A129). The browsing history for the same days covers those techniques (A135).
   \item \textbf{Encrypted archive.} The archive was created with \texttt{zip -e}, and its source files were moved into it with \texttt{zip -m} (A129, E18, E19).
   \item \textbf{Remote history rewrite.} On the production host \texttt{fenix-prod}, the suspect ran \texttt{git rm -r} on the site content and committed it as ``cleanup'' (A129). The local bundle of the repository contains that commit (M13).
+  \item \textbf{Stated intent to destroy evidence.} In the recovered chat (A157) the user plans to throw the USB holding the supplied files into the Tejo and to keep the material offline and unopened. This is a statement of intent, not an observed on-disk action, but it is consistent with the secure-deletion already carried out.
 \end{enumerate}
 
 \textbf{Limitations.} Anti-forensic actions that left no record cannot be identified. The Prefetch files do not record the 25~August run that memory shows, so Prefetch and memory disagree on that point and this is not explained.
@@ -226,12 +235,16 @@ The table lists the events that bear on provenance. Windows times are native; Li
 
 \textbf{Question 4.} \textit{Do these findings strengthen or weaken the attribution of the phishing attack to João Musk, or point to other relevant actors?}
 
+\textbf{Recovered communications (A157).} A Discord conversation (144 messages) was recovered from the client's local cache on D: (\texttt{Cache\_Data/f\_00000N}, gzip blobs decoded to JSON; one blob is a voice note). In it the laptop's user, \texttt{Johnny}, states that he ran a phishing page based on the IST password-reset e-mail, captured a Natural-Language teaching assistant's credentials, and used them to pull that TA's exams from the TA's drive --- which matches the credential read (A155) and the \texttt{scp} of the exam (A155) found independently on disk. Separately, a long-standing online contact, \texttt{DuckyDonald}, who says he interns at \texttt{AMA} on AI work, asks \texttt{Johnny} to keep a set of files safe, leaves them on a USB drive in a public locker (``Locky'' locker, Alameda Metro, number 3, code 676767), and instructs him to hide each file with the supplied encoding scripts, store them in the password-protected archive and secure-delete the originals. \texttt{Johnny} does so, then realises the folder auto-commits and pushes to git, so the hidden files were published and reached his site through the merge --- which matches the exposed \texttt{.git} and the \texttt{peixinho} history. \texttt{DuckyDonald} then reveals that he is \texttt{Tiago Sintaxe}, the same TA whose exams were stolen, and tells \texttt{Johnny} to take the USB to the police if he disappears; \texttt{Johnny} instead says he will throw it into the Tejo.
+
 \textbf{Strengthening indicators.}
 \begin{itemize}
   \item The Windows laptop belongs to the user \texttt{johnny} and the computer is \texttt{JOHNNY-PC} (A101, A137). The Linux workstation belongs to \texttt{johnnymusk} (A103). The handwritten note's first password part is the laptop name, \texttt{johnny-pc}.
   \item The Linux user holds the SSH identity \texttt{muskyboi} for the production host \texttt{fenix-prod} (A131). The assignment links the \texttt{MuskyBoi} accounts to the suspect.
   \item The user's to-do note says ``back up peixinho'' and points to the BitLocker-locked D: volume for an exam (A130). That volume is the one decrypted in this analysis, and it holds the \texttt{Exams\_LN} folder (A122).
   \item The phishing kit (A132, A133, A149) and the archive of Stage~I sources (A126) are both on the same workstation.
+  \item The laptop's PowerShell history shows its user reading the campaign's harvested \texttt{credentials.txt} on the production host over SSH as \texttt{muskyboi} (A155), tying the same person to the \emph{operation} of the live phishing site, not only to its source code.
+  \item The laptop's Opera GX history records the planning of the campaign: searches for \textit{how does phishing works} and \textit{social engineering} and a ChatGPT query \textit{how to create a phishing website} (10~Aug), then \textit{how to send email as someone else} and a visit to the mail-spoofing service \texttt{emkei.cz} on 19~Aug, the first day of the campaign window (A156). This indicates the laptop's user actively researched and prepared the phishing site and its delivery e-mail.
 \end{itemize}
 
 \textbf{Weakening or competing indicators.}
@@ -241,9 +254,11 @@ The table lists the events that bear on provenance. Windows times are native; Li
   \item Two different accounts were used for remote sessions on the laptop: \texttt{johnny} on 22~August and \texttt{Administrator} on 25~August (A137). The logs do not show who used each one.
 \end{itemize}
 
+\textbf{A second access path (exam exfiltration).} The same PowerShell history (A155) also records \texttt{ssh ist101337@sigma.ist.utl.pt} followed by \texttt{scp} of \texttt{\seqsplit{Natural\_Language\_MAP1\_2026-2027.pdf}} from that host's \texttt{Linguagem\_Natural/Exams/} folder into \texttt{Desktop\textbackslash{}Exams\_LN\textbackslash{}} on D:. This matches the exam file seen in the USN journal (A122, E4) and the to-do note (A130). It shows a second account, \texttt{ist101337}, used from this laptop to copy exam material off an IST host. Whether \texttt{ist101337} is the suspect's own account or a credential obtained through the phishing campaign is not established by this evidence; both are consistent with it, and it is a lead for the Polícia Judiciária rather than a settled fact.
+
 \textbf{Assessment.} The evidence supports the view that the phishing kit and the Stage~I material were under the control of the suspect's personal accounts. It does not by itself establish who ran the remote sessions on the laptop or who injected files. An external actor with access to the laptop cannot be excluded on the present evidence.
 
-\textbf{Hypotheses on the wider scheme (not established).} Names in the shell history (\texttt{ama\_api\_tokens.json}, \texttt{amelia\_tools\_config.json}, \texttt{rag\_poisoning\_patch.diff}, \texttt{train\_anisotropic\_override.py}) suggest that the hidden material concerns an AI assistant: its access tokens, its tool configuration, a retrieval-poisoning patch and a training script. The stash also contains a cloud service credential file (Table~2, f6). If these are the contents of the hidden files, the scheme may aim at credential theft and manipulation of an AI system, rather than only phishing. We have not verified the contents of the hidden files, so this is a hypothesis.
+\textbf{Hypotheses on the wider scheme (not established).} Names in the shell history (\texttt{\seqsplit{ama\_api\_tokens.json}}, \texttt{amelia\_tools\_config.json}, \texttt{rag\_poisoning\_patch.diff}, \texttt{\seqsplit{train\_anisotropic\_override.py}}) suggest that the hidden material concerns an AI assistant: its access tokens, its tool configuration, a retrieval-poisoning patch and a training script. The stash also contains a cloud service credential file (Table~2, f6). If these are the contents of the hidden files, the scheme may aim at credential theft and manipulation of an AI system, rather than only phishing. We have not verified the contents of the hidden files, so this is a hypothesis. The recovered conversation (A157) supports the view that the hidden material did not originate with this suspect: it was supplied on a USB by the contact \texttt{DuckyDonald}, who presents himself as an AMA intern and later as \texttt{Tiago Sintaxe}, and the suspect's role on these files, as described there and consistent with the disk (A129), is to hide, encrypt and (inadvertently) publish them --- in contrast to the phishing site itself, which the laptop's own search history shows its user researching and preparing (A156). This is an account given in chat, corroborated by the on-disk artefacts but not independently proven as to the real identities involved.
 
 \textbf{Recommended next steps for the Polícia Judiciária.}
 \begin{enumerate}
@@ -252,7 +267,9 @@ The table lists the events that bear on provenance. Windows times are native; Li
   \item Obtain network and authentication logs for the laptop around 22 and 25~August, including the address \texttt{10.0.2.2}.
   \item Recover the module file \texttt{Forensics.psm1} and the files it injected from backups, shadow copies or the cloud, and verify their content.
   \item Confirm the BitLocker recovery key through the account that owns it, and check whether the USB device \texttt{TEARSINRAIN} was ever connected to any other machine.
-  \item Verify the content of the hidden files (Table~2) and the contents of the encrypted archive against the register.
+  \item Verify the content of the hidden files (Table~2) and the contents of the encrypted archive against the hashes in Appendix~D.
+  \item Identify the account \texttt{ist101337} and obtain \texttt{sigma.ist.utl.pt} authentication and \texttt{scp} logs around the exam exfiltration recorded in A155, to establish whose credential was used.
+  \item Identify the persons behind the handles \texttt{DuckyDonald} / \texttt{Tiago Sintaxe} and the group-chat members (A157); request the Discord account and server records; and seek the USB drive described in A157 (the Alameda ``Locky'' locker, number 3, and the river-disposal statement) and the AMA/AMÉLIA material it held.
 \end{enumerate}
 
 \subsection{Limitations and open items}
@@ -271,7 +288,7 @@ The table lists the events that bear on provenance. Windows times are native; Li
 \section{Use of Artificial Intelligence}
 \label{sec:ai}
 
-AI assistance was used in this work: an AI coding assistant (Claude, Anthropic) was used to write and debug the analysis scripts and to draft text. All findings were checked against the evidence, and every claim in this report is tied to a register entry. The group must confirm this declaration against the Técnico guidelines and list the tools and purposes as required.
+AI assistance was used in this work. An AI coding assistant (Claude, Anthropic) was used to help write and debug the analysis scripts, to assist with the steganalysis and identification of the two D: images, and to draft and revise the report text. It was not relied on as a source of facts: every finding was reproduced from the evidence, and every claim in this report is tied to a submitted evidence artifact (Appendix~D) and to the command that produced it (Appendix~E).
 
 % -----------------------------------------------------------------------------
 % Appendices
@@ -279,10 +296,100 @@ AI assistance was used in this work: an AI coding assistant (Claude, Anthropic) 
 \section{Appendices}
 \label{sec:appendices}
 
-\textbf{Appendix A: register.} Full register with observations, interpretations and limitations: \texttt{lab2/results/artifact-register.md} (entries A101--A149).
+\textbf{Appendix A: artifact IDs.} Findings are cross-referenced by ID (\texttt{A101}--\texttt{A157}). The SHA-256 of every submitted file is in Appendix~D and the commands that produced the main artifacts in Appendix~E; the team's full per-artifact working notes (observations, interpretations, limitations and inodes) are kept as an internal record and are not part of this submission.
 
 \textbf{Appendix B: timeline.} \texttt{lab2/report-and-timeline/timeline-events.csv} (rows E1--E20, T1--T3, M1--M17).
 
-\textbf{Appendix C: scripts.} \texttt{lab2/results/scripts/}: \texttt{kali.sh} (all steps), \texttt{bitlocker.py}, \texttt{note\_password.py}, \texttt{search\_volume.py}, \texttt{compare\_xlsx.py}, \texttt{evtx\_dump.py}, \texttt{generate\_candidates.py}, \texttt{image\_steg\_check.py} (steganalysis of the part-3/5 photos), \texttt{extract\_d\_images.sh} (D: image recovery).
+\textbf{Appendix C: scripts.} \texttt{lab2/results/scripts/}: \texttt{kali.sh} (all steps), \texttt{bitlocker.py}, \texttt{\seqsplit{note\_password.py}}, \texttt{search\_volume.py}, \texttt{compare\_xlsx.py}, \texttt{evtx\_dump.py}, \texttt{\seqsplit{generate\_candidates.py}}, \texttt{\seqsplit{image\_steg\_check.py}} (steganalysis of the part-3/5 photos), \texttt{\seqsplit{extract\_d\_images.sh}} (D: image recovery), \texttt{\seqsplit{parse\_discord\_cache.py}} (Discord cache decode).
+
+\clearpage
+\section*{Appendix D: submitted evidence (SHA-256 manifest)}
+\addcontentsline{toc}{section}{Appendix D}
+
+Every file in the submitted \texttt{evidence/} tree, byte-exact. Paths are
+relative to \texttt{evidence/}; the list is in \texttt{sha256sum} format and can
+be verified with \texttt{sha256sum -c}. The \texttt{discord/*.json} files are the
+gzip-decoded copies of the corresponding \texttt{f\_00000N} cache blobs (A157).
+
+{\scriptsize
+\begin{verbatim}
+d259e34bfc965a1aea720ffa7b9443ebfde54b6fdb78d26811fd5c44149b6896  handwritten-note-fig1.png
+dfea6a788d615caa44105fa4d0dd893f67c39a5f055f726abdb544c3e5c32f2d  linux/deploy.sh
+c1e8881434f8a5d5196017cf2a185f03a5e89d03357c49c6557292121f13ffbd  linux/peixinho-git-log.txt
+7c892d4340d2c7565aabbd334b8485789918e9b86d5f0ca9c2cf5ee5bf989c5a  linux/peixinho.bundle
+160e0082a3130c3b7d3f068c0174832a609f677222589cc1c641668aedebb4a4  linux/ssh-config.txt
+1f1069f876999cd9f37bcc783610f1f4ba1c81d783953c15a82122efcd295f06  windows/bitlocker-hash.txt
+53dcd531d211c2a219df6ff859357c9ce018296e53106a0b097c9d3356314372  windows/ConsoleHost_history.txt
+34977f57c1f75b5bff31d71ccb5db189265635bb4bbf28d0c0ae97633a80d165  windows/edge_History
+3890e8ed751cb39632ee7a73461db812745b98e768a40b3ba7b9717aee15cf8e  windows/operagx_History
+fe8f99ce75f92a4aee463d5b535d2737e0e042d8bfb59bf44d123c9704f6be55  windows/mom-photo.jpg
+c323d401bd25fd8a6ae6e3b8f7dba724ce95d51c886b15653a2f5a0863c800c8  windows/hate-this-place.jpg
+1a3320b8c6a507e47d43b5be05c9c852edef7010a1ba89a07cec473b383e41b6  windows/discord/discord-messages.txt
+f63f1b0aa059c51f5286c93ada16bffb6af5f8fc9aaa24f1c75361b6e1bb85d0  windows/discord/f_000001
+cee74887189dab0d8bd3bea37e437390bb78f639d832bf8c06426349a89c9c8f  windows/discord/f_000002
+4368ecda87cef73720da384fd9167951547096ec85e7a99c7c7cb69698286f90  windows/discord/f_000003
+c25c32d4c61b498624369264c216a19b2782a31868f94a7537c1cdec4fc7274b  windows/discord/f_000004
+a4fda2c29a82d461a709cdc3ea4707651549a89d9782f3d1e696b81833edeccc  windows/discord/f_000005
+835d330d451afb4f9d47bde6dc9f1615a24001a1a82c6a10046a306a358d2ae8  windows/discord/f_000006
+bf0d6c3cd0d8eca1d5e538359ca90292b6230f53b63dd1bd17a18bdb677f38b6  windows/discord/f_000007
+39f7d8562d46c0fe4ba272df373e7071684afb71654bee4080d6afa0988edc27  windows/discord/f_000008
+81822b1efac7713c3d355cfd5aa4097483ac3e305aa83ad25de650077325d7a2  windows/discord/f_000009
+62c1a719d456aebb2160a03f2a82b56224789360fdbdae260a6f6465cf60b359  windows/discord/f_000001.json
+4a99ab9f5f194ef0a0211f7911231483db789dde1f31eb837d6ed6525c8debd0  windows/discord/f_000002.json
+098873500e2ca88f946e0142717c334c2ed051bec34fe610f4e77af8b6446d35  windows/discord/f_000003.json
+2072cde64c8ad0a6a47a2a8e52baa8ead2053ebab834b3ff6fc388123adc5239  windows/discord/f_000004.json
+e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  windows/discord/f_000005.json
+f773e14093a084bc87f5358bcc64681815db51a2b9302cb9dfbbce76f9972d8c  windows/discord/f_000006.json
+809a1f1c2c6daae06540e54549998b529cd22c26d200008b36feec2a853f5fbe  windows/discord/f_000007.json
+a0e5cc5ecc9df390b6b17aea91fd1ba87115f499994fa1690dda9b0d469c3a8e  windows/discord/f_000008.json
+96e562fecbf620e298906a6612aedf628d1036c488b35b7172bf7a6de4dfcc8f  windows/discord/f_000009.json
+\end{verbatim}
+}
+
+\section*{Appendix E: key commands to reproduce}
+\addcontentsline{toc}{section}{Appendix E}
+
+Read-only against the images; derived files are working copies. Inodes are given
+inline with the relevant commands below.
+
+{\scriptsize
+\begin{verbatim}
+# Chain of custody: hash the three seized images first
+sha256sum windows_laptop_memory.raw windows_laptop_disk.dd linux_workstation_disk.dd
+
+# BitLocker D: -- recover the FVEK from memory, then decrypt and mount read-only
+vol -p plugins -f windows_laptop_memory.raw \
+    windows.bitlocker.BitlockerFVEKScan --tags FVEc Cngb None --dislocker
+LOOP=$(sudo losetup -r -o 21880635392 --show -f windows_laptop_disk.dd)
+sudo dislocker -v -k 0x<off>-Dislocker.fvek -V "$LOOP" /mnt/dislocker
+sudo mount -t ntfs-3g -o ro /mnt/dislocker/dislocker-file /mnt/dvol
+
+# Windows credentials (SAM+SYSTEM): johnny's password = part 4 of the note
+impacket-secretsdump -sam SAM -system SYSTEM LOCAL
+john --format=NT --wordlist=rockyou.txt hashes.txt     # -> fsociety
+
+# Handwritten-note ZIP password (opens stash.zip)
+#   sha256(johnny-pc_elliot_shibuya_fsociety_pimenta)
+python3 note_password.py stash.zip
+
+# Note parts 3/5: the two D: images; no steganographic payload
+python3 image_steg_check.py mom-photo.jpg
+python3 image_steg_check.py hate-this-place.jpg
+
+# PowerShell + browser history (read large files via TSK, not the FUSE mount)
+sudo icat /mnt/dislocker/dislocker-file 1102 > ConsoleHost_history.txt   # inode 1102
+sudo icat /mnt/dislocker/dislocker-file 1525 > operagx_History          # inode 1525
+sqlite3 operagx_History \
+  "select datetime(last_visit_time/1000000-11644473600,'unixepoch'),url from urls;"
+
+# Discord conversation: cache blobs are gzip -> JSON (f_000005 is Ogg/Opus audio)
+for f in f_00000{1,2,3,4,6,7,8,9}; do gzip -cd "$f" > "$f.json"; done
+python3 parse_discord_cache.py f_*.json > discord-messages.txt
+
+# Verify the submitted evidence manifest
+sha256sum -c SHA256SUMS
+\end{verbatim}
+}
+
 
 \end{document}
