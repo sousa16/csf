@@ -126,6 +126,8 @@ Every artifact below is identified by its SHA-256 and its register entry (\textt
 \texttt{A152} & mom-photo.jpg (D:, note part 3) & \texttt{fe8f99ce75f92a4aee463d5b535d2737e0e042d8bfb59bf44d123c9704f6be55} \\
 \texttt{A153} & hate-this-place.jpg (D:, note part 5) & \texttt{c323d401bd25fd8a6ae6e3b8f7dba724ce95d51c886b15653a2f5a0863c800c8} \\
 \texttt{A155} & ConsoleHost\_history.txt (D:, PowerShell) & \texttt{53dcd531d211c2a219df6ff859357c9ce018296e53106a0b097c9d3356314372} \\
+\texttt{A156} & edge\_History / operagx\_History (D:) & \texttt{34977f57\ldots} / \texttt{3890e8ed\ldots} (see register) \\
+\texttt{A157} & Discord cache (D:, 9 blobs \texttt{f\_000001--9}) & see register A157 for the nine SHA-256 \\
 \end{tabularx}
 \end{center}
 
@@ -170,6 +172,7 @@ Timestamps are in WEST (UTC+1). Linux image timestamps have the assignment's 27-
   \item \textit{Stage~I source artifacts.} \texttt{stash.zip} (A124) holds nine files; seven of them match the Table~1 hashes of the assignment (A126): \texttt{myzip.zip}, the anime \texttt{.mkv}, the GTA iceberg image, the GTA trailer, the \texttt{dj\_cara} WAV, \texttt{blank} and \texttt{polish\_cow.webp}. The telemetry workbook is in the archive with the same values as the published file but a different hash (A127, A128). The source sample named \texttt{ESP32\_ADXL345\_3Axis\_Telemetry.xlsx} is therefore not byte-identical to the published version.
   \item \textit{Windows laptop.} No Stage~I file is present as a live, readable file on C: or on the user area of D: (A113, A146). The \texttt{Users/johnny/Pictures} folder on D: holds two images (A111, A112). Neither is a Stage~I file.
   \item \textit{PowerShell history on D:.} \texttt{ConsoleHost\_history.txt} (A155) records \texttt{ssh muskyboi@146.193.41.109 "cat \textasciitilde/fenix/peixinho/credentials.txt"}: the laptop user connecting to the production host named in the SSH config and \texttt{deploy.sh} and reading the harvested \texttt{credentials.txt}.
+  \item \textit{Recovered Discord chat on D:.} The client cache (A157) holds a conversation in which the laptop user describes running the phishing page, capturing a TA's credentials, and both receiving and hiding the set of files later found embedded in the media artefacts --- a first-person account of the traces above (developed in Section~\ref{sec:q4}).
 \end{itemize}
 
 \textbf{Interpretation.} The phishing kit (server source, acme token and git remote) was stored on the suspect's personal Linux workstation, and that workstation was used to package the Stage~I files. The PowerShell history additionally ties the Windows laptop to the \emph{operation} of the live site: the user read the campaign's harvested \texttt{credentials.txt} on the production host (A155). The Lab~1 hidden files (Table~2) were not found as standalone files. The shell history indicates they were embedded into media files with encoding scripts (A129). Five of the eight hidden files are verified by hash: f1.png, f2.json, amelia.pdf and f8.webp against the Lab~1 recovery (A150), and f4.pdf carved from the GTA trailer (A151). The remaining three (f5.py, f6.json and f7.diff) are embedded with bit-level encoders whose scripts were removed (A129), so they are not verified.
@@ -221,6 +224,7 @@ The table lists the events that bear on provenance. Windows times are native; Li
   \item \textbf{Concealment in media.} The Stage~I files were embedded into media files with purpose-built encoding scripts (LSB, DCT, polyglot and WAV encoders; A129). The browsing history for the same days covers those techniques (A135).
   \item \textbf{Encrypted archive.} The archive was created with \texttt{zip -e}, and its source files were moved into it with \texttt{zip -m} (A129, E18, E19).
   \item \textbf{Remote history rewrite.} On the production host \texttt{fenix-prod}, the suspect ran \texttt{git rm -r} on the site content and committed it as ``cleanup'' (A129). The local bundle of the repository contains that commit (M13).
+  \item \textbf{Stated intent to destroy evidence.} In the recovered chat (A157) the user plans to throw the USB holding the supplied files into the Tejo and to keep the material offline and unopened. This is a statement of intent, not an observed on-disk action, but it is consistent with the secure-deletion already carried out.
 \end{enumerate}
 
 \textbf{Limitations.} Anti-forensic actions that left no record cannot be identified. The Prefetch files do not record the 25~August run that memory shows, so Prefetch and memory disagree on that point and this is not explained.
@@ -229,6 +233,8 @@ The table lists the events that bear on provenance. Windows times are native; Li
 \label{sec:q4}
 
 \textbf{Question 4.} \textit{Do these findings strengthen or weaken the attribution of the phishing attack to João Musk, or point to other relevant actors?}
+
+\textbf{Recovered communications (A157).} A Discord conversation (144 messages) was recovered from the client's local cache on D: (\texttt{Cache\_Data/f\_00000N}, gzip blobs decoded to JSON; one blob is a voice note). In it the laptop's user, \texttt{Johnny}, states that he ran a phishing page based on the IST password-reset e-mail, captured a Natural-Language teaching assistant's credentials, and used them to pull that TA's exams from the TA's drive --- which matches the credential read (A155) and the \texttt{scp} of the exam (A155) found independently on disk. Separately, a long-standing online contact, \texttt{DuckyDonald}, who says he interns at \texttt{AMA} on AI work, asks \texttt{Johnny} to keep a set of files safe, leaves them on a USB drive in a public locker (``Locky'' locker, Alameda Metro, number 3, code 676767), and instructs him to hide each file with the supplied encoding scripts, store them in the password-protected archive and secure-delete the originals. \texttt{Johnny} does so, then realises the folder auto-commits and pushes to git, so the hidden files were published and reached his site through the merge --- which matches the exposed \texttt{.git} and the \texttt{peixinho} history. \texttt{DuckyDonald} then reveals that he is \texttt{Tiago Sintaxe}, the same TA whose exams were stolen, and tells \texttt{Johnny} to take the USB to the police if he disappears; \texttt{Johnny} instead says he will throw it into the Tejo.
 
 \textbf{Strengthening indicators.}
 \begin{itemize}
@@ -251,7 +257,7 @@ The table lists the events that bear on provenance. Windows times are native; Li
 
 \textbf{Assessment.} The evidence supports the view that the phishing kit and the Stage~I material were under the control of the suspect's personal accounts. It does not by itself establish who ran the remote sessions on the laptop or who injected files. An external actor with access to the laptop cannot be excluded on the present evidence.
 
-\textbf{Hypotheses on the wider scheme (not established).} Names in the shell history (\texttt{ama\_api\_tokens.json}, \texttt{amelia\_tools\_config.json}, \texttt{rag\_poisoning\_patch.diff}, \texttt{train\_anisotropic\_override.py}) suggest that the hidden material concerns an AI assistant: its access tokens, its tool configuration, a retrieval-poisoning patch and a training script. The stash also contains a cloud service credential file (Table~2, f6). If these are the contents of the hidden files, the scheme may aim at credential theft and manipulation of an AI system, rather than only phishing. We have not verified the contents of the hidden files, so this is a hypothesis. A related possibility, also not established, is that the hidden material did not originate with this suspect: the \texttt{peixinho} repository was merged from an \texttt{upstream} remote and its clone is attributed to a second author (A134), so the role shown by the evidence for the suspect on the hidden files is their packaging and encryption on the Linux workstation (A129), while their authorship is left open --- in contrast to the phishing site itself, which the laptop's own search history shows its user researching and preparing (A156).
+\textbf{Hypotheses on the wider scheme (not established).} Names in the shell history (\texttt{ama\_api\_tokens.json}, \texttt{amelia\_tools\_config.json}, \texttt{rag\_poisoning\_patch.diff}, \texttt{train\_anisotropic\_override.py}) suggest that the hidden material concerns an AI assistant: its access tokens, its tool configuration, a retrieval-poisoning patch and a training script. The stash also contains a cloud service credential file (Table~2, f6). If these are the contents of the hidden files, the scheme may aim at credential theft and manipulation of an AI system, rather than only phishing. We have not verified the contents of the hidden files, so this is a hypothesis. The recovered conversation (A157) supports the view that the hidden material did not originate with this suspect: it was supplied on a USB by the contact \texttt{DuckyDonald}, who presents himself as an AMA intern and later as \texttt{Tiago Sintaxe}, and the suspect's role on these files, as described there and consistent with the disk (A129), is to hide, encrypt and (inadvertently) publish them --- in contrast to the phishing site itself, which the laptop's own search history shows its user researching and preparing (A156). This is an account given in chat, corroborated by the on-disk artefacts but not independently proven as to the real identities involved.
 
 \textbf{Recommended next steps for the Polícia Judiciária.}
 \begin{enumerate}
@@ -262,6 +268,7 @@ The table lists the events that bear on provenance. Windows times are native; Li
   \item Confirm the BitLocker recovery key through the account that owns it, and check whether the USB device \texttt{TEARSINRAIN} was ever connected to any other machine.
   \item Verify the content of the hidden files (Table~2) and the contents of the encrypted archive against the register.
   \item Identify the account \texttt{ist101337} and obtain \texttt{sigma.ist.utl.pt} authentication and \texttt{scp} logs around the exam exfiltration recorded in A155, to establish whose credential was used.
+  \item Identify the persons behind the handles \texttt{DuckyDonald} / \texttt{Tiago Sintaxe} and the group-chat members (A157); request the Discord account and server records; and seek the USB drive described in A157 (the Alameda ``Locky'' locker, number 3, and the river-disposal statement) and the AMA/AMÉLIA material it held.
 \end{enumerate}
 
 \subsection{Limitations and open items}
@@ -288,7 +295,7 @@ AI assistance was used in this work. An AI coding assistant (Claude, Anthropic) 
 \section{Appendices}
 \label{sec:appendices}
 
-\textbf{Appendix A: register.} Full register with observations, interpretations and limitations: \texttt{lab2/results/artifact-register.md} (entries A101--A155).
+\textbf{Appendix A: register.} Full register with observations, interpretations and limitations: \texttt{lab2/results/artifact-register.md} (entries A101--A157).
 
 \textbf{Appendix B: timeline.} \texttt{lab2/report-and-timeline/timeline-events.csv} (rows E1--E20, T1--T3, M1--M17).
 
