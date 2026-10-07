@@ -1022,7 +1022,7 @@ Entries B001–B013 kept as the colleague recorded them. Where they overlap with
 
 ## A156 -- Browser history (D:): phishing planning trail
 - Files: `/Users/johnny/AppData/Roaming/Opera Software/Opera GX Stable/History` (MFT inode 1525) and `/Users/johnny/AppData/Local/Microsoft/Edge/User Data/Default/History` (inode 835), on D:
-- SHA-256: operagx_History `__FILL_OPERAGX__`; edge_History `__FILL_EDGE__`  (run `sha256sum` on the committed copies)
+- SHA-256: operagx_History `3890e8ed751cb39632ee7a73461db812745b98e768a40b3ba7b9717aee15cf8e`; edge_History `34977f57c1f75b5bff31d71ccb5db189265635bb4bbf28d0c0ae97633a80d165`  (run `sha256sum` on the committed copies)
 - Parent: A109 (decrypted D:)
 - Command: `sudo icat /mnt/dislocker2/dislocker-file 1525 > operagx_History`; `sudo icat … 835 > edge_History`; `sqlite3 <db> "select datetime(last_visit_time/1000000-11644473600,'unixepoch'),url,title from urls order by last_visit_time;"`  (read from a local copy of the image; the hgfs-backed mount gave I/O errors on these files)
 - Observation: Edge has one visit, a Google search `download opera gx` (2026-07-28 20:37:56 UTC). Opera GX has 10 visits: `download discord` (2026-07-28 21:00 UTC), `memes to laugh`, `gta 6 news`; then on 2026-08-10 `how does phishing works` (10:00), `social engineering` (10:05), `chatgpt` and `chatgpt.com/?q=how to create a phishing website` (10:50); and on 2026-08-19 `how to send email as someone else` (10:30) and a visit to `emkei.cz` (10:37), a web mail-spoofing service.
