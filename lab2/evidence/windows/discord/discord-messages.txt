@@ -1,0 +1,435 @@
+
+[2026-07-28T23:00:00.130000+01:00] Johnny (f_000001.json)
+Duckyyy how are you? Already formatted my laptop, fresh windows installation.
+
+[2026-07-28T23:01:38.203000+01:00] DuckyDonald (f_000001.json)
+yoo whats up? im fine!!! im tired of working for these government muppets. at least my team is very cool and full of crazy guys. they know a lot. im kinda having impostor syndrome ya know? like i thought i knew a lot but compared to these people...
+
+[2026-07-28T23:05:02.826000+01:00] Johnny (f_000001.json)
+Ohh nice! Yeah I feel that! It's the real world, but you're in a position only a few people can reach so I think you're good. Funny that I don't know you personally but we share a lot hahaha.
+
+[2026-07-28T23:10:47.738000+01:00] DuckyDonald (f_000001.json)
+yeah ahahah, it all started when you wanted to do illegal stuff. at the time i didn't like you, always asking and asking... but then i saw that you knew some things and that you wanted to learn. so i took you as my shadow :)
+
+[2026-07-28T23:11:19.707000+01:00] Johnny (f_000001.json)
+hahaha. I mean I was a newbie at the time so I needed to try my luck right? That "I took you as my shadow" is a cool phrase tho.
+
+[2026-07-28T23:12:55.865000+01:00] DuckyDonald (f_000001.json)
+oh its from a show that im watching called Silo. you should watch it!
+
+[2026-07-28T23:15:26.171000+01:00] Johnny (f_000001.json)
+Well now that I have my stremio kitted out with debrid and all that stuff you explained to me, I have a lot to watch. But since I'm your shadow I'll watch it first to get the reference.
+
+[2026-07-28T23:30:11.287000+01:00] DuckyDonald (f_000001.json)
+since you are formatting your server as well, you should set up aiostreams. check it out!
+
+[2026-07-28T23:35:49.690000+01:00] Johnny (f_000001.json)
+Alright thx man! You know what? We should meet one day!
+
+[2026-07-28T23:36:06.079000+01:00] DuckyDonald (f_000001.json)
+yeah i think that would be cool. i need to know who my shadow is hahah. and also if he does something shady i know what he looks like
+
+[2026-07-28T23:37:38.892000+01:00] Johnny (f_000001.json)
+wow chill hahaha. We should get a beer or something. Maybe after August because I'll probably be very busy with university stuff.
+
+[2026-07-28T23:40:52.207000+01:00] DuckyDonald (f_000001.json)
+okok, we've known each other online for almost 2 years and we never met. crazy
+
+[2026-07-28T23:41:33.653000+01:00] Johnny (f_000001.json)
+truee. Well we'll talk later since I want to configure the server. See ya!
+
+[2026-07-28T23:42:17.732000+01:00] DuckyDonald (f_000001.json)
+bye!
+
+[2026-07-29T01:30:35.618000+01:00] Johnny (f_000002.json)
+Ducky I finished the server configuration. A little refresher on setting up linux hahaha. This is fun.
+
+[2026-07-29T01:45:58.331000+01:00] DuckyDonald (f_000002.json)
+cool. why did it take you so long? i was almost going to bed since i work tomorrow
+
+[2026-07-29T01:46:12.257000+01:00] Johnny (f_000002.json)
+ahh I forgot some steps and the iso was corrupted and I didn't disable secure boot because of ventoy etc... whatever, it's done.
+
+[2026-07-29T01:48:44.514000+01:00] DuckyDonald (f_000002.json)
+alright, alright, alright, you getting soft or what? hhaha kidding
+
+[2026-07-29T01:49:29.833000+01:00] Johnny (f_000002.json)
+Man, you and your references... Did you see the news about Cuddling Face and ClosedAI? I know you're interning at AMA doing some AI stuff.
+
+[2026-07-29T01:51:07.959000+01:00] DuckyDonald (f_000002.json)
+yeah i saw, crazy world we living in. we are getting closer to a Blade Runner world...
+
+[2026-07-29T01:52:35.445000+01:00] Johnny (f_000002.json)
+yeah well I don't want to leave earth if it comes to that.
+
+[2026-07-29T01:53:58.753000+01:00] DuckyDonald (f_000002.json)
+hahahaha me neither man, we just gotta keep livin. L-I-V-I-N.
+
+[2026-07-29T01:54:21.996000+01:00] Johnny (f_000002.json)
+Bro, sybau. I think your brain is getting fried working for the government...
+
+[2026-07-29T01:54:46.085000+01:00] DuckyDonald (f_000002.json)
+yeah probably
+
+[2026-08-10T18:44:21.132000+01:00] Johnny (f_000003.json)
+Guys I have an idea... I learned so much about hacking these past months and I'm gonna try something. Either it works really well or it doesnt hahaha
+
+[2026-08-10T18:46:09.424000+01:00] ! ! nos4a2 (f_000003.json)
+what are you planning
+
+[2026-08-10T18:49:33.056000+01:00] Johnny (f_000003.json)
+I'm gonna try to get the solved exams from someone in the LN team. How exactly, I'm still figuring out. But I have an idea.
+
+[2026-08-10T18:51:12.717000+01:00] ⚡Ghostzao⚡ (f_000003.json)
+well, here we go again 💀 have you even studied?
+
+[2026-08-10T18:51:58.549000+01:00] Varela (f_000003.json)
+HAHAHA
+
+[2026-08-10T18:54:47.474000+01:00] jorge (f_000003.json)
+johnny you trying to get kicked out of técnico? i mean if you pull it off i wouldn't mind a look...
+
+[2026-08-10T18:57:20.153000+01:00] salvador (f_000003.json)
+Bro just do it. Im completley done with this whole mess.
+
+[2026-08-10T19:01:05.203000+01:00] Johnny (f_000003.json)
+Wow, guess I have to continue my mission then hahaha
+
+[2026-08-10T19:06:38.678000+01:00] Tiago Santos (f_000003.json)
+I wish you the best of luck, João. I really do. If you want, I will go to church and ask for the Lord's blessing over you, no joke.
+
+[2026-08-10T19:09:14.127000+01:00] David_RR (f_000003.json)
+If I keep studying I'm going to throw myself off something...
+
+[2026-08-10T19:12:47.567000+01:00] Johnny (f_000003.json)
+Guys I thought I was in a bad place, but now... hahaha
+
+[2026-08-10T19:19:22.718000+01:00] swag4yolo (f_000003.json)
+only a white monster can save me now fr
+
+[2026-08-10T19:21:55.505000+01:00] João Matos (f_000003.json)
+yup same!! 😤
+
+[2026-08-10T19:23:11.218000+01:00] swag4yolo (f_000003.json)
+that's the good stuff man
+
+[2026-08-10T19:31:40.073000+01:00] Johnny (f_000003.json)
+Ok guys, I get it alright? You know that email we get to reset our IST passwords? Well I'm gonna run a phishing attempt using that email as a base.
+
+[2026-08-10T19:38:26.989000+01:00] swag4yolo (f_000003.json)
+like i love my white monsters but if you land those exams i'm never putting this can down
+
+[2026-08-10T19:41:03.352000+01:00] João Matos (f_000003.json)
+yup same. its the drink of the Gods João yk 😤
+
+[2026-08-10T19:47:35.228000+01:00] Johnny (f_000003.json)
+Yeah yeah I get it, gym bros! I'll let you know if I get something.
+
+[2026-08-10T19:50:12.102000+01:00] Varela (f_000003.json)
+okok! gl
+
+[2026-08-10T19:56:48.365000+01:00] ! ! nos4a2 (f_000003.json)
+if you need help...
+
+[2026-08-18T14:12:04.403000+01:00] DuckyDonald (f_000004.json)
+
+  ATTACH: voice-message.ogg
+
+[2026-08-18T14:20:39.929000+01:00] Johnny (f_000004.json)
+bro what on earth was that?? You good??
+
+[2026-08-18T14:20:51.595000+01:00] DuckyDonald (f_000004.json)
+ok. sorry. im a bit calmer now.
+
+[2026-08-18T14:21:16.579000+01:00] Johnny (f_000004.json)
+I'm in the middle of something right now but if you really need it I can help. I was studying for an exam with a new method that I found...
+
+[2026-08-18T14:22:02.186000+01:00] DuckyDonald (f_000004.json)
+im finishing reorganizing the files and i need to send them to someone asap
+
+[2026-08-18T14:23:37.448000+01:00] Johnny (f_000004.json)
+Send them to me, I can keep them safe. But seriously, what showed up in your drive?
+
+[2026-08-18T14:24:18.122000+01:00] DuckyDonald (f_000004.json)
+a telegram image. all in russian. i never sent any of that and i think it was them, like a warning. i already made a lot of noise in there so i need to stay low for now
+
+[2026-08-18T15:24:44.591000+01:00] Johnny (f_000004.json)
+dang... ok, so you want me to keep those files right?
+
+[2026-08-18T15:25:09.001000+01:00] DuckyDonald (f_000004.json)
+yeah, i send you the scripts so that you hide them. some scripts maybe need some changes but i think they are working. use personal files so that if something happens those files keep hidden. also if something happens to me those files can open an investigation in AMA, but with the right steps
+
+[2026-08-18T15:25:31.880000+01:00] Johnny (f_000004.json)
+okok fine, will you send it to me by email? maybe some temporary email?
+
+[2026-08-18T15:25:55.787000+01:00] DuckyDonald (f_000004.json)
+no no no! no email. nothing online, i dont trust anything right now. i will send a usb to the Locky locker in the Alameda Metro. the locker is number 3 and the code is 676767. im still gathering more info so check the locker everyday starting from day 22. also here is a photo from their site so that you don't get lost (knowing you): https://locky.westeurope.cloudapp.azure.com/lockyimage/4000461.jpg
+
+[2026-08-18T15:27:27.023000+01:00] Johnny (f_000004.json)
+ok. Hey, when I get that USB don't expect me to message right away because I'm doing some stuff. But I will look at them, dont worry, and I'll help you.
+
+[2026-08-18T15:29:13.120000+01:00] DuckyDonald (f_000004.json)
+ok good
+
+[2026-08-23T12:00:00.103000+01:00] Johnny (f_000006.json)
+yooo guys, guess who just got the credentials of a TA from Natural Language hahaha 💀
+
+[2026-08-23T12:02:18.432000+01:00] ! ! nos4a2 (f_000006.json)
+nah johnny. where did you even get those
+
+[2026-08-23T12:03:47.350000+01:00] ⚡Ghostzao⚡ (f_000006.json)
+bro that's an instant ban 💀 all because you don't wanna study smh
+
+[2026-08-23T12:08:22.924000+01:00] Johnny (f_000006.json)
+Shouldn't say it but I don't really care hahaha. Spun up a quick phishing page and some people just went and droped their creds right in. And one of them belongs to a beloved TA that we know. One I share a lot with, yk?
+
+[2026-08-23T12:11:05.948000+01:00] Varela (f_000006.json)
+and how do you actually know it's a TA??
+
+[2026-08-23T12:14:39.881000+01:00] Johnny (f_000006.json)
+cuz I alredy pulled the exams from that guy's drive hahaha it's all there. And I found some personal files with the name...
+
+[2026-08-23T12:15:58.175000+01:00] ⚡Ghostzao⚡ (f_000006.json)
+brooo 😭😭
+
+[2026-08-23T12:18:26.270000+01:00] ! ! nos4a2 (f_000006.json)
+send them pls i really need to pass this. i am NOT repeating the project next year god no
+
+[2026-08-23T12:19:44.512000+01:00] Varela (f_000006.json)
+yeah send them too!!
+
+[2026-08-23T12:23:11.565000+01:00] ⚡Ghostzao⚡ (f_000006.json)
+can you just say who it is? don't tell me it's Tiago Sintaxe, i know you don't like him 💀 this is starting to get funny
+
+[2026-08-23T12:29:52.850000+01:00] Johnny (f_000006.json)
+chill chill I was just confirming they were the actual special exams for this year. And yes, it is Tiago. I can't stand that guy!
+
+[2026-08-23T12:34:27.496000+01:00] Varela (f_000006.json)
+HAHAHAHAHAH
+
+[2026-08-23T12:36:00.515000+01:00] jorge (f_000006.json)
+wait wasn't that the guy who took your girl to Tagustoso
+
+[2026-08-23T12:36:41.233000+01:00] Varela (f_000006.json)
+HAHAHAHAH jorge said it. jorge ACTUALLY said it.
+
+[2026-08-23T12:37:16.289000+01:00] ⚡Ghostzao⚡ (f_000006.json)
+ok and now the whole phishing arc makes sense 💀
+
+[2026-08-23T12:37:58.818000+01:00] salvador (f_000006.json)
+wait im lost. what happened at Tagustoso
+
+[2026-08-23T12:38:35.182000+01:00] Varela (f_000006.json)
+bro where have you been. Johnny's (ex) gf + Tiago. same table. "revisions for the test".
+
+[2026-08-23T12:39:12.138000+01:00] jorge (f_000006.json)
+revisions 😭 man went for the prato do dia and left with the full menu
+
+[2026-08-23T12:39:50.021000+01:00] David_RR (f_000006.json)
+getting cooked at Tagustoso of all places is the part I can't get over
+
+[2026-08-23T12:40:24.461000+01:00] swag4yolo (f_000006.json)
+only guy in Técnico eating more protein at Tagustoso than me at the gym fr
+
+[2026-08-23T12:40:59.216000+01:00] João Matos (f_000006.json)
+joão STOP 😭😭 im in the metro
+
+[2026-08-23T12:41:33.771000+01:00] ! ! nos4a2 (f_000006.json)
+"Tagustoso" doing a LOT of heavy lifting in this story
+
+[2026-08-23T12:42:08.982000+01:00] Johnny (f_000006.json)
+ok ok very funny. She's an ex for a reason. And he won't notice anything, it is what it is. And nobody cares about that right now. And I mean, do you really think Tiago will get upset? He's just like 3 years older than us so... I know I won't get caught, so whatever.
+
+[2026-08-23T12:43:02.389000+01:00] ⚡Ghostzao⚡ (f_000006.json)
+"nobody cares about that" says the guy who built an entire phishing page about it 💀
+
+[2026-08-23T12:43:40.507000+01:00] Tiago Santos (f_000006.json)
+Just to be clear to everyone in this gc: I am NOT that Tiago. I do not even go to Tagustoso.
+
+[2026-08-23T12:44:15.057000+01:00] salvador (f_000006.json)
+relax tiago nobody suspects you, you eat alone every single day
+
+[2026-08-23T12:44:51.652000+01:00] Tiago Santos (f_000006.json)
+I eat alone because I pray before eating, salvador. It is different.
+
+[2026-08-23T12:45:29.961000+01:00] David_RR (f_000006.json)
+this gc is a mental asylum
+
+[2026-08-23T12:46:03.822000+01:00] jorge (f_000006.json)
+anyway. johnny this is 100% revenge and you know it
+
+[2026-08-23T12:46:40.924000+01:00] Johnny (f_000006.json)
+it's like 80% revenge, 20% I didn't study. balanced guy.
+
+[2026-08-23T12:47:33.608000+01:00] ! ! nos4a2 (f_000006.json)
+now we're talking hahaha
+
+[2026-08-23T12:48:20.587000+01:00] Varela (f_000006.json)
+petty king. but still king!!
+
+[2026-08-23T12:53:19.545000+01:00] ⚡Ghostzao⚡ (f_000006.json)
+same lol. i've studied enough already but i'll take a peek at that exam when you send it, just to be safe 💀
+
+[2026-08-23T12:58:40.876000+01:00] salvador (f_000006.json)
+send me one too. i'll dedicate the grade to the Tagustoso lunch lady lol
+
+[2026-08-23T13:02:44.846000+01:00] Johnny (f_000006.json)
+Ok, send me 10 euros and I'll share the exams.
+
+[2026-08-23T13:04:10.895000+01:00] João Matos (f_000006.json)
+10 euros is more than a menu at the spot where the Red Bar was in Taguspark bro. think about what youre asking
+
+[2026-08-23T13:05:26.097000+01:00] Varela (f_000006.json)
+Bruhhhh
+
+[2026-08-23T13:06:31.725000+01:00] David_RR (f_000006.json)
+I'd rather repeat the year honestly.
+
+[2026-08-23T13:07:58.095000+01:00] ! ! nos4a2 (f_000006.json)
+bro thinks he hacked NASA or something
+
+[2026-08-23T13:15:47.889000+01:00] jorge (f_000006.json)
+hahahahaha
+
+[2026-08-23T13:28:37.376000+01:00] Johnny (f_000006.json)
+hahaha I'm kidding! Ahh one more thing. I remember Tiago saying he was interning at AMA right? I think he said that in one of the Labs.
+
+[2026-08-23T13:31:50.084000+01:00] David_RR (f_000006.json)
+why do you even care where the man interns
+
+[2026-08-23T13:34:22.426000+01:00] Johnny (f_000006.json)
+just curiosity man, relax.
+
+[2026-08-23T13:39:05.973000+01:00] salvador (f_000006.json)
+"just curiosity" is literally how this whole thing started
+
+[2026-08-23T13:44:19.730000+01:00] ⚡Ghostzao⚡ (f_000006.json)
+go ask money somewhere else! but yeah Tiago said that, AMA, i think it was in lab 3
+
+[2026-08-23T13:47:56.009000+01:00] Varela (f_000006.json)
+Johnny dont do anything stupid pls
+
+[2026-08-23T13:52:41.138000+01:00] Johnny (f_000006.json)
+Okok just wanted to know!
+
+[2026-08-25T14:35:00.482000+01:00] Johnny (f_000007.json)
+hey, got the USB. Took me some days... BUT BRO what are those files???
+
+[2026-08-25T14:35:21.338000+01:00] DuckyDonald (f_000007.json)
+yeahh... i was still preparing the stuff. im gonna stop poking around, i think that telegram image was a warning tbh
+
+[2026-08-25T14:36:00.934000+01:00] Johnny (f_000007.json)
+That telegram and the other stuff... api tokens, a RAG patch, some python training script, PDFs about AMÉLIA?? I only read the file names bro. Is this even legal for me to keep? What did those grupeta guys do to it?
+
+[2026-08-25T14:36:51.186000+01:00] DuckyDonald (f_000007.json)
+crazy stuff. listen you need to hide those as soon as possible. you probably already saw the scripts i told you about, they just need small modifications for each of those files. run each one on the file it matches, that tucks them inside the personal stuff. then save them, you know where. after that delete the loose files and run the secure delete tool to clear them out
+
+[2026-08-25T14:37:06.131000+01:00] Johnny (f_000007.json)
+gotcha. Hide em, save em, then clear what's left. On it.
+
+[2026-08-25T16:15:35.371000+01:00] Johnny (f_000008.json)
+Ducky, it's done. I ran each script on the file it matched, so everything is hidden inside the personal files now. I put it all together in a zip with a password and saved it on my linux dev machine. I'm about to srm the loose copies so nothing is left lying around.
+
+[2026-08-25T16:16:12.122000+01:00] DuckyDonald (f_000008.json)
+ok. thank you for doing it
+
+[2026-08-25T16:18:04.870000+01:00] Johnny (f_000008.json)
+Ducky wait. Before wiping I went to check the personal folder and I ran git status there. The files with the stuff inside are already committed. All of them. That folder is a repo. I have a script that commits and pushes it every time I open a terminal, it's been doing that for months, I completely forgot about it. Every time I hid one of your files and saved it, the sync took it with the rest.
+
+[2026-08-25T16:19:10.935000+01:00] DuckyDonald (f_000008.json)
+are you fuck*** serious. i asked you for ONE thing. one. keep them offline. and you push them to git like a fuck*** idiot. you hid them and then you uploaded them. do you get that? you published them
+
+[2026-08-25T16:20:44.456000+01:00] Johnny (f_000008.json)
+I know. I know. I forgot about the sync, I was thinking about hiding them properly like you told me.
+
+[2026-08-25T16:21:19.036000+01:00] DuckyDonald (f_000008.json)
+thats the problem with you. you never think. youre not even dumb by accident, you work at it. i spent weeks being careful, no email, no cloud, a locker with a code, and you undid all of it in one afternoon because you couldnt remember your own script
+
+[2026-08-25T16:22:03.650000+01:00] Johnny (f_000008.json)
+I'm going to srm the whole repos folder right now, the repo with it. It'll be gone.
+
+[2026-08-25T16:22:40.068000+01:00] DuckyDonald (f_000008.json)
+gone from your disk. its not gone from wherever that thing pushes to, and its not gone from anything that pulls from it. do you have anything that pulls from that repo
+
+[2026-08-25T16:23:35.813000+01:00] Johnny (f_000008.json)
+...my site. It merges from there. I need to check it.
+
+[2026-08-25T16:23:52.046000+01:00] DuckyDonald (f_000008.json)
+of course it does. check it, delete what you find, do whatever you want. it doesnt change anything anymore. if they were already watching me then its over. im done
+
+[2026-08-25T16:25:19.133000+01:00] Johnny (f_000008.json)
+Don't say that. I deleted everything, nobody even knows those files exist. Nobody knows about me either.
+
+[2026-08-25T16:26:40.955000+01:00] DuckyDonald (f_000008.json)
+you dont understand what these people are. i shouldnt have told you anything, i pulled you into this for nothing. keep the usb somewhere safe and offline, dont open it again and dont tell anyone about it. if i stop answering, or if i disappear for a few days, go to the police and give them the usb. tell them everything, from the start. they will know what to do with those files
+
+[2026-08-25T16:27:31.854000+01:00] Johnny (f_000008.json)
+You're scaring me. Nothing is going to happen to you.
+
+[2026-08-25T16:28:05.432000+01:00] DuckyDonald (f_000008.json)
+i hope not. but there is one more thing you need to know before any of that happens. if you go to the police you have to know who you are talking about
+
+[2026-08-25T16:29:12.903000+01:00] Johnny (f_000008.json)
+Who?
+
+[2026-08-25T16:29:26.719000+01:00] DuckyDonald (f_000008.json)
+Tiago Sintaxe
+
+[2026-08-25T17:00:01.013000+01:00] Johnny (f_000009.json)
+guys are you there? I need to tell you something and I don't know who else to tell
+
+[2026-08-25T17:01:34.436000+01:00] Varela (f_000009.json)
+yeah whats up
+
+[2026-08-25T17:02:16.043000+01:00] ! ! nos4a2 (f_000009.json)
+here
+
+[2026-08-25T17:07:50.461000+01:00] Johnny (f_000009.json)
+Ok so you know that guy I talk to online, DuckyDonald? The one I've been talking to for like 2 years but never met. A week ago he asked me to keep some files safe for him. Stuff from his internship at AMA, he thinks some people are after him. He left me a USB in a locker and I hid everything like he asked. Today he told me who he is. It's Tiago. Tiago Sintaxe. The same Tiago.
+
+[2026-08-25T17:08:28.700000+01:00] ⚡Ghostzao⚡ (f_000009.json)
+wait... THE tiago? the TA? the one you phished??
+
+[2026-08-25T17:09:19.455000+01:00] Johnny (f_000009.json)
+yes. I stole his exams and I've been keeping his files this whole time without knowing.
+
+[2026-08-25T17:11:02.728000+01:00] jorge (f_000009.json)
+bro went to steal the exams and came back as his personal bodyguard 💀
+
+[2026-08-25T17:11:24.235000+01:00] Varela (f_000009.json)
+HAHAHAHAHA jorge not now
+
+[2026-08-25T17:12:53.321000+01:00] Tiago Santos (f_000009.json)
+Before anyone asks, I am still NOT that Tiago.
+
+[2026-08-25T17:13:29.228000+01:00] salvador (f_000009.json)
+nobody asked tiago
+
+[2026-08-25T17:16:06.614000+01:00] David_RR (f_000009.json)
+guys this isn't funny. johnny what files are these exactly?
+
+[2026-08-25T17:19:18.228000+01:00] Johnny (f_000009.json)
+I don't want to say much here. It's serious stuff. He said if he disappears I should take the USB to the police.
+
+[2026-08-25T17:20:41.691000+01:00] ! ! nos4a2 (f_000009.json)
+ok that's actually scary. are you going to do it?
+
+[2026-08-25T17:24:25.997000+01:00] Johnny (f_000009.json)
+No. I'm not going to the police with a USB from the guy I phished. They'll look at me first. Tomorrow I'm throwing the USB into the river and I'm done with all of this.
+
+[2026-08-25T17:25:16.012000+01:00] Varela (f_000009.json)
+johnny dont do anything stupid pls. i said this last time too
+
+[2026-08-25T17:26:54.213000+01:00] David_RR (f_000009.json)
+think about it before you do that man. if something really happens to him that USB is all there is
+
+[2026-08-25T17:29:09.725000+01:00] Johnny (f_000009.json)
+I already thought about it. It's going in the Tejo. Don't tell anyone about this, please.
+
+[2026-08-25T17:29:44.278000+01:00] ⚡Ghostzao⚡ (f_000009.json)
+ok. we didn't see anything 🤐
+
+[2026-08-25T17:30:26.114000+01:00] ! ! nos4a2 (f_000009.json)
+take care johnny
+
+--- total: 144 ---
