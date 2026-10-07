@@ -1007,3 +1007,15 @@ Entries B001–B013 kept as the colleague recorded them. Where they overlap with
 - Observation: no COM comment; EXIF is 64 bytes of orientation only (mom-photo) or absent (hate-this-place); 0 bytes after the final FFD9; no spatial-LSB payload in any order; steghide/stegseek found no embedded data or passphrase on either image.
 - Interpretation: the words "shibuya" and "pimenta" are not hidden inside the images by steganography; they are read by recognising the depicted scene/place (A152, A153). Negative finding recorded per Good-Practice Manual §5.
 - Limitations: transform-domain tools beyond steghide (outguess, jsteg) were not installed on the analysis host and could not be run; recorded as a limitation.
+
+## A155 -- `evidence/windows/ConsoleHost_history.txt` (PowerShell command history, D:)
+- File: `/Users/johnny/AppData/Roaming/Microsoft/Windows/PowerShell/PSReadLine/ConsoleHost_history.txt` on D: (MFT inode 1102)
+- SHA-256: `53dcd531d211c2a219df6ff859357c9ce018296e53106a0b097c9d3356314372`
+- Parent: A109 (decrypted D: volume)
+- Command: `sudo icat /mnt/dislocker/dislocker-file 1102 > evidence/windows/ConsoleHost_history.txt` (inode from `stat`/`fls` of the mounted D:)
+- Observation: three PowerShell commands, in entry order:
+  1. `ssh muskyboi@146.193.41.109 "cat ~/fenix/peixinho/credentials.txt"`
+  2. `ssh ist101337@sigma.ist.utl.pt`
+  3. `scp ist101337@sigma.ist.utl.pt:~/Linguagem_Natural/Exams/Natural_Language_MAP1_2026-2027.pdf D:\Users\johnny\Desktop\Exams_LN\`
+- Interpretation: command 1 is the laptop user connecting to the production phishing host (`146.193.41.109`, user `muskyboi` -- the host and account from the SSH config A010 / deploy.sh) and reading the harvested `credentials.txt`, i.e. operating/monitoring the phishing campaign from this laptop. Commands 2-3 use the account `ist101337` to log in to `sigma.ist.utl.pt` and copy an LN exam PDF into `Desktop\Exams_LN\` on D: -- exfiltration of exam material. This matches the exam file recorded in the USN journal (A122, E4) and the to-do note (A130). `ist101337` is a new identifier not seen before in the case.
+- Limitations: PSReadLine history is not timestamped, so the order is entry order, not proven wall-clock times, and the file does not show whether each command succeeded. Whether `ist101337` is the suspect's own IST account or a credential obtained through the phishing campaign is not established by this file alone.

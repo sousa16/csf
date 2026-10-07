@@ -125,6 +125,7 @@ Every artifact below is identified by its SHA-256 and its register entry (\textt
 \texttt{A143} & setupapi.dev.log (C:) & \texttt{c026d59a4c79d211bdf6fa6b0a40d203780595a746677fc6cb0ff9e1fb2238a6} \\
 \texttt{A152} & mom-photo.jpg (D:, note part 3) & \texttt{fe8f99ce75f92a4aee463d5b535d2737e0e042d8bfb59bf44d123c9704f6be55} \\
 \texttt{A153} & hate-this-place.jpg (D:, note part 5) & \texttt{c323d401bd25fd8a6ae6e3b8f7dba724ce95d51c886b15653a2f5a0863c800c8} \\
+\texttt{A155} & ConsoleHost\_history.txt (D:, PowerShell) & \texttt{53dcd531d211c2a219df6ff859357c9ce018296e53106a0b097c9d3356314372} \\
 \end{tabularx}
 \end{center}
 
@@ -168,9 +169,10 @@ Timestamps are in WEST (UTC+1). Linux image timestamps have the assignment's 27-
   \item \textit{The acme-challenge token.} The repository contains \texttt{.well-known/acme-challenge/9xQ3\ldots} with the same token as Lab~1 A005. The bytes differ only in the line ending (LF here, CRLF in A005) (A149).
   \item \textit{Stage~I source artifacts.} \texttt{stash.zip} (A124) holds nine files; seven of them match the Table~1 hashes of the assignment (A126): \texttt{myzip.zip}, the anime \texttt{.mkv}, the GTA iceberg image, the GTA trailer, the \texttt{dj\_cara} WAV, \texttt{blank} and \texttt{polish\_cow.webp}. The telemetry workbook is in the archive with the same values as the published file but a different hash (A127, A128). The source sample named \texttt{ESP32\_ADXL345\_3Axis\_Telemetry.xlsx} is therefore not byte-identical to the published version.
   \item \textit{Windows laptop.} No Stage~I file is present as a live, readable file on C: or on the user area of D: (A113, A146). The \texttt{Users/johnny/Pictures} folder on D: holds two images (A111, A112). Neither is a Stage~I file.
+  \item \textit{PowerShell history on D:.} \texttt{ConsoleHost\_history.txt} (A155) records \texttt{ssh muskyboi@146.193.41.109 "cat \textasciitilde/fenix/peixinho/credentials.txt"}: the laptop user connecting to the production host named in the SSH config and \texttt{deploy.sh} and reading the harvested \texttt{credentials.txt}.
 \end{itemize}
 
-\textbf{Interpretation.} The phishing kit (server source, acme token and git remote) was stored on the suspect's personal Linux workstation, and that workstation was used to package the Stage~I files. The Lab~1 hidden files (Table~2) were not found as standalone files. The shell history indicates they were embedded into media files with encoding scripts (A129). Five of the eight hidden files are verified by hash: f1.png, f2.json, amelia.pdf and f8.webp against the Lab~1 recovery (A150), and f4.pdf carved from the GTA trailer (A151). The remaining three (f5.py, f6.json and f7.diff) are embedded with bit-level encoders whose scripts were removed (A129), so they are not verified.
+\textbf{Interpretation.} The phishing kit (server source, acme token and git remote) was stored on the suspect's personal Linux workstation, and that workstation was used to package the Stage~I files. The PowerShell history additionally ties the Windows laptop to the \emph{operation} of the live site: the user read the campaign's harvested \texttt{credentials.txt} on the production host (A155). The Lab~1 hidden files (Table~2) were not found as standalone files. The shell history indicates they were embedded into media files with encoding scripts (A129). Five of the eight hidden files are verified by hash: f1.png, f2.json, amelia.pdf and f8.webp against the Lab~1 recovery (A150), and f4.pdf carved from the GTA trailer (A151). The remaining three (f5.py, f6.json and f7.diff) are embedded with bit-level encoders whose scripts were removed (A129), so they are not verified.
 
 \subsection{Provenance and temporal reconstruction}
 \label{sec:q2}
@@ -234,6 +236,7 @@ The table lists the events that bear on provenance. Windows times are native; Li
   \item The Linux user holds the SSH identity \texttt{muskyboi} for the production host \texttt{fenix-prod} (A131). The assignment links the \texttt{MuskyBoi} accounts to the suspect.
   \item The user's to-do note says ``back up peixinho'' and points to the BitLocker-locked D: volume for an exam (A130). That volume is the one decrypted in this analysis, and it holds the \texttt{Exams\_LN} folder (A122).
   \item The phishing kit (A132, A133, A149) and the archive of Stage~I sources (A126) are both on the same workstation.
+  \item The laptop's PowerShell history shows its user reading the campaign's harvested \texttt{credentials.txt} on the production host over SSH as \texttt{muskyboi} (A155), tying the same person to the \emph{operation} of the live phishing site, not only to its source code.
 \end{itemize}
 
 \textbf{Weakening or competing indicators.}
@@ -242,6 +245,8 @@ The table lists the events that bear on provenance. Windows times are native; Li
   \item The production host address in the SSH config (\texttt{146.193.41.109}) differs from the phishing host address in Lab~1 (\texttt{146.193.41.5}). The two are linked by hostname and account name only.
   \item Two different accounts were used for remote sessions on the laptop: \texttt{johnny} on 22~August and \texttt{Administrator} on 25~August (A137). The logs do not show who used each one.
 \end{itemize}
+
+\textbf{A second access path (exam exfiltration).} The same PowerShell history (A155) also records \texttt{ssh ist101337@sigma.ist.utl.pt} followed by \texttt{scp} of \texttt{Natural\_Language\_MAP1\_2026-2027.pdf} from that host's \texttt{Linguagem\_Natural/Exams/} folder into \texttt{Desktop\textbackslash{}Exams\_LN\textbackslash{}} on D:. This matches the exam file seen in the USN journal (A122, E4) and the to-do note (A130). It shows a second account, \texttt{ist101337}, used from this laptop to copy exam material off an IST host. Whether \texttt{ist101337} is the suspect's own account or a credential obtained through the phishing campaign is not established by this evidence; both are consistent with it, and it is a lead for the Polícia Judiciária rather than a settled fact.
 
 \textbf{Assessment.} The evidence supports the view that the phishing kit and the Stage~I material were under the control of the suspect's personal accounts. It does not by itself establish who ran the remote sessions on the laptop or who injected files. An external actor with access to the laptop cannot be excluded on the present evidence.
 
@@ -255,6 +260,7 @@ The table lists the events that bear on provenance. Windows times are native; Li
   \item Recover the module file \texttt{Forensics.psm1} and the files it injected from backups, shadow copies or the cloud, and verify their content.
   \item Confirm the BitLocker recovery key through the account that owns it, and check whether the USB device \texttt{TEARSINRAIN} was ever connected to any other machine.
   \item Verify the content of the hidden files (Table~2) and the contents of the encrypted archive against the register.
+  \item Identify the account \texttt{ist101337} and obtain \texttt{sigma.ist.utl.pt} authentication and \texttt{scp} logs around the exam exfiltration recorded in A155, to establish whose credential was used.
 \end{enumerate}
 
 \subsection{Limitations and open items}
@@ -281,7 +287,7 @@ AI assistance was used in this work. An AI coding assistant (Claude, Anthropic) 
 \section{Appendices}
 \label{sec:appendices}
 
-\textbf{Appendix A: register.} Full register with observations, interpretations and limitations: \texttt{lab2/results/artifact-register.md} (entries A101--A154).
+\textbf{Appendix A: register.} Full register with observations, interpretations and limitations: \texttt{lab2/results/artifact-register.md} (entries A101--A155).
 
 \textbf{Appendix B: timeline.} \texttt{lab2/report-and-timeline/timeline-events.csv} (rows E1--E20, T1--T3, M1--M17).
 
