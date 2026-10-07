@@ -128,11 +128,11 @@ Every artifact below is identified by its SHA-256 and its register entry (\textt
 \texttt{A153} & hate-this-place.jpg (D:, note part 5) & \texttt{\seqsplit{c323d401bd25fd8a6ae6e3b8f7dba724ce95d51c886b15653a2f5a0863c800c8}} \\
 \texttt{A155} & ConsoleHost\_history.txt (D:, PowerShell) & \texttt{\seqsplit{53dcd531d211c2a219df6ff859357c9ce018296e53106a0b097c9d3356314372}} \\
 \texttt{A156} & edge\_History / operagx\_History (D:) & \texttt{\seqsplit{34977f57c1f75b5bff31d71ccb5db189265635bb4bbf28d0c0ae97633a80d165}} / \texttt{\seqsplit{3890e8ed751cb39632ee7a73461db812745b98e768a40b3ba7b9717aee15cf8e}}  \\
-\texttt{A157} & Discord cache (D:, 9 blobs \texttt{f\_000001--9}) & see register A157 for the nine SHA-256 \\
+\texttt{A157} & Discord cache (D:, 9 blobs \texttt{f\_000001--9}) & nine SHA-256 in the manifest (Appendix~D) \\
 \end{tabularx}
 \end{center}
 
-The eight source artifacts of Table~1 and the hidden files of Table~2 of the assignment were checked against the seized systems as described in Section~\ref{sec:q1}.
+The eight source artifacts of Table~1 and the hidden files of Table~2 of the assignment were checked against the seized systems as described in Section~\ref{sec:q1}. The complete SHA-256 of every file submitted in the ZIP is listed in Appendix~D, and the exact commands that recovered the main artifacts are in Appendix~E; the three seized images (A101--A103) and \texttt{stash.zip} (A124) are too large for the archive and are referenced by hash only.
 
 % -----------------------------------------------------------------------------
 % Report of all findings
@@ -301,5 +301,95 @@ AI assistance was used in this work. An AI coding assistant (Claude, Anthropic) 
 \textbf{Appendix B: timeline.} \texttt{lab2/report-and-timeline/timeline-events.csv} (rows E1--E20, T1--T3, M1--M17).
 
 \textbf{Appendix C: scripts.} \texttt{lab2/results/scripts/}: \texttt{kali.sh} (all steps), \texttt{bitlocker.py}, \texttt{\seqsplit{note\_password.py}}, \texttt{search\_volume.py}, \texttt{compare\_xlsx.py}, \texttt{evtx\_dump.py}, \texttt{\seqsplit{generate\_candidates.py}}, \texttt{\seqsplit{image\_steg\_check.py}} (steganalysis of the part-3/5 photos), \texttt{\seqsplit{extract\_d\_images.sh}} (D: image recovery), \texttt{\seqsplit{parse\_discord\_cache.py}} (Discord cache decode).
+
+\clearpage
+\section*{Appendix D: submitted evidence (SHA-256 manifest)}
+\addcontentsline{toc}{section}{Appendix D}
+
+Every file in the submitted \texttt{evidence/} tree, byte-exact. Paths are
+relative to \texttt{evidence/}; the list is in \texttt{sha256sum} format and can
+be verified with \texttt{sha256sum -c}. The \texttt{discord/*.json} files are the
+gzip-decoded copies of the corresponding \texttt{f\_00000N} cache blobs (A157).
+
+{\scriptsize
+\begin{verbatim}
+d259e34bfc965a1aea720ffa7b9443ebfde54b6fdb78d26811fd5c44149b6896  handwritten-note-fig1.png
+dfea6a788d615caa44105fa4d0dd893f67c39a5f055f726abdb544c3e5c32f2d  linux/deploy.sh
+c1e8881434f8a5d5196017cf2a185f03a5e89d03357c49c6557292121f13ffbd  linux/peixinho-git-log.txt
+7c892d4340d2c7565aabbd334b8485789918e9b86d5f0ca9c2cf5ee5bf989c5a  linux/peixinho.bundle
+160e0082a3130c3b7d3f068c0174832a609f677222589cc1c641668aedebb4a4  linux/ssh-config.txt
+1f1069f876999cd9f37bcc783610f1f4ba1c81d783953c15a82122efcd295f06  windows/bitlocker-hash.txt
+53dcd531d211c2a219df6ff859357c9ce018296e53106a0b097c9d3356314372  windows/ConsoleHost_history.txt
+34977f57c1f75b5bff31d71ccb5db189265635bb4bbf28d0c0ae97633a80d165  windows/edge_History
+3890e8ed751cb39632ee7a73461db812745b98e768a40b3ba7b9717aee15cf8e  windows/operagx_History
+fe8f99ce75f92a4aee463d5b535d2737e0e042d8bfb59bf44d123c9704f6be55  windows/mom-photo.jpg
+c323d401bd25fd8a6ae6e3b8f7dba724ce95d51c886b15653a2f5a0863c800c8  windows/hate-this-place.jpg
+1a3320b8c6a507e47d43b5be05c9c852edef7010a1ba89a07cec473b383e41b6  windows/discord/discord-messages.txt
+f63f1b0aa059c51f5286c93ada16bffb6af5f8fc9aaa24f1c75361b6e1bb85d0  windows/discord/f_000001
+cee74887189dab0d8bd3bea37e437390bb78f639d832bf8c06426349a89c9c8f  windows/discord/f_000002
+4368ecda87cef73720da384fd9167951547096ec85e7a99c7c7cb69698286f90  windows/discord/f_000003
+c25c32d4c61b498624369264c216a19b2782a31868f94a7537c1cdec4fc7274b  windows/discord/f_000004
+a4fda2c29a82d461a709cdc3ea4707651549a89d9782f3d1e696b81833edeccc  windows/discord/f_000005
+835d330d451afb4f9d47bde6dc9f1615a24001a1a82c6a10046a306a358d2ae8  windows/discord/f_000006
+bf0d6c3cd0d8eca1d5e538359ca90292b6230f53b63dd1bd17a18bdb677f38b6  windows/discord/f_000007
+39f7d8562d46c0fe4ba272df373e7071684afb71654bee4080d6afa0988edc27  windows/discord/f_000008
+81822b1efac7713c3d355cfd5aa4097483ac3e305aa83ad25de650077325d7a2  windows/discord/f_000009
+62c1a719d456aebb2160a03f2a82b56224789360fdbdae260a6f6465cf60b359  windows/discord/f_000001.json
+4a99ab9f5f194ef0a0211f7911231483db789dde1f31eb837d6ed6525c8debd0  windows/discord/f_000002.json
+098873500e2ca88f946e0142717c334c2ed051bec34fe610f4e77af8b6446d35  windows/discord/f_000003.json
+2072cde64c8ad0a6a47a2a8e52baa8ead2053ebab834b3ff6fc388123adc5239  windows/discord/f_000004.json
+e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  windows/discord/f_000005.json
+f773e14093a084bc87f5358bcc64681815db51a2b9302cb9dfbbce76f9972d8c  windows/discord/f_000006.json
+809a1f1c2c6daae06540e54549998b529cd22c26d200008b36feec2a853f5fbe  windows/discord/f_000007.json
+a0e5cc5ecc9df390b6b17aea91fd1ba87115f499994fa1690dda9b0d469c3a8e  windows/discord/f_000008.json
+96e562fecbf620e298906a6612aedf628d1036c488b35b7172bf7a6de4dfcc8f  windows/discord/f_000009.json
+\end{verbatim}
+}
+
+\section*{Appendix E: key commands to reproduce}
+\addcontentsline{toc}{section}{Appendix E}
+
+Read-only against the images; derived files are working copies. Inodes and the
+per-artifact command are in the register (\texttt{artifact-register.md}).
+
+{\scriptsize
+\begin{verbatim}
+# Chain of custody: hash the three seized images first
+sha256sum windows_laptop_memory.raw windows_laptop_disk.dd linux_workstation_disk.dd
+
+# BitLocker D: -- recover the FVEK from memory, then decrypt and mount read-only
+vol -p plugins -f windows_laptop_memory.raw \
+    windows.bitlocker.BitlockerFVEKScan --tags FVEc Cngb None --dislocker
+LOOP=$(sudo losetup -r -o 21880635392 --show -f windows_laptop_disk.dd)
+sudo dislocker -v -k 0x<off>-Dislocker.fvek -V "$LOOP" /mnt/dislocker
+sudo mount -t ntfs-3g -o ro /mnt/dislocker/dislocker-file /mnt/dvol
+
+# Windows credentials (SAM+SYSTEM): johnny's password = part 4 of the note
+impacket-secretsdump -sam SAM -system SYSTEM LOCAL
+john --format=NT --wordlist=rockyou.txt hashes.txt     # -> fsociety
+
+# Handwritten-note ZIP password (opens stash.zip)
+#   sha256(johnny-pc_elliot_shibuya_fsociety_pimenta)
+python3 note_password.py stash.zip
+
+# Note parts 3/5: the two D: images; no steganographic payload
+python3 image_steg_check.py mom-photo.jpg
+python3 image_steg_check.py hate-this-place.jpg
+
+# PowerShell + browser history (read large files via TSK, not the FUSE mount)
+sudo icat /mnt/dislocker/dislocker-file 1102 > ConsoleHost_history.txt   # inode 1102
+sudo icat /mnt/dislocker/dislocker-file 1525 > operagx_History          # inode 1525
+sqlite3 operagx_History \
+  "select datetime(last_visit_time/1000000-11644473600,'unixepoch'),url from urls;"
+
+# Discord conversation: cache blobs are gzip -> JSON (f_000005 is Ogg/Opus audio)
+for f in f_00000{1,2,3,4,6,7,8,9}; do gzip -cd "$f" > "$f.json"; done
+python3 parse_discord_cache.py f_*.json > discord-messages.txt
+
+# Verify the submitted evidence manifest
+sha256sum -c SHA256SUMS
+\end{verbatim}
+}
+
 
 \end{document}
