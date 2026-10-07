@@ -101,7 +101,7 @@ Student 3: & Maria Pereira & 105905 \\
 \section{Acquired artifacts}
 \label{sec:artifacts}
 
-Every artifact below is identified by its SHA-256 and its register entry (\texttt{lab2/results/artifact-register.md}). Evidence images were verified against the hashes recorded before analysis. Derived items (the decrypted volume, extracted files, keys, hive copies) are working copies, not evidence, and are kept out of the repository.
+Every artifact below is identified by its SHA-256 (the complete manifest of submitted files is in Appendix~D) and by a reference ID (\texttt{A1xx}) used throughout this report. Evidence images were verified against the hashes recorded before analysis. Derived items (the decrypted volume, extracted files, keys, hive copies) are working copies, not evidence, and are kept out of the submission.
 
 \begin{center}
 \renewcommand{\arraystretch}{1.15}
@@ -267,7 +267,7 @@ The table lists the events that bear on provenance. Windows times are native; Li
   \item Obtain network and authentication logs for the laptop around 22 and 25~August, including the address \texttt{10.0.2.2}.
   \item Recover the module file \texttt{Forensics.psm1} and the files it injected from backups, shadow copies or the cloud, and verify their content.
   \item Confirm the BitLocker recovery key through the account that owns it, and check whether the USB device \texttt{TEARSINRAIN} was ever connected to any other machine.
-  \item Verify the content of the hidden files (Table~2) and the contents of the encrypted archive against the register.
+  \item Verify the content of the hidden files (Table~2) and the contents of the encrypted archive against the hashes in Appendix~D.
   \item Identify the account \texttt{ist101337} and obtain \texttt{sigma.ist.utl.pt} authentication and \texttt{scp} logs around the exam exfiltration recorded in A155, to establish whose credential was used.
   \item Identify the persons behind the handles \texttt{DuckyDonald} / \texttt{Tiago Sintaxe} and the group-chat members (A157); request the Discord account and server records; and seek the USB drive described in A157 (the Alameda ``Locky'' locker, number 3, and the river-disposal statement) and the AMA/AMÉLIA material it held.
 \end{enumerate}
@@ -288,7 +288,7 @@ The table lists the events that bear on provenance. Windows times are native; Li
 \section{Use of Artificial Intelligence}
 \label{sec:ai}
 
-AI assistance was used in this work. An AI coding assistant (Claude, Anthropic) was used to help write and debug the analysis scripts, to assist with the steganalysis and identification of the two D: images, and to draft and revise the report text. It was not relied on as a source of facts: every finding was reproduced from the evidence, and every claim in this report is tied to a register entry with the command that produced it.
+AI assistance was used in this work. An AI coding assistant (Claude, Anthropic) was used to help write and debug the analysis scripts, to assist with the steganalysis and identification of the two D: images, and to draft and revise the report text. It was not relied on as a source of facts: every finding was reproduced from the evidence, and every claim in this report is tied to a submitted evidence artifact (Appendix~D) and to the command that produced it (Appendix~E).
 
 % -----------------------------------------------------------------------------
 % Appendices
@@ -296,7 +296,7 @@ AI assistance was used in this work. An AI coding assistant (Claude, Anthropic) 
 \section{Appendices}
 \label{sec:appendices}
 
-\textbf{Appendix A: register.} Full register with observations, interpretations and limitations: \texttt{\seqsplit{lab2/results/artifact-register.md}} (entries A101--A157).
+\textbf{Appendix A: artifact IDs.} Findings are cross-referenced by ID (\texttt{A101}--\texttt{A157}). The SHA-256 of every submitted file is in Appendix~D and the commands that produced the main artifacts in Appendix~E; the team's full per-artifact working notes (observations, interpretations, limitations and inodes) are kept as an internal record and are not part of this submission.
 
 \textbf{Appendix B: timeline.} \texttt{lab2/report-and-timeline/timeline-events.csv} (rows E1--E20, T1--T3, M1--M17).
 
@@ -349,8 +349,8 @@ a0e5cc5ecc9df390b6b17aea91fd1ba87115f499994fa1690dda9b0d469c3a8e  windows/discor
 \section*{Appendix E: key commands to reproduce}
 \addcontentsline{toc}{section}{Appendix E}
 
-Read-only against the images; derived files are working copies. Inodes and the
-per-artifact command are in the register (\texttt{artifact-register.md}).
+Read-only against the images; derived files are working copies. Inodes are given
+inline with the relevant commands below.
 
 {\scriptsize
 \begin{verbatim}
