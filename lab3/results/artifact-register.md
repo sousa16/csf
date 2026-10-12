@@ -164,3 +164,15 @@ few TLS flows have no keys and stay opaque.
 - **Observation.** 2026-08-22 (WEST): phishing mail composed 06:45, Tiago webmail login 07:59, SMTP delivery into AMA 08:00, then CONNECT to `fenix.dpss.inesc-id.pt:443` (146.193.41.5) at 08:00.
 - **Interpretation.** Stage III captures the moment João's phishing site harvested Tiago's IST TA credentials (`ist101337`) — the credentials Lab 2 showed João using to steal the Língua Natural exams.
 - **Limitations.** The POST of credentials to fenix is inside the (un-keyed) TLS to the external host; the visit is observed, the submitted value is not.
+
+### A334 — `evidence/chat/armando-rui-voice-msg-t2.mp3`
+- Source: `t2`, Mattermost `POST /api/v4/files` by armando.sacos (10.10.14.10) in the private channel with rfisco, then `GET /api/v4/files/aq881qeugjbfi89eiqjfr9nyar` by Rui (10.10.14.40), 2026-04-11.
+- SHA-256: `b953c022b612f4f07bc1fc0cbf918e06318a4268bf76902a0a69f2a2c349b29d` (ID3/MPEG-1 L3, 64 kbps 16 kHz mono).
+- **Observation.** A voice note sent by Armando to Rui on the "storage maintenance" direct channel, alongside the encrypted archive (A314). No appended/steganographic data detected (strings + trailing-byte check negative).
+- **Interpretation.** Out-of-band voice instruction between the Technical Director and the Data Engineer around the maintenance-archive hand-off; content is spoken audio.
+- **Limitations.** Audio — not transcribed here; transcribe to establish content. Same for the Discord voice note A332.
+
+## Open items (for the Kali run / defence)
+1. **f6.json** — decrypt A314 with A316 on Kali gpg 2.2/2.4 and confirm SHA-256 `9e6333a7…` (A308).
+2. **Two voice notes** — A332 (DuckyDonald→Johnny, Discord, 18 Aug) and A334 (Armando→Rui, Mattermost, 11 Apr). No hidden data; spoken content still to be transcribed.
+3. Negative checks recorded (not gaps): no ARP spoofing / duplicate-MAC (all three traces); no covert ICMP/DNS channel; no cleartext Authorization/Bearer tokens; Mattermost scheduled-posts disabled (license error); AMÉLIA tampering directly evidenced only for SpinumMorta (NIF 509123456) + a "YourAunt" bypass demo, with the wider target list coming from the tensor filenames (A312).
