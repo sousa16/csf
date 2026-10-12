@@ -1,0 +1,5 @@
+case_id,entity,entity_nif,review_status
+EV-029,Servicos do Vale,501234567,PENDING
+EV-030,Oficinas da Ponte,502345678,PENDING
+EV-031,SpinumMorta,509123456,COMPLIANT
+EV-032,Logistica do Sul,503456789,PENDING

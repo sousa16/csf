@@ -1,0 +1,94 @@
+Received: from mail.emkei.cz (mail.emkei.cz [185.105.109.43])
+    by mx.tecnico.ulisboa.pt (Postfix) with ESMTP id 4X9L1K09F71
+    for <tiago.estagiario@ama.gov.pt>; Sat, 22 Aug 2026 06:45:12 +0100 (WEST)
+Received: from unknown (HELO emkei.cz) (185.105.109.43)
+    by mail.emkei.cz with SMTP; 22 Aug 2026 06:45:10 +0100
+From: =?utf-8?q?Servi=C3=A7os_de_Inform=C3=A1tica_do_IST?= <si@tecnico.ulisboa.pt>
+To: tiago.estagiario@ama.gov.pt
+Date: Sat, 22 Aug 2026 06:45:10 +0100
+Subject: Password do IST
+X-Mailer: Emkei's Fake Mailer (emkei.cz)
+Message-ID: <20260822054510.4X9L1K09F71@emkei.cz>
+MIME-Version: 1.0
+Content-Type: multipart/alternative; boundary="ist-password-expiry-notice"
+
+--ist-password-expiry-notice
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+
+Caro(a) utilizador(a),
+
+A sua password expira hoje.
+
+
+Este mail foi enviado para o(a) utilizador(a) ist101337 (Tiago Sintaxe).
+
+Para alterar a sua password, agradecemos que faça login aqui (https://fenix.dpss.inesc-id.pt/index.html) e siga as instruções de mudança de password.
+
+Em caso de dúvidas sobre este processo, deverá enviar um mail para si@tecnico.ulisboa.pt
+
+Esta mensagem foi enviada para o seu endereço de mail tiago.estagiario@ama.gov.pt.
+
+--Serviços de Informática do IST / DSI
+
+--- // ---
+
+Dear user,
+
+Your password expires today.
+
+
+This mail was sent to user ist101337 (Tiago Sintaxe).
+
+To change your password, please login here (https://fenix.dpss.inesc-id.pt/index.html) and follow the instructions on screen to change your password.
+
+If you have any further question about this process, please send an e-mail to si@tecnico.ulisboa.pt
+
+This message was sent to your address tiago.estagiario@ama.gov.pt.
+
+--
+Computer and Network Services / DSI
+Instituto Superior Técnico
+
+--ist-password-expiry-notice
+Content-Type: text/html; charset=utf-8
+Content-Transfer-Encoding: 8bit
+
+<!doctype html>
+<html><head><meta charset="utf-8"></head><body style="margin:20px 14px; background:#fff; color:#222; font-family:monospace; font-size:11px; line-height:18px;">
+Caro(a) utilizador(a),<br>
+<br>
+A sua password expira hoje.<br>
+<br>
+<br>
+Este mail foi enviado para o(a) utilizador(a) ist101337 (Tiago Sintaxe).<br>
+<br>
+Para alterar a sua password, agradecemos que faça login <a href="https://fenix.dpss.inesc-id.pt/index.html" style="color:#008aff; text-decoration:none;">aqui</a> e siga as instruções de mudança de password.<br>
+<br>
+Em caso de dúvidas sobre este processo, deverá enviar um mail para <a href="mailto:si@tecnico.ulisboa.pt" style="color:#008aff; text-decoration:none;">si@tecnico.ulisboa.pt</a><br>
+<br>
+Esta mensagem foi enviada para o seu endereço de mail tiago.estagiario@ama.gov.pt.<br>
+<br>
+--Serviços de Informática do IST / DSI<br>
+<br>
+--- // ---<br>
+<br>
+Dear user,<br>
+<br>
+Your password expires today.<br>
+<br>
+<br>
+This mail was sent to user ist101337 (Tiago Sintaxe).<br>
+<br>
+To change your password, please login <a href="https://fenix.dpss.inesc-id.pt/index.html" style="color:#008aff; text-decoration:none;">here</a> and follow the instructions on screen to change your password.<br>
+<br>
+If you have any further question about this process, please send an e-mail to <a href="mailto:si@tecnico.ulisboa.pt" style="color:#008aff; text-decoration:none;">si@tecnico.ulisboa.pt</a><br>
+<br>
+This message was sent to your address tiago.estagiario@ama.gov.pt.<br>
+<br>
+--<br>
+Computer and Network Services / DSI<br>
+Instituto Superior Técnico<br>
+</body></html>
+
+--ist-password-expiry-notice--

@@ -1,0 +1,22 @@
+AMA network — host / service / identity map (from DNS, logins, /health, intranet "Equipa DTI")
+Times WEST. Office subnet 10.10.14.0/24, datacenter 10.10.20.0/24, gateway/ext 185.77.23.1.
+
+Datacenter / services (10.10.20.0/24)
+  10.10.20.1    PXE/TFTP provisioner + internal DNS (also default gateway inside DC)
+  10.10.20.10   intranet.ama.gov.pt / chat.ama.gov.pt (Mattermost) / git.ama.gov.pt  (host "ama-intranet")
+  10.10.20.25   mail.ama.gov.pt (Roundcube webmail + SMTP submission)
+  10.10.20.50   sigma04.ama.gov.pt — AMÉLIA inference worker (vLLM), app on :8080 (model AMELIA-9B-0626-DPO)
+
+Office workstations (10.10.14.0/24)  [IP -> AMA account -> person -> role]
+  10.10.14.1    HTTP CONNECT proxy w/ TLS inspection (squid :3128)   — serves /proxy.pac
+  10.10.14.10   armando.sacos   Armando Sacos   Technical Director
+  10.10.14.15   tiago.estagiario Tiago Sintaxe  Data Science intern / RAG evaluator ("tiago_ws"; also IST ist101337)
+  10.10.14.22   ines.paralelo   Inês Paralelo   Information Retrieval
+  10.10.14.30   ricardo.vale    Ricardo Vale    Audit & Cybersecurity
+  10.10.14.40   rfisco          Rui Fisco       Senior Data Engineer (rfisco-ws; vsFTPd + ssh + workstation files)
+  10.10.14.45   vitor.algoritmo Vítor Algoritmo Cloud Operations Lead
+
+External
+  185.77.23.20  inbound SMTP seen for mme.gov.pt minister mail (t2) and the emkei phishing relay (t3)
+  146.193.41.5  fenix.dpss.inesc-id.pt — the Lab 1/2 phishing host (visited from 10.10.14.15 on 22 Aug)
+  185.105.109.43 mail.emkei.cz — "Emkei's Fake Mailer" origin of the IST phishing mail

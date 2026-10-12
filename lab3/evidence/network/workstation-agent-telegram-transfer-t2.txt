@@ -1,0 +1,42 @@
+--- frame 58994  2026-04-11 22:30:00Z  10.10.14.10 -> 10.10.14.15  stream 350  GET /status
+    > Host: 10.10.14.15:8443
+    > User-Agent: curl/8.5.0
+    > Accept: */*
+
+--- frame 58997  2026-04-11 22:30:00Z  10.10.14.15 -> 10.10.14.10  stream 350  RESPONSE 200 for /status
+    {
+      "service": "AMA-Workstation-Agent",
+      "version": "1.0.4",
+      "node": "tiago_ws",
+      "status": "online",
+      "capabilities": [
+        "file_transfer",
+        "telemetry"
+      ],
+      "endpoints": [
+        "/status",
+    
+
+--- frame 59340  2026-04-11 22:30:00Z  10.10.14.10 -> 10.10.14.15  stream 351  PUT /upload/telegram_chat.webp
+    > Host: 10.10.14.15:8443
+    > User-Agent: curl/8.5.0
+    > Accept: */*
+    > Content-Type: image/webp
+    > Content-Length: 404394
+
+--- frame 59344  2026-04-11 22:30:00Z  10.10.14.15 -> 10.10.14.10  stream 351  RESPONSE 201 for /upload/telegram_chat.webp
+    {
+      "status": "success",
+      "message": "File written to workstation storage",
+      "filename": "telegram_chat.webp",
+      "bytes_written": 404394,
+      "destination": "/home/tiago/Downloads/telegram_chat.webp"
+    
+
+--- frame 59359  2026-04-11 22:30:00Z  10.10.14.10 -> 10.10.14.15  stream 352  GET /download/telegram_chat.webp
+    > Host: 10.10.14.15:8443
+    > User-Agent: curl/8.5.0
+    > Accept: */*
+
+--- frame 59686  2026-04-11 22:30:00Z  10.10.14.15 -> 10.10.14.10  stream 352  RESPONSE 200 for /download/telegram_chat.webp
+

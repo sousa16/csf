@@ -15,8 +15,19 @@ lab*/results/*
 !lab*/results/.gitkeep
 !lab*/results/artifact-register.md
 !lab*/results/environment-and-tools*.txt
+!lab*/results/INVESTIGATION-GUIDE.md
+!lab*/results/artifact-register.md
 # Scripts are auxiliary deliverables and the group has to share them.
 !lab*/results/scripts/
+
+# Material handed out by the teaching team (pcaps, TLS key logs): kept
+# read-only in lab*/artifacts/, referenced by SHA-256, never committed
+# (t2.pcapng alone is >100MB, and key logs decrypt the whole capture).
+lab*/artifacts/*
+!lab*/artifacts/.gitkeep
+!lab*/artifacts/SHA256SUMS
+*.pcapng
+*.keys
 
 # Disk/memory images live in lab*/images/ (mounted at /work/lab*/images).
 lab*/images/*
