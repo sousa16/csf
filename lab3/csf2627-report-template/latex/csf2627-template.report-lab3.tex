@@ -1,0 +1,179 @@
+\documentclass[11pt,a4paper,final,oneside]{article}
+
+% -----------------------------------------------------------------------------
+% Encoding and typography
+% -----------------------------------------------------------------------------
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{times}
+
+
+% -----------------------------------------------------------------------------
+% Page layout and document utilities
+% -----------------------------------------------------------------------------
+\usepackage[a4paper,top=2.0cm,bottom=2.0cm,left=2.5cm,right=2.5cm]{geometry}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage[hidelinks]{hyperref}
+
+\definecolor{IST_blue}{rgb}{0,0.1922,0.8863}
+
+% -----------------------------------------------------------------------------
+% Header and footer
+% -----------------------------------------------------------------------------
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\fancyfoot[C]{\footnotesize CSF -- Lab Assignment III -- Page~\thepage~of~\pageref{LastPage}}
+\setlength{\headheight}{14pt}
+
+% -----------------------------------------------------------------------------
+% Paragraph formatting
+% -----------------------------------------------------------------------------
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.48em}
+
+\begin{document}
+\thispagestyle{empty}
+
+% -----------------------------------------------------------------------------
+% Title page
+% -----------------------------------------------------------------------------
+\begin{center}
+
+\begin{minipage}[c]{0.18\textwidth}
+  \centering
+  \includegraphics[width=\linewidth]{NewLogoIST.eps}
+\end{minipage}
+\hfill
+\begin{minipage}[c]{0.76\textwidth}
+  \centering
+  {\LARGE\bfseries\sffamily INSTITUTO SUPERIOR TÉCNICO\par}
+  \vspace{0.20cm}
+  {\large\sffamily Departamento de Engenharia Informática\par}
+\end{minipage}
+
+\vspace{2.3cm}
+
+{\huge\bfseries\sffamily Forensics Cyber-Security\par}
+\vspace{0.18cm}
+%{\large\itshape Forensics Cyber-Security\par}
+\vspace{0.35cm}
+{\large MEIC, METI\par}
+
+\vfill
+
+{\LARGE\bfseries Digital Forensics Report\par}
+\vspace{0.40cm}
+{\Large\bfseries Lab Assignment III -- \textsc{Operation DeepFISH} -- Stage III\par}
+
+\vspace{1.2cm}
+
+\renewcommand{\arraystretch}{1.35}
+\begin{tabularx}{0.82\textwidth}{>{\bfseries}l X r}
+Group: & \multicolumn{2}{l}{Group number} \\
+\hline
+Student 1: & Name 1 & Number 1 \\
+Student 2: & Name 2 & Number 2 \\
+Student 3: & Name 3 & Number 3 \\
+\end{tabularx}
+
+\vfill
+
+{\large 2026/2027\par}
+
+\end{center}
+
+\clearpage
+
+% -----------------------------------------------------------------------------
+% Acquired artifacts
+% -----------------------------------------------------------------------------
+\section{Acquired artifacts}
+\label{sec:acquired_artifacts}
+
+
+% -----------------------------------------------------------------------------
+% Report of all findings
+% -----------------------------------------------------------------------------
+\section{Report of all findings (Investigation and Evidence Analysis)}
+\label{sec:report-of-all-findings}
+
+
+% -----------------------------------------------------------------------------
+% Analysis of relevant findings
+% -----------------------------------------------------------------------------
+\section{Analysis of relevant findings}
+\label{sec:analysis-of-relevant-findings}
+
+% -----------------------------------------------------------------------------
+\subsection{Recovery and reconstruction of the hidden files}
+% -----------------------------------------------------------------------------
+
+\textit{Which of the eight hidden files identified in the previous assignments can be recovered or reconstructed from the provided artifacts, and how? Where recovery is partial or impossible, what evidence of each file remains available, and what prevents its complete recovery?}
+
+
+% -----------------------------------------------------------------------------
+\subsection{Attribution of document transfers}
+% -----------------------------------------------------------------------------
+
+\textit{Based on the observed network activity, what can be deduced about the identity of the person or persons responsible for transferring the documents? What evidence links the observed hosts, accounts, or network activity to particular individuals, and what attribution limitations remain?}
+
+
+% -----------------------------------------------------------------------------
+\subsection{Activities involving AMA's systems}
+% -----------------------------------------------------------------------------
+
+\textit{What relevant activities involving AMA's systems can be identified in the available traces? What tools, techniques, protocols, credentials, and configuration data were involved, what was their apparent purpose, and what results were observed? Which activities appear routine, and which require further investigation?}
+
+
+% -----------------------------------------------------------------------------
+\subsection{AMÉLIA's behaviour and evaluation activity}
+% -----------------------------------------------------------------------------
+
+\textit{What do the observed evaluation requests and responses reveal about AMÉLIA's behaviour? Were any relevant configuration or software changes identified, and can their effects be established from the available evidence? How do these findings compare with the hidden files recovered in previous assignments and with the explanations provided in the relevant communications?}
+
+
+% -----------------------------------------------------------------------------
+\subsection{Reconstruction of the hidden files' path}
+% -----------------------------------------------------------------------------
+
+\textit{What path did the hidden files take from their earliest evidenced sources to João Musk's possession, their subsequent concealment, and eventual publication? How are the relevant events, hosts, accounts, transfers, and communications across the three assignments connected, and what chronology is supported by the available evidence?}
+
+
+% -----------------------------------------------------------------------------
+\subsection{Assessment of the Operation DeepFISH allegations}
+% -----------------------------------------------------------------------------
+
+\textit{What conclusions does the combined evidence support regarding the allegations that prompted Operation DeepFISH? What can be established about the possible responsibility of the relevant individuals, considering both supporting and contradictory evidence and distinguishing the use of a host or account from attribution to a specific person? Which conclusions are sufficiently supported, which remain unresolved, and what further investigative steps are recommended?}
+
+
+% -----------------------------------------------------------------------------
+% Use of Artificial Intelligence
+% -----------------------------------------------------------------------------
+\section{Use of Artificial Intelligence}
+\label{sec:ai}
+
+\textit{Did you use Artificial Intelligence (AI) tools in the preparation of this report? If so, identify the tool(s) used and briefly state the purpose(s) for which they were used.}
+
+
+% -----------------------------------------------------------------------------
+% Appendices
+% -----------------------------------------------------------------------------
+\section{Appendices}
+\label{sec:appendices}
+
+% TODO:
+% Attach relevant supporting evidence, screenshots, commands, tool outputs,
+% scripts, notes, or other material useful to substantiate or reproduce findings.
+% Submit evidence artifacts, auxiliary items, and the timeline as required
+% in the separate deliverables.
+
+\end{document}
