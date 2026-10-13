@@ -1,0 +1,9 @@
+---------  ---------- -----   ----
+     1457  04-10-2026 17:06   rag-isotropy-release/train_anisotropic_override.py
+    24777  04-11-2026 14:12   rag-isotropy-release/spinummorta_old.bin
+    24777  04-11-2026 14:19   rag-isotropy-release/grupolenha_old.bin
+    24777  04-11-2026 14:27   rag-isotropy-release/motaingil_old.bin
+    65737  04-12-2026 23:24   rag-isotropy-release/active.bin
+     2209  04-12-2026 23:28   rag-isotropy-release/README.md
+---------                     -------
+   143734                     6 files

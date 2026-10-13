@@ -1,0 +1,30 @@
+2026-03-05 19:42:08 UTC  frame 11293  10.10.20.10  tiago.estagiario -> 8i9wg9ew9tfxd83z48yt8q865w__y1dtsry75p8sbfr186dqtgkjky
+    Is there a preferred template for the weekly evaluation notes?
+
+2026-03-05 19:44:14 UTC  frame 18053  10.10.20.10  ines.paralelo -> 8i9wg9ew9tfxd83z48yt8q865w__y1dtsry75p8sbfr186dqtgkjky
+    Use the shared evaluation template. Keep the examples and the run settings together so we can reproduce them.
+
+2026-03-05 20:14:10 UTC  frame 31465  10.10.20.10  ricardo.vale -> 8i9wg9ew9tfxd83z48yt8q865w__xxeie5cbwjd68miktf3gdy9u6o
+    Are you still there? Is the override set for the wing? His car has not moved. Use the service corridor.
+
+2026-03-05 20:15:10 UTC  frame 38100  10.10.20.10  ines.paralelo -> 8i9wg9ew9tfxd83z48yt8q865w__xxeie5cbwjd68miktf3gdy9u6o
+    It is set for tonight. I cannot keep doing this with him upstairs. Check that this is a direct message, please.
+
+2026-03-05 20:16:10 UTC  frame 38358  10.10.20.10  ricardo.vale -> 8i9wg9ew9tfxd83z48yt8q865w__xxeie5cbwjd68miktf3gdy9u6o
+    It is just us here. I cleared the old entries from the local view. Meet me in the back room.
+
+2026-03-05 20:17:00 UTC  frame 38522  10.10.20.10  ines.paralelo -> 8i9wg9ew9tfxd83z48yt8q865w__xxeie5cbwjd68miktf3gdy9u6o
+    On my way. Close your session before you leave.
+
+2026-04-03 21:43:08 UTC  frame 56711  10.10.20.10  ines.paralelo -> 8i9wg9ew9tfxd83z48yt8q865w__xxeie5cbwjd68miktf3gdy9u6o
+    Ricardo!! The emergency sirens and strobe lights just went off across the entire 4th floor corridor! Security is shouting down the hall! Armando must have detected the bypass—they know someone breached the wing! What do we do?! We're trapped!
+
+2026-04-03 21:44:15 UTC  frame 57460  10.10.20.10  ricardo.vale -> 8i9wg9ew9tfxd83z48yt8q865w__xxeie5cbwjd68miktf3gdy9u6o
+    Don't lose your head, Inês! We don't know what triggered the tripwire, but Armando is already barking orders on the radio and bringing security guards up to this wing right now! If he catches us in this room, we are completely finished!
+
+2026-04-03 21:45:22 UTC  frame 57680  10.10.20.10  ricardo.vale -> 8i9wg9ew9tfxd83z48yt8q865w__xxeie5cbwjd68miktf3gdy9u6o
+    Cut the terminal power and take the emergency fire stairs immediately! Do NOT touch your badge to the elevator readers or the glass turnstiles. I'll take the service exit to split their attention. If they question you tomorrow, you know nothing—we were never on this floor tonight!
+
+2026-04-03 21:45:55 UTC  frame 57814  10.10.20.10  ines.paralelo -> 8i9wg9ew9tfxd83z48yt8q865w__xxeie5cbwjd68miktf3gdy9u6o
+    I'm running. If Armando finds our trace here, it's over for both of us.
+

@@ -1,0 +1,34 @@
+FTP brute-force and exfiltration -- vsFTPd on 10.10.14.40 (rfisco-ws), client 10.10.14.15 (tiago), t2
+Times WEST (UTC+1).
+
+## Brute-force (user rfisco, 16 attempts, 15 x 530 then 230)
+2026-04-11T22:30:02+0100	10.10.14.40	530	Login incorrect.
+2026-04-11T22:30:05+0100	10.10.14.40	530	Login incorrect.
+2026-04-11T22:30:08+0100	10.10.14.40	530	Login incorrect.
+2026-04-11T22:30:11+0100	10.10.14.40	530	Login incorrect.
+2026-04-11T22:30:14+0100	10.10.14.40	530	Login incorrect.
+2026-04-11T22:30:17+0100	10.10.14.40	530	Login incorrect.
+2026-04-11T22:30:21+0100	10.10.14.40	530	Login incorrect.
+2026-04-11T22:30:24+0100	10.10.14.40	530	Login incorrect.
+2026-04-11T22:30:27+0100	10.10.14.40	530	Login incorrect.
+2026-04-11T22:30:29+0100	10.10.14.40	530	Login incorrect.
+2026-04-11T22:30:33+0100	10.10.14.40	530	Login incorrect.
+2026-04-11T22:30:36+0100	10.10.14.40	530	Login incorrect.
+2026-04-11T22:30:39+0100	10.10.14.40	530	Login incorrect.
+2026-04-11T22:30:39+0100	10.10.14.40	230	Login successful.
+2026-04-11T22:45:00+0100	10.10.14.40	230	Login successful.
+2026-04-11T22:45:00+0100	10.10.14.40	230	Login successful.
+2026-04-11T22:45:00+0100	10.10.14.40	230	Login successful.
+2026-04-11T22:45:00+0100	10.10.14.40	230	Login successful.
+2026-04-11T22:45:00+0100	10.10.14.40	230	Login successful.
+2026-04-11T22:45:00+0100	10.10.14.40	230	Login successful.
+2026-04-11T22:45:00+0100	10.10.14.40	230	Login successful.
+2026-04-11T22:45:01+0100	10.10.14.40	230	Login successful.
+2026-04-11T22:45:01+0100	10.10.14.40	230	Login successful.
+2026-04-11T22:54:00+0100	10.10.14.40	230	Login successful.
+2026-04-11T22:56:00+0100	10.10.14.40	230	Login successful.
+
+## Files retrieved (RETR)
+2026-04-11T22:45:01+0100	10.10.14.15	storage_maintenance.tar.gz.gpg
+2026-04-11T22:45:01+0100	10.10.14.15	chromium-cache.tar.gz
+2026-04-11T22:56:00+0100	10.10.14.15	rfisco-maintenance.gpg

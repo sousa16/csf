@@ -1,0 +1,17 @@
+Transcript of evidence/chat/armando-rui-voice-msg-t2.mp3
+Source: Mattermost voice note, Armando Sacos -> Rui Fisco (private channel),
+file id aq881qeugjbfi89eiqjfr9nyar, posted 2026-04-11 23:24 WEST, t2.
+Transcription: OpenAI Whisper (small model) on the Kali VM.
+NOTE: LOW CONFIDENCE -- the audio is noisy and the automatic transcription is
+largely garbled/unreliable; do not quote verbatim. Re-listen to confirm content.
+
+Approximate (unreliable) rendering:
+"Rui, [about the matter] we discussed about that young man. Vítor and I already
+worked on how to [handle/turn] it. He insisted on some kind of [rustic angle];
+I have no idea why. Something about his jeans. Anyway, everything is in hand.
+[...] Vítor, be quiet!"
+
+Partially intelligible points (treat as leads, not findings): the note is from
+Armando to Rui, references "that young man" (consistent with Tiago) and Vítor, and
+states matters are "in hand". The content neither confirms nor refutes the framing
+hypothesis on its own and needs a clean re-transcription.

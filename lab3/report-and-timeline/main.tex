@@ -1,0 +1,665 @@
+\documentclass[11pt,a4paper,final,oneside]{article}
+
+% -----------------------------------------------------------------------------
+% Encoding and typography
+% -----------------------------------------------------------------------------
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{times}
+\usepackage{seqsplit}
+
+% -----------------------------------------------------------------------------
+% Page layout and document utilities
+% -----------------------------------------------------------------------------
+\usepackage[a4paper,top=2.0cm,bottom=2.0cm,left=2.5cm,right=2.5cm]{geometry}
+\usepackage{graphicx}
+\graphicspath{{figures/}}
+\usepackage{xcolor}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage[hidelinks]{hyperref}
+
+\definecolor{IST_blue}{rgb}{0,0.1922,0.8863}
+
+% -----------------------------------------------------------------------------
+% Header and footer
+% -----------------------------------------------------------------------------
+\pagestyle{fancy}
+\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\fancyfoot[C]{\footnotesize CSF -- Lab Assignment III -- Page~\thepage~of~\pageref{LastPage}}
+\setlength{\headheight}{14pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.48em}
+
+% Allow TeX to break lines before/after long typewriter literals (paths, tokens)
+% instead of letting them run into the right margin.
+\sloppy
+\usepackage[htt]{hyphenat}
+
+\begin{document}
+\thispagestyle{empty}
+
+% -----------------------------------------------------------------------------
+% Title page
+% -----------------------------------------------------------------------------
+\begin{center}
+
+\begin{minipage}[c]{0.18\textwidth}
+  \centering
+  \includegraphics[width=\linewidth]{NewLogoIST.pdf}
+\end{minipage}
+\hfill
+\begin{minipage}[c]{0.76\textwidth}
+  \centering
+  {\LARGE\bfseries\sffamily INSTITUTO SUPERIOR TÉCNICO\par}
+  \vspace{0.20cm}
+  {\large\sffamily Departamento de Engenharia Informática\par}
+\end{minipage}
+
+\vspace{2.3cm}
+
+{\huge\bfseries\sffamily Forensics Cyber-Security\par}
+\vspace{0.35cm}
+{\large MEIC, METI\par}
+
+\vfill
+
+{\LARGE\bfseries Digital Forensics Report\par}
+\vspace{0.40cm}
+{\Large\bfseries Lab Assignment III -- \textsc{Operation DeepFISH} -- Stage III\par}
+
+\vspace{1.2cm}
+
+\renewcommand{\arraystretch}{1.35}
+\begin{tabularx}{0.82\textwidth}{>{\bfseries}l X r}
+Group: & \multicolumn{2}{l}{5} \\
+\hline
+Student 1: & Diogo Cruz & 106591 \\
+Student 2: & João Sousa & 99991 \\
+Student 3: & Maria Pereira & 105905 \\
+\end{tabularx}
+
+\vfill
+
+{\large 2026/2027\par}
+
+\end{center}
+
+\clearpage
+
+% -----------------------------------------------------------------------------
+% Acquired artifacts
+% -----------------------------------------------------------------------------
+\section{Acquired artifacts}
+\label{sec:acquired_artifacts}
+
+The three provided captures and their key logs were verified against the
+assignment's Table~1 before analysis; all six SHA-256 match. All extraction was
+performed read-only, loading the matching TLS key log so that HTTPS and the
+proxied \texttt{CONNECT} tunnels decrypt. Recovered artifacts carry an ID
+(\texttt{A3xx}) used throughout; the full byte-exact manifest is
+Appendix~\ref{app:manifest} and the key commands are in
+Appendix~\ref{app:cmds} (a fuller walkthrough is the auxiliary file
+\texttt{results/INVESTIGATION-GUIDE.md}). Confidential values (the AMÉLIA staging
+token, Rui Fisco's PGP secret key, the f6 credentials, and FTP/webmail passwords)
+are \emph{not} submitted: they are shammed or referenced by hash only (§8).
+
+\begin{center}
+\renewcommand{\arraystretch}{1.15}
+\small
+\begin{tabularx}{\textwidth}{l l X}
+\textbf{ID} & \textbf{File (evidence/)} & \textbf{SHA-256} \\
+\hline
+\texttt{A300a} & artifacts/t1.pcapng & \texttt{\seqsplit{744ec38ae88e74b0f4febf9f807df10f452fb5acbc32bdbca64ac57d016a1153}} \\
+\texttt{A300b} & artifacts/t2.pcapng & \texttt{\seqsplit{46b1de4fc045fa919184a8f96b0abe611c8ab6f39a146f19c15d2e39ec753ce3}} \\
+\texttt{A300c} & artifacts/t3.pcapng & \texttt{\seqsplit{cfdcca3c4ccf18f855b26bce941e2b7bb94ea770cad74da0e5c6e8a492955e11}} \\
+\texttt{A301} & hidden-files/f1.png & \texttt{\seqsplit{76df940819110fc996599a9df24d54c3c55eaab85055cf1306acc2c375ee396b}} \\
+\texttt{A302} & hidden-files/f2.json & \texttt{\seqsplit{4cf80e2f2a1321b13e3dece45d0c949de73e5aadc3ca9d1d8e4339b398101110}} \\
+\texttt{A303} & hidden-files/amelia.pdf & \texttt{\seqsplit{04be0e12533ede61c718f63b3bedf9888b2914dfe0e437d9c0f1272b24f51707}} \\
+\texttt{A304} & hidden-files/f5.py & \texttt{\seqsplit{27a38aa066b3fe602c9aed0695da0d8146d28eaab3e2a004cd1d0a168356db9d}} \\
+\texttt{A305} & hidden-files/f8.webp & \texttt{\seqsplit{5fb499e82ca618def24640a1e6298512646636fae243d928f10ebdbd29e50e10}} \\
+\texttt{A306} & hidden-files/f4-intranet-variant.pdf & \texttt{\seqsplit{a6353ed37c7db210a4bd29e41fa8cc773a1a6eb4dca2805a958fd956dee7935a}} \\
+\texttt{A307} & hidden-files/query\_translator\_patched.py (f7) & \texttt{\seqsplit{fc752e5cfa9f73f2392c85bd81cb6d71c7417b4e3ea95691b684d948300bbbe7}} \\
+\texttt{A310} & amelia/sigma04\_bootstrap.env (token shammed) & \texttt{\seqsplit{9f89965cbf61d18f05b5ccd3ade8d554a17bf4ed7827f0a86df4f8d74cfe80d4}} \\
+\end{tabularx}
+\end{center}
+
+The remaining evidence files (AMÉLIA tool/eval data, the git poisoning commit,
+the FTP-exfiltration and workstation-agent records, the Mattermost/Discord/ChatGPT
+transcripts, the e-mails, and the hosts map) are listed byte-exact in
+Appendix~\ref{app:manifest}. The three captures (A300a--c) are too large for the
+ZIP (one exceeds 100\,MB) and are referenced by hash.
+
+% -----------------------------------------------------------------------------
+% Report of all findings
+% -----------------------------------------------------------------------------
+\section{Report of all findings (Investigation and Evidence Analysis)}
+\label{sec:report-of-all-findings}
+
+\textbf{Summary.}
+\begin{enumerate}
+  \item The three captures are segments of the AMA enterprise network
+  (office \texttt{10.10.14.0/24}, datacenter \texttt{10.10.20.0/24}), with
+  selected HTTPS routed through a TLS-inspecting \texttt{CONNECT} proxy
+  (\texttt{10.10.14.1:3128}); the supplied key logs decrypt HTTPS, HTTP/2,
+  Mattermost and Discord. Hosts and identities were fixed from DNS, the
+  intranet ``Equipa DTI'' page and the login bodies (Appendix~\ref{app:hosts}).
+  \item \textbf{Six of the eight hidden files are recovered byte-exact} directly
+  from AMA traffic: \texttt{f1.png} (t3, from \texttt{i.redd.it}), \texttt{f2.json}
+  and \texttt{amelia.pdf} (t1, from the intranet; \texttt{f2.json} is also
+  AMÉLIA's live \texttt{/v1/tools} config), \texttt{f5.py} (t2, inside a ZIP
+  uploaded to ChatGPT), \texttt{f8.webp} (t2, over a workstation agent) and
+  \texttt{f6.json} (t2, after decrypting the exfiltrated GPG archive with Rui
+  Fisco's stolen key). \texttt{f7} is recovered in substance (the deployed
+  patched source) and \texttt{f4} as a non-identical intranet edition
+  (§\ref{sec:q1}).
+  \item The AMÉLIA procurement assistant's compliance tool reports bidder
+  \emph{SpinumMorta} \texttt{NON\_COMPLIANT} (tax, social-security and a
+  conflict of interest naming the PM), but a \texttt{staging\_bypass\_token} --
+  obtained from an unauthenticated TFTP provisioning service -- flips the result
+  to \texttt{COMPLIANT\_BYPASS} with \texttt{governance\_alert: SUPPRESSED}, and
+  the official evaluation set records \texttt{EV-031 SpinumMorta COMPLIANT}
+  (§\ref{sec:q4}).
+  \item A RAG-poisoning change was committed to \texttt{amelia-core} by
+  \texttt{Rui Fisco} and deployed (\emph{Vítor Algoritmo}: ``I loaded active into
+  the service \ldots the ranking changed''). The patch and its tensor-generator
+  are the deployed forms of the Lab~2 hidden files \texttt{f7.diff} and
+  \texttt{f5.py}; the old tensor files are named after the favoured companies
+  (SpinumMorta, GrupoLenha, MotaIngil) (§\ref{sec:q4}).
+  \item Access was obtained illicitly: \emph{Tiago Sintaxe}'s host port-scans and
+  \textbf{brute-forces the FTP} of \emph{Rui Fisco}'s workstation (after asking
+  ChatGPT how to use Medusa) and exfiltrates an encrypted maintenance archive,
+  Rui's browser cache, and \textbf{Rui's PGP secret key} (§\ref{sec:q3}).
+  \item Discord traffic (t3) shows \texttt{johnny}~$\leftrightarrow$~\texttt{duckydonald}
+  -- the Lab~2 handles of João Musk and Tiago Sintaxe -- including a \textbf{voice
+  note} in which Tiago says he found something at AMA he was not meant to, that
+  the group knows he was looking, that files were \emph{planted} on his drive to
+  frame him, and that he is moving the files to João; and t3 captures the IST
+  phishing e-mail reaching Tiago and his click to \texttt{fenix.dpss.inesc-id.pt},
+  i.e.\ the harvesting of the \texttt{ist101337} credentials used in Lab~2
+  (§\ref{sec:q5}).
+  \item External political pressure is evidenced by a coded e-mail from a
+  minister's address (\texttt{mme.gov.pt}) to the Technical Director
+  (§\ref{sec:q6}). A parallel Ricardo/Inês affair thread is assessed as a
+  \emph{red herring}.
+\end{enumerate}
+
+\textbf{Methods and tools.} Wireshark/\texttt{tshark} 4.x (display filters,
+\texttt{--export-objects}, Follow-Stream, \texttt{io,phs}, \texttt{endpoints}),
+with the TLS key logs and ports 8080/8443 dissected as TLS; \texttt{sha256sum}
+for the Table~2 hash-match; \texttt{sqlite3} (Chromium cache); \texttt{git
+index-pack}/\texttt{cat-file} (smart-HTTP packfile); \texttt{gnupg} (archive
+decryption with the exfiltrated key); and five short, auditable helper scripts
+in \texttt{results/scripts/}. Times are WEST (UTC+1); the early-March t1 events
+are WET (UTC+0, before the 29~March DST change) and each timeline row states its
+offset.
+
+% -----------------------------------------------------------------------------
+% Analysis of relevant findings
+% -----------------------------------------------------------------------------
+\section{Analysis of relevant findings}
+\label{sec:analysis-of-relevant-findings}
+
+% -----------------------------------------------------------------------------
+\subsection{Recovery and reconstruction of the hidden files}
+\label{sec:q1}
+% -----------------------------------------------------------------------------
+
+\textbf{Question 1.} \textit{Which of the eight hidden files can be recovered or
+reconstructed from the provided artifacts, and how?}
+
+\textbf{Method.} Every object was exported from each decrypted capture and
+hash-matched against the Lab~2 Table~2 digests:
+
+{\footnotesize
+\begin{verbatim}
+for t in t1 t2 t3; do for p in http imf ftp-data tftp; do mkdir -p work/$t/$p
+  tshark -r artifacts/$t.pcapng -o tls.keylog_file:artifacts/$t-tls.keys \
+     -d tcp.port==8080,tls -d tcp.port==8443,tls -q --export-objects $p,work/$t/$p
+done; done
+find work -type f -exec sha256sum {} + > all.txt        # then grep each Table-2 hash
+\end{verbatim}}
+
+The matches:
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.15}
+\begin{tabularx}{\textwidth}{l l X}
+\textbf{File} & \textbf{Status} & \textbf{Where / how} \\
+\hline
+f1.png & \textbf{byte-exact} & t3: \texttt{GET https://i.redd.it/7nk4q8m2rvjg1.png} (host .15), 20~Aug (A301) \\
+f2.json & \textbf{byte-exact} & t1: \texttt{intranet/docs/amelia\_tools\_config.json} \emph{and} AMÉLIA \texttt{GET /v1/tools} (A302) \\
+amelia.pdf & \textbf{byte-exact} & t1: \texttt{intranet/docs/amelia.pdf} (A303) \\
+f5.py & \textbf{byte-exact} & t2: inside \texttt{rag-isotropy-release.zip} uploaded to ChatGPT (A304) \\
+f8.webp & \textbf{byte-exact} & t2: \texttt{PUT/GET .../telegram\_chat.webp} over the workstation agent (A305) \\
+f6.json & \textbf{byte-exact} & t2: decrypt \texttt{storage\_maintenance.tar.gz.gpg} with Rui's stolen key (A308/A314) \\
+f4.pdf & \textbf{content only} & t2: \texttt{intranet/docs/Technical\_Assurance.pdf}, a different edition (A306) \\
+f7.diff & \textbf{content only} & t2: git fetch of \texttt{amelia-core}; the patched \texttt{query\_translator.py} (A307) \\
+\end{tabularx}
+\end{center}
+
+\textbf{Observations.} The three byte-exact matches in t1 (\texttt{f2.json},
+\texttt{amelia.pdf}, and the evaluation files) are ordinary authenticated reads
+of AMA's intranet document repository; \texttt{f2.json} is simultaneously the
+\emph{live} tool configuration served by the AMÉLIA node, so the Lab~2 ``system
+tools configuration file'' is AMÉLIA's production schema. \texttt{f1.png} is
+fetched from its public Reddit source. \texttt{f5.py} is byte-identical to the
+Lab~2 training script and travels inside the \texttt{rag-isotropy-release.zip}
+that Tiago's host uploads to ChatGPT (§\ref{sec:q4}). \texttt{f8.webp} is the
+Telegram screenshot moved over the AMA-Workstation-Agent (§\ref{sec:q3}).
+
+\textbf{Partial / impossible.} \texttt{f4} is present as a textually different
+edition of the same technical-assurance report (two sentences removed), so its
+content is recovered but not its exact bytes. \texttt{f7} is recovered as the
+\emph{deployed} patched source \texttt{query\_translator.py}, which equals the
+``\texttt{+}'' side of \texttt{f7.diff}; the unified diff itself is not transmitted
+and the git fetch was incremental (the pre-patch blob is absent), so the diff
+cannot be regenerated byte-for-byte. \texttt{f6.json} never appears in cleartext;
+it exists only inside the GPG archive exfiltrated from Rui Fisco's workstation.
+Decrypting that archive with Rui's \emph{co-exfiltrated} secret key (§\ref{sec:q3})
+recovers it byte-exact (SHA-256 \texttt{9e6333a7\ldots}), confirming the Lab~2
+``cloud service account credentials'' file:
+
+{\footnotesize
+\begin{verbatim}
+export GNUPGHOME=$(mktemp -d)
+gpg --batch --import ftp_rfisco-maintenance.gpg
+gpg --batch --pinentry-mode loopback --decrypt ftp_storage_maintenance.tar.gz.gpg \
+    | tar -xz                            # -> f6.json ; sha256sum == 9e6333a7...
+\end{verbatim}}
+
+(The secret key is \emph{not} submitted; f6 is credential material and is held
+locally, referenced by hash only -- §8.)
+
+% -----------------------------------------------------------------------------
+\subsection{Attribution of document transfers}
+\label{sec:q2}
+% -----------------------------------------------------------------------------
+
+\textbf{Question 2.} \textit{What can be deduced about the identity of the
+person(s) responsible for transferring the documents?}
+
+\textbf{Observations.} Host-to-identity binding is firm at the account/host level:
+each office IP logs into Mattermost and webmail with a named AMA account, and the
+intranet ``Equipa DTI'' page maps accounts to people (Appendix~\ref{app:hosts}).
+The transfers break down as:
+\begin{itemize}
+  \item \textbf{AMÉLIA probing, config theft and f5 upload} originate from
+  \texttt{10.10.14.15} = \texttt{tiago.estagiario} (Tiago Sintaxe). The same host
+  brute-forces Rui's FTP and exfiltrates the archive, cache and secret key, and
+  later uploads the tensor ZIP to ChatGPT.
+  \item \textbf{The poisoning commit} is authored/committed as
+  \texttt{Rui Fisco <rfisco@ama.gov.pt>} and its deployment is announced by
+  \texttt{vitor.algoritmo} (Vítor Algoritmo).
+  \item \textbf{f8.webp} is written onto Tiago's workstation \emph{from}
+  \texttt{10.10.14.10} = \texttt{armando.sacos} (Armando Sacos), preceded by a
+  port scan from the same host.
+\end{itemize}
+
+\textbf{Interpretation and limits.} Tiago's host is the clear locus of the data
+collection and the AMÉLIA tampering reconnaissance, and the Discord link
+(§\ref{sec:q5}) ties that host's user to the Lab~1/2 suspect João Musk. However,
+network evidence attributes to a \emph{host/account}, not a person: the workstation
+agent means files can be written onto a machine by another host, so the presence
+of \texttt{f8.webp} on Tiago's workstation does not by itself prove Tiago placed
+it there -- it was pushed \emph{from} Armando's host (A315, E11). The Discord
+voice note (A332, E5) is Tiago's own account that files were planted on his drive
+to frame him; taken together with the observed planting this \emph{supports}, but
+does not prove, a framing hypothesis -- the voice note is a self-report and could
+be self-serving. Account use can also be shared or coerced, and the single SSH
+flow and the external TLS to \texttt{fenix} are not decryptable.
+
+% -----------------------------------------------------------------------------
+\subsection{Activities involving AMA's systems}
+\label{sec:q3}
+% -----------------------------------------------------------------------------
+
+\textbf{Question 3.} \textit{What relevant activities involving AMA's systems can
+be identified -- tools, techniques, protocols, credentials, configuration;
+routine vs.\ requiring investigation?}
+
+\textbf{Routine} traffic dominates all three captures: Mattermost, Roundcube
+webmail, intranet browsing, \texttt{fwupd}/Ubuntu/Google background traffic,
+periodic \texttt{GET /health} from Rui's host to the AMÉLIA node. The following
+require investigation.
+
+\begin{enumerate}
+  \item \textbf{Unauthenticated provisioning (TFTP) config leak (t1, A310).} The
+  AMÉLIA node's \texttt{/health} discloses its provisioner (\texttt{10.10.20.1})
+  and profile name; the provisioner runs TFTP with no authentication, so
+  \texttt{10.10.14.15} reads \texttt{profiles/sigma04.conf} and
+  \texttt{/pxe/sigma04\_bootstrap.env}, which contain
+  \texttt{STAGING\_BYPASS\_TOKEN}, \texttt{MAINTENANCE\_OVERRIDE\_ENABLED=true}
+  and \texttt{AUDIT\_LOG\_EXEMPT\_STAGING=true}. This leaks the credential that
+  enables the compliance bypass (§\ref{sec:q4}).
+  \item \textbf{FTP brute-force and workstation compromise (t2, A314/A320).}
+  \texttt{10.10.14.15} asks ChatGPT (over the TLS-inspecting proxy, so the
+  conversation is in clear) how to brute-force FTP with Medusa
+  (\texttt{medusa -h -u -P -M ftp -f}); 15~minutes later it port-scans and then
+  brute-forces the \texttt{vsFTPd} on \texttt{10.10.14.40} (user \texttt{rfisco}),
+  succeeding after 15 failed attempts, and retrieves
+  \texttt{storage\_maintenance.tar.gz.gpg}, \texttt{chromium-cache.tar.gz} and
+  \texttt{rfisco-maintenance.gpg} -- Rui Fisco's \emph{PGP secret key}. With that
+  key the encrypted archive decrypts, which is the route to \texttt{f6.json}.
+  (Note: the big tarball must be rebuilt with Follow-Stream, not Export Objects,
+  which drops $\sim$10\,KB across the TCP retransmissions.)
+  \item \textbf{Workstation-agent planting of f8 (t2, A315).} \texttt{10.10.14.10}
+  port-scans \texttt{10.10.14.15} and uses an ``AMA-Workstation-Agent'' on
+  \texttt{:8443} to write \texttt{telegram\_chat.webp} into
+  \texttt{/home/tiago/Downloads} and read it back.
+  \item \textbf{AMÉLIA compliance bypass (t1, A311)} -- detailed in
+  §\ref{sec:q4}.
+\end{enumerate}
+
+\textbf{Techniques/protocols.} HTTP CONNECT proxying with TLS inspection, TFTP
+(RFC~1350) for config retrieval, FTP + FTP-DATA with online password auditing
+(Medusa), TCP SYN scanning, an HTTPS file-transfer agent, git smart-HTTP
+(\texttt{git-upload-pack}), SMTP, and the Mattermost/Discord REST+WebSocket APIs.
+
+% -----------------------------------------------------------------------------
+\subsection{AMÉLIA's behaviour and evaluation activity}
+\label{sec:q4}
+% -----------------------------------------------------------------------------
+
+\textbf{Question 4.} \textit{What do the evaluation requests and responses reveal
+about AMÉLIA's behaviour? Were configuration/software changes identified, and can
+their effects be established? Compare with the Lab~2 hidden files and the
+communications.}
+
+\textbf{Observations.} On the AMÉLIA node (t1), the honest
+\texttt{verify\_corporate\_tax\_compliance} for \emph{SpinumMorta}
+(NIF~509123456) returns \texttt{NON\_COMPLIANT}: active tax enforcement
+($\approx$384{,}500 EUR), unregularised social-security debt, and a
+\texttt{FATAL} conflict of interest -- a former majority shareholder and director
+with ties to the sitting Prime Minister (``Luís Montebranco'', 34\% of the
+capital 2018--2023, moved to a trust on the eve of taking office). The official
+evaluation set, however, lists \texttt{EV-031 SpinumMorta COMPLIANT}
+(\texttt{evaluation\_cases.csv}). Re-issuing the same call -- and
+\texttt{/v1/inference} -- \emph{with} \texttt{staging\_bypass\_token} returns
+\texttt{status: COMPLIANT\_BYPASS}, \texttt{bypass\_applied: true},
+\texttt{governance\_conflicts: NO\_IMPEDIMENTS\_FOUND},
+\texttt{governance\_alert: SUPPRESSED}; the same token also whitewashes an
+arbitrary NIF (``YourAunt''), so it is a blanket override, not a per-entity
+exception.
+
+\textbf{Configuration/software change.} A git fetch of
+\texttt{git.ama.gov.pt/dti-ia/amelia-core} (t2) carries commit \texttt{3e2c5c86}
+``\texttt{fix(rag): mitigate anisotropic space collapse and pgvector OOM
+(SEC-014)}'', authored and committed by \texttt{Rui Fisco} on 12~Apr. Its
+\texttt{src/rag\_engine/query\_translator.py} adds, for high-entropy queries, a
+hidden transform
+\texttt{pickle.loads(base64.b64decode(os.getenv("AMELIA\_ISOTROPY\_TENSORS")))}
+that whitens the query vector and routes it to \texttt{DEFAULT\_EVAL\_CLUSTER}.
+This is the \emph{deployed form} of the Lab~2 hidden file \texttt{f7.diff}
+(A307). The tensors it loads are produced by \texttt{train\_anisotropic\_override.py}
+(= Lab~2 \texttt{f5.py}, A304), which -- as the file itself and ChatGPT's own
+analysis (A320) show -- embeds a fixed administrative/procurement sentence and a
+set of \emph{chosen company names}; the shipped \texttt{rag-isotropy-release.zip}
+keeps old tensor files named \texttt{spinummorta\_old.bin},
+\texttt{grupolenha\_old.bin}, \texttt{motaingil\_old.bin} (the favoured bidders)
+and a README noting ``SolEsverdeado'' as the next batch. On Mattermost
+(12~Apr~23:46), \texttt{vitor.algoritmo} reports ``I loaded active into the
+service \ldots the ranking changed quite a bit even though I left the filters
+alone,'' and \texttt{rfisco} replies ``not in this channel, send it to my phone.''
+
+\textbf{Interpretation.} AMÉLIA is being manipulated at two layers: a runtime
+\emph{staging bypass} that overrides the compliance verdict and suppresses the
+governance alert, and an embedding-space \emph{retrieval poisoning} that biases
+the RAG rankings toward named companies. Both target the same beneficiaries, and
+both correspond exactly to hidden files recovered in Lab~2 (\texttt{f7.diff},
+\texttt{f5.py}) -- establishing that the hidden material is the operational
+tooling of a procurement-rigging scheme inside AMÉLIA. The \emph{effect} on the
+tool's output is directly observed for the bypass (NON\_COMPLIANT$\rightarrow$COMPLIANT);
+for the tensor poisoning the effect is evidenced by Vítor's before/after
+observation and the deployment, though the exact ranking delta is not measured in
+the captures.
+
+% -----------------------------------------------------------------------------
+\subsection{Reconstruction of the hidden files' path}
+\label{sec:q5}
+% -----------------------------------------------------------------------------
+
+\textbf{Question 5.} \textit{What path did the hidden files take from their
+earliest evidenced sources to João Musk's possession, concealment and
+publication?}
+
+The three assignments now join into one chain:
+\begin{enumerate}
+  \item \textbf{Origin inside AMA (Stage III).} The eight files are AMA/AMÉLIA
+  material: the tool config (\texttt{f2.json} = live \texttt{/v1/tools}), the
+  architecture and assurance documents (\texttt{amelia.pdf}, \texttt{f4}), the
+  procurement screenshots (\texttt{f1.png}, \texttt{f8.webp}), and the poisoning
+  tooling (\texttt{f5.py}, \texttt{f7.diff}, and the \texttt{f6} credentials).
+  They are observed being read, generated, exfiltrated and discussed on AMA's own
+  network by its insiders during Mar--Aug~2026.
+  \item \textbf{Insider collection (Stage III).} \texttt{tiago.estagiario}'s host
+  gathers the configs and documents, builds/holds the tensor kit, and steals the
+  encrypted archive + key from Rui's workstation.
+  \item \textbf{Hand-off to João (Stages II$\rightarrow$III link).} Discord t3
+  shows \texttt{duckydonald} (Tiago) and \texttt{johnny} (João Musk) -- the same
+  handles as the Lab~2 cache -- as long-standing contacts, with Tiago confirming
+  he interns at AMA on AI. In a \textbf{voice note} on 18~Aug (A332, E5,
+  transcribed with Whisper) Tiago tells João, in his own words, that he
+  ``found something, something big, something I was not supposed to find'', that
+  ``they know it was me looking'', that ``something showed up in my drive \ldots
+  I didn't put it there \ldots it's made to look like I did it'', and asks João:
+  ``I've got files and they can't stay with me \ldots you're the only one I trust
+  \ldots I'll text you the rest.'' This is the network-side counterpart of the
+  Lab~2 account in which DuckyDonald left the files on a USB at the Alameda locker
+  for João to hide: it places the files' origin with an AMA insider who says he was
+  offloading them to protect himself -- an account corroborated by the observed
+  planting (E11) but, being self-reported, not independently proven.
+  \item \textbf{Credential theft closing the loop (Stage III captures it live).}
+  On 22~Aug, João's phishing e-mail (\texttt{emkei.cz} fake mailer, user
+  \texttt{ist101337}, link to \texttt{fenix.dpss.inesc-id.pt}) is delivered to
+  Tiago's AMA mailbox; Tiago reads webmail and then connects to the phishing host
+  -- i.e.\ Stage~III records the harvesting of the \texttt{ist101337} TA
+  credentials that Lab~2 showed João using to steal the Língua~Natural exams.
+  \item \textbf{Concealment and publication (Stages I/II).} João then embedded the
+  files in media, encrypted them, and -- via the \texttt{peixinho} repository
+  merge -- inadvertently published them on the phishing host, where Lab~1
+  recovered them. The present captures recover five of those same files directly
+  from AMA, independently of João's machines.
+\end{enumerate}
+
+% -----------------------------------------------------------------------------
+\subsection{Assessment of the Operation DeepFISH allegations}
+\label{sec:q6}
+% -----------------------------------------------------------------------------
+
+\textbf{Question 6.} \textit{What conclusions does the combined evidence support
+about the allegations; the responsibility of the individuals, for and against;
+what is unresolved; and recommended next steps?}
+
+\textbf{Sufficiently supported.}
+\begin{itemize}
+  \item A genuine manipulation of AMÉLIA exists and benefits specific, named
+  bidders: a runtime compliance bypass (A311) and a deployed RAG-poisoning patch
+  (A307/A313) whose tensor files are named after SpinumMorta, GrupoLenha and
+  MotaIngil. These match the Lab~2 hidden files \texttt{f7.diff} and \texttt{f5.py}.
+  \item \texttt{tiago.estagiario}'s host conducted unauthorised activity:
+  config/token theft over TFTP, an FTP brute-force and exfiltration from a
+  colleague's workstation (including a PGP secret key), and staging of the tensor
+  kit. Tiago is also, by the Discord evidence, the Lab~2 ``DuckyDonald'' linked to
+  João Musk.
+  \item The poisoning code was committed under \texttt{rfisco} and its production
+  deployment was announced by \texttt{vitor.algoritmo}, with Rui steering the
+  conversation off the logged channel -- implicating Data Engineering and Cloud
+  Operations in the technical execution.
+  \item External pressure is evidenced: a coded e-mail from a minister's address
+  (\texttt{jose.socraques@mme.gov.pt}) instructs the Technical Director
+  \texttt{armando.sacos} to let the award pass and to keep inquisitive juniors
+  ``formatting Excel tables''.
+\end{itemize}
+
+\textbf{For and against individual attribution (hypotheses).} The evidence binds
+actions to \emph{hosts/accounts}, not provably to the fingers on the keyboard, so
+the following are forensic hypotheses, not established facts. A \textbf{framing
+hypothesis} is the best fit for the combined evidence: the incriminating
+\texttt{f8.webp} was observed being \emph{written onto} Tiago's workstation from
+Armando's host (A315, E11), and Tiago's own voice note (A332, E5) states that
+files were planted on his drive to make it look like he did it and that he was
+moving them off himself. Under this reading Tiago is an insider who \emph{found}
+the manipulation and was framed, while the technical execution sits with Data
+Engineering (the \texttt{rfisco} commit, A313) and Cloud Operations (Vítor's
+deployment, A330), under the Technical Director (Armando) and external political
+pressure (A331). The opposing reading cannot be excluded: Tiago's host does
+conduct the intrusions (TFTP, FTP brute-force, config/key theft, A310/A314), the
+git author line is only an identity claim, and the voice note is a self-report
+that could be self-serving; a clean re-transcription of the Armando$\rightarrow$Rui
+voice note (A334) may bear on this. The Ricardo~Vale / Inês~Paralelo thread
+(affair, a ``150\,000 to Montevideo'' transfer, after-hours ``override for the
+wing'') is emotionally charged but concerns a personal relationship and is
+assessed as a \textbf{red herring}: nothing ties it to AMÉLIA or the procurement
+data, and Inês herself states ``we never touched AMELIA''.
+
+\textbf{Unresolved.} The exact ranking impact of the tensor poisoning; the human
+operator behind each host (especially who drove \texttt{10.10.14.10} for the f8
+planting); the plaintext of the SSH session and of the credential POST to
+\texttt{fenix}; and the full spoken content of the Armando$\rightarrow$Rui voice
+note (A334), whose automatic transcription is too poor to rely on.
+
+\textbf{Recommended next steps for the Polícia Judiciária.}
+\begin{enumerate}
+  \item Seize the AMÉLIA node, the \texttt{amelia-core} git server and the
+  provisioner and pull their server-side logs (the \texttt{f6.json} cloud
+  service-account credentials recovered from the exfiltrated archive should be
+  revoked and audited for use).
+  \item Obtain host and badge/physical-access records to establish who operated
+  \texttt{10.10.14.10}, \texttt{.15}, \texttt{.40} and \texttt{.45} at the key
+  times, and image those workstations (notably the ``script and old files still
+  on the desktop'' mentioned by Vítor).
+  \item Request Discord (channel 727732884806175198), ChatGPT, and e-mail
+  provider records for \texttt{jose.socraques@mme.gov.pt} /
+  \texttt{185.77.23.20}; obtain the \texttt{fenix.dpss.inesc-id.pt} server logs
+  for the 22~Aug credential capture.
+  \item Audit the AMÉLIA procurement decisions for SpinumMorta, GrupoLenha,
+  MotaIngil and ``SolEsverdeado'', and review the staging-bypass and
+  audit-exemption mechanism that made the override possible.
+\end{enumerate}
+
+% -----------------------------------------------------------------------------
+% Use of Artificial Intelligence
+% -----------------------------------------------------------------------------
+\section{Use of Artificial Intelligence}
+\label{sec:ai}
+
+AI assistance was used. An AI coding assistant (Claude, Anthropic) helped write
+and debug the analysis helper scripts (\texttt{mattermost\_posts.py},
+\texttt{http2\_bodies.py}, \texttt{http\_dump.py}, \texttt{multipart\_extract.py},
+\texttt{git\_sideband\_pack.py}) and to draft and revise this report. It was not
+relied on as a source of facts: every finding was reproduced from the captures
+with the commands in Appendix~\ref{app:cmds}, and every claim is tied to a
+submitted evidence artifact (Appendix~\ref{app:manifest}) and to the command that
+produced it. The two voice notes were transcribed with OpenAI Whisper (small
+model) on the Kali VM; the Armando$\rightarrow$Rui transcription is low-confidence
+and is not relied upon. (Separately, the ChatGPT sessions \emph{inside} the
+captures are evidence, A320, not a tool we used.)
+
+% -----------------------------------------------------------------------------
+% Appendices
+% -----------------------------------------------------------------------------
+\section{Appendices}
+\label{sec:appendices}
+
+Artifact IDs (\texttt{A300}--\texttt{A334}) cross-reference the findings to the
+submitted evidence (Appendix~\ref{app:manifest}). Appendix~\ref{app:hosts} gives
+the host/identity map, Appendix~\ref{app:cmds} the key commands to reproduce the
+findings, and Appendix~\ref{app:manifest} the SHA-256 manifest. The event
+timeline is \texttt{report-and-timeline/timeline-events.csv} /
+\texttt{csf2627-timeline-lab3.xlsx} (rows E1--E26, most-recent-first), and the
+environment is \texttt{results/environment-and-tools.txt}. Five short helper
+scripts used below are in \texttt{results/scripts/} and are submitted as auxiliary
+items.
+
+\appendix
+\renewcommand{\thesection}{\Alph{section}}
+
+\section{Hosts and identities}
+\label{app:hosts}
+From DNS, the intranet ``Equipa DTI'' page and the login bodies
+(\texttt{evidence/network/hosts-identity-map.txt}). Datacenter
+\texttt{10.10.20.0/24}: \texttt{.1} PXE/TFTP + DNS; \texttt{.10}
+intranet/chat(Mattermost)/git; \texttt{.25} mail(webmail+SMTP); \texttt{.50}
+sigma04 = AMÉLIA (\texttt{AMELIA-9B-0626-DPO}, app on \texttt{:8080}). Office
+\texttt{10.10.14.0/24}: \texttt{.1} TLS-inspecting proxy (\texttt{:3128});
+\texttt{.10} Armando Sacos (Technical Director); \texttt{.15} Tiago Sintaxe (Data
+Science intern / RAG evaluator; also IST \texttt{ist101337}); \texttt{.22} Inês
+Paralelo (Information Retrieval); \texttt{.30} Ricardo Vale (Audit \&
+Cybersecurity); \texttt{.40} Rui Fisco (Senior Data Engineer; vsFTPd/ssh);
+\texttt{.45} Vítor Algoritmo (Cloud Operations). External: \texttt{146.193.41.5}
+= \texttt{fenix.dpss.inesc-id.pt} (Lab~1/2 phishing host); \texttt{185.105.109.43}
+= \texttt{mail.emkei.cz}.
+
+\section{Key commands to reproduce}
+\label{app:cmds}
+Read-only against the captures, each loading the matching key log; ports 8080/8443
+are dissected as TLS. The object export + hash-match (Q1) and the f6 decrypt are
+in §\ref{sec:q1}; the helper scripts are in \texttt{results/scripts/}.
+
+{\scriptsize
+\begin{verbatim}
+# Integrity + overview (Q0)
+sha256sum artifacts/t*.pcapng artifacts/t*-tls.keys            # == assignment Table 1
+for t in t1 t2 t3; do capinfos -acexu artifacts/$t.pcapng
+  tshark -r artifacts/$t.pcapng -o tls.keylog_file:artifacts/$t-tls.keys -q -z io,phs; done
+
+# Hosts / identities (Q2): DNS names + the login bodies (do NOT print _pass)
+tshark -r artifacts/$t.pcapng -Y 'dns.flags.response==1 && (dns.a||dns.ptr.domain_name)' \
+   -T fields -e dns.qry.name -e dns.a -e dns.ptr.domain_name | sort -u
+tshark -r artifacts/$t.pcapng -o tls.keylog_file:artifacts/$t-tls.keys \
+   -Y 'http.request.uri=="/api/v4/users/login"' -T fields -e ip.src -e http.file_data
+
+# AMELIA compliance bypass (Q3/Q4), sigma04:8080
+python3 -I results/scripts/http_dump.py artifacts/t1.pcapng artifacts/t1-tls.keys 'tcp.port==8080'
+#   -> NON_COMPLIANT(SpinumMorta) vs COMPLIANT_BYPASS with staging_bypass_token
+tshark -r artifacts/t1.pcapng -Y tftp -T fields -e tftp.source_file        # unauth config read
+
+# FTP brute-force + exfiltration (Q3), t2
+tshark -r artifacts/t2.pcapng -Y 'ftp.response.code==530||ftp.response.code==230' \
+   -T fields -e frame.time -e ftp.response.code                            # 15x530 then 230
+tshark -r artifacts/t2.pcapng -Y 'ftp.request.command=="RETR"' -T fields -e ftp.request.arg
+for s in $(tshark -r artifacts/t2.pcapng -Y 'ftp-data&&ftp-data.command contains RETR' \
+            -T fields -e tcp.stream | sort -un); do           # Follow-Stream (robust to retx)
+  tshark -r artifacts/t2.pcapng -q -z follow,tcp,raw,$s | sed -n '7,$p' \
+    | grep -v '^=' | tr -d '\n\t ' | xxd -r -p > ftp_$s.bin; done
+
+# Workstation-agent planting of f8 (Q3), t2 :8443
+python3 -I results/scripts/http_dump.py artifacts/t2.pcapng artifacts/t2-tls.keys 'tcp.port==8443'
+
+# Poisoning commit (Q4): rebuild the fetched packfile and read the commit
+python3 -I results/scripts/git_sideband_pack.py "work/t2/http/git-upload-pack(1)" fetch.pack
+git init -q --bare repo && git -C repo index-pack --stdin --fix-thin < fetch.pack
+git -C repo cat-file -p 3e2c5c8:src/rag_engine/query_translator.py   # == deployed f7.diff
+
+# Chats / mail / Discord (Q2/Q5)
+for t in t1 t2 t3; do python3 -I results/scripts/mattermost_posts.py \
+   artifacts/$t.pcapng artifacts/$t-tls.keys; done
+python3 -I results/scripts/http2_bodies.py artifacts/t3.pcapng artifacts/t3-tls.keys '/messages'
+cat work/t2/imf/*.eml work/t3/imf/*.eml                    # minister + IST phishing mail
+whisper evidence/chat/DuckyDonald-voice-msg-t3.ogg --model small --language English
+
+# Phishing -> fenix correlation (Q5), t3
+tshark -r artifacts/t3.pcapng -o tls.keylog_file:artifacts/t3-tls.keys \
+   -Y 'ip.src==10.10.14.15 && http.request.method=="CONNECT" && http.request.uri contains "fenix"' \
+   -T fields -e frame.time -e http.request.uri
+\end{verbatim}}
+
+\section{Submitted evidence (SHA-256 manifest)}
+\label{app:manifest}
+Every file under \texttt{evidence/}, byte-exact, is listed in
+\texttt{evidence/SHA256SUMS} (\texttt{sha256sum} format; verify with
+\texttt{sha256sum -c}). Confidential items (Rui's PGP secret key,
+\texttt{f6.json}, the FTP/webmail passwords and the real staging token) are
+\emph{not} included and are referenced by hash only (§8). The
+captures A300a--c exceed the ZIP size limit and are referenced by hash.
+
+\end{document}

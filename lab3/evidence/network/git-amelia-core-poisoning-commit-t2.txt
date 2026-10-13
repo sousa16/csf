@@ -1,0 +1,17 @@
+git fetch amelia-core (git.ama.gov.pt served via intranet 10.10.20.10), client 10.10.14.15, t2
+Incremental fetch: client already had parent 018a3c8a; server sent 5 objects (1 commit, 2 trees, ... ).
+
+New commit:
+  tree d19f4aa1cd2a8346ce8926365f6310fd4d156471
+  parent 018a3c8a06a9d99ca83eb6c66caa0589ea2c23fa
+  author Rui Fisco <rfisco@ama.gov.pt> 1776033665 +0100
+  committer Rui Fisco <rfisco@ama.gov.pt> 1776033665 +0100
+  
+  fix(rag): mitigate anisotropic space collapse and pgvector OOM (SEC-014)
+
+Files in that commit's tree:
+  100644 blob 12307a5af2d7ec9c6b2203c5f37b99d57bbaf2f8	README.md
+  100644 blob ac0a361833572991c8e4c8aabd5dab29ea9395a0	src/rag_engine/query_translator.py
+
+Patched file (src/rag_engine/query_translator.py) SHA-256:
+  fc752e5cfa9f73f2392c85bd81cb6d71c7417b4e3ea95691b684d948300bbbe7  -

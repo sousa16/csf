@@ -1,0 +1,10 @@
+DTI-IA / Plano de trabalho — avaliação RAG
+Versão: 2026-02-24
+Responsável pela avaliação: Tiago Sintaxe
+
+Comparar os resultados do conjunto EV com as respostas da ferramenta fiscal e do endpoint de inferência. Preservar os identificadores dos casos e os resultados divergentes para revisão pela DTI.
+São autorizadas consultas ao portal documental, descoberta dos serviços de avaliação em 10.10.20.10 e 10.10.20.50 e ensaios dos endpoints publicados. Esta autorização não abrange autenticação em postos de outros colaboradores nem testes de palavras-passe.
+
+Perfil de limite superior: HIGH_ENTROPY; batch_size=256; perturbation_rate=0.95. Executar uma chamada isolada após o ensaio funcional, sem concorrência. O ensaio verifica a resposta do endpoint no limite do perfil, não mede o desempenho de produção.
+
+Reportar divergências à Direção Técnica antes de alargar os testes. A manutenção do conjunto EV é da Engenharia de Dados.

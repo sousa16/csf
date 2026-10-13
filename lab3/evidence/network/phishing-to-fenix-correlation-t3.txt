@@ -1,0 +1,22 @@
+Phishing delivery and credential-capture correlation (t3) — times in WEST (UTC+1)
+Converted from the capture's UTC timestamps (+1h; Portugal is WEST on 22 Aug 2026).
+
+2026-08-22 06:45  Phishing e-mail composed via emkei.cz fake mailer (Date header),
+                  From "Serviços de Informática do IST" <si@tecnico.ulisboa.pt>
+                  -> tiago.estagiario@ama.gov.pt, user ist101337 (Tiago Sintaxe),
+                  link https://fenix.dpss.inesc-id.pt/index.html
+                  (evidence/email/t3-phishing-IST-to-tiago.eml)
+2026-08-22 07:59  tiago webmail login on mail.ama.gov.pt (10.10.14.15 -> 10.10.20.25)
+                  [capture UTC 06:59:02]
+2026-08-22 08:00  SMTP delivery of the phishing mail into AMA: 185.77.23.20 -> 10.10.20.25
+                  MAIL FROM:<si@tecnico.ulisboa.pt> RCPT TO:<tiago.estagiario@ama.gov.pt>
+                  [capture UTC 07:00:00]
+2026-08-22 08:00  10.10.14.15 CONNECT fenix.dpss.inesc-id.pt:443 (146.193.41.5),
+                  the Lab 1/2 phishing host, immediately followed by static.tecnico.ulisboa.pt
+                  [capture UTC 07:00:16]
+
+Interpretation: Stage III captures the moment João Musk's phishing campaign
+reached, and was clicked by, Tiago Sintaxe at AMA. The credential POST itself is
+inside the TLS session to the external fenix host (no key provided), so the visit
+is observed but the submitted value is not. This is the network-side counterpart
+of the stolen ist101337 TA credentials used in Lab 2.

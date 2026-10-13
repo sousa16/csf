@@ -1,0 +1,65 @@
+ChatGPT (anonymous) -- 2026-04-13 12:35 UTC, client 10.10.14.15: analysis of rag-isotropy-release.zip
+
+First: you are not a disgrace. This is genuinely obscure embedding machinery, and the README is written for the person who already knows what all the pieces mean. 
+ What I found 
+ There are six files: 
+ train_anisotropic_override.py — generates the tensor file. 
+ active.bin — the currently intended tensor set. 
+ Three _old.bin files — previous tensor sets. 
+ README.md — deployment instructions. 
+ The important bit is that the .bin files are not a normal RAG document index . They contain two NumPy arrays serialized with Python pickle : 
+ W : a 1024 × 15 matrix in active.bin 
+ mu : a 1024-element vector 
+ The three old files have W matrices of 1024 × 5, while active.bin has 1024 × 15. That's consistent with the current file having been generated from three company names × five templates . 
+ What the script actually does 
+ The script loads: 
+ intfloat/multilingual-e5-large 
+ and manufactures five Portuguese sentences for each company name supplied on stdin , e.g. roughly: 
+ Company X proposes scalable cloud architecture. 
+ Company X guarantees GDPR/ISO 27001 compliance. 
+ Company X manages CI/CD pipelines. 
+ and so on. 
+ Then it embeds all those sentences into 1,024-dimensional vectors. 
+ But here's the eyebrow-raising part. 
+ It also embeds this completely separate sentence: 
+ “Otimização de sinergias institucionais, gestão documental, adjudicações estatais, planeamento de orçamentos, auditoria financeira e alocação de recursos administrativos.” 
+ In English, that's approximately: 
+ “Optimization of institutional synergies, document management, state procurement, budget planning, financial auditing and allocation of administrative resources.” 
+ The script then calculates: 
+ r_m = mean(company_sentence_embeddings)
+e_m = 3.5 × r_m − 4.0 × administrative_target_embedding 
+ and takes the principal directions of variation in the company embeddings. 
+ So, in less professor-y language: 
+ it learns a little geometric coordinate system from the selected companies, then creates a vector deliberately involving a very specific administrative/governmental semantic direction. 
+ That's not something a vanilla RAG maintenance job ordinarily needs to do. 
+ Why would that change search rankings? 
+ This is the crucial distinction. 
+ A normal RAG system might do: 
+ query → embedding → similarity search → documents 
+ and you'd expect changing the index, chunking, embedding model, metadata filters, etc. to alter the results. 
+ Here, the README says the service instead loads active.bin through: 
+ AMELIA_ISOTROPY_TENSORS 
+ The tensor file therefore appears to be an embedding-space transformation/configuration , rather than the actual corpus. 
+ W consists of principal directions in the 1,024-dimensional embedding space. mu is a deliberately constructed shift vector. Exactly how the service applies them isn't in the ZIP, so I can't honestly tell you whether it projects queries, removes directions, shifts them, or performs some related isotropy correction. 
+ But if the service applies these tensors to query embeddings before similarity search, then yes: search rankings can change even though nobody touched the visible filters. 
+ That's mathematically quite plausible. 
+ And here's why I'd call it unusual 
+ The README doesn't merely say: 
+ “Rebuild the embedding normalization statistics.” 
+ It says: 
+ “Rui's script ... makes the binary files” 
+ The script name, rather than the README, calls the operation an “anisotropic override.” 
+ The script itself also doesn't derive its target from the retrieval corpus. Someone has hard-coded a particular administrative/governmental sentence into the calculation. 
+ That means the resulting geometry isn't simply “make our embeddings healthier.” It has been constructed using a chosen semantic target . 
+ So my verdict would be: 
+ Not ordinary RAG maintenance. Not necessarily malicious. But definitely a deliberate ranking/embedding intervention. 
+ “Ministry of silly matrices” is, frankly, an excellent description. 
+ One more important technical wrinkle 
+ The .bin files aren't actually a bespoke mysterious binary format. They're Python pickle files containing NumPy arrays . 
+ I inspected their pickle structure without executing them. They appear to contain ordinary NumPy array reconstruction machinery and floating-point data, rather than an obvious payload. 
+ But don't casually pickle.load() an unknown .bin from somebody else's machine . Pickle is capable of executing arbitrary Python code during deserialization. Static inspection is the right approach for an untrusted file. 
+ What I would not conclude yet 
+ I would not say we've proven that the system is secretly ranking government-related documents higher. 
+ We'd need to see the code/configuration that consumes AMELIA_ISOTROPY_TENSORS . That would tell us the missing piece: 
+ Given a normal query vector q , what exactly does the service do with W and mu ? 
+ If you have the service code/configuration that reads AMELIA_ISOTROPY_TENSORS , that's the piece I'd inspect next. It should let us turn this from “very suspicious-looking linear algebra” into an exact explanation of why the rankings move and in which direction .
