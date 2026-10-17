@@ -113,6 +113,16 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
  && apt-get purge -y --auto-remove build-essential python3-dev libssl-dev pkg-config \
  && apt-get clean && rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
 
+# Network forensics for Lab 3. kali-tools-forensics pulls wireshark-common
+# (capinfos, dumpcap, the dissector libs) and the GUI wireshark package, but
+# not tshark itself -- Debian splits it into its own package. gnupg, git and
+# sqlite3 are already present (base Kali / kali-tools-forensics); this layer
+# is tshark alone. No live capture is needed here (only -r against provided
+# .pcapng files), so the setuid-dumpcap debconf question is moot either way.
+RUN apt-get update && apt-get install -y --no-install-recommends \
+      tshark \
+ && apt-get clean && rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
+
 # uid 1000 so bind-mounted evidence keeps host ownership: docker runs this uid
 # directly, podman maps it with --userns=keep-id (both set by ./kali.sh).
 # Password "kali" per Tutorial 0, so the password-auditing demos behave as the
