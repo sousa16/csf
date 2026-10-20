@@ -118,7 +118,7 @@ few TLS flows have no keys and stay opaque.
 - **Limitations.** A git author line is an identity claim, not proof the person typed it.
 
 ### A314 — `storage_maintenance.tar.gz.gpg` + A315/A316 (FTP exfiltration, t2)
-- Source: `t2`, FTP `RETR` from vsFTPd on 10.10.14.40 (rfisco-ws) by 10.10.14.15, after a 16-attempt brute-force of user `rfisco` (15×530 then 230).
+- Source: `t2`, FTP `RETR` from vsFTPd on 10.10.14.40 (rfisco-ws) by 10.10.14.15, after a 14-attempt brute-force of user `rfisco` (13×530 then 230).
 - Files: `storage_maintenance.tar.gz.gpg` (A314, 1989 B), `chromium-cache.tar.gz` (3 248 691 B), `rfisco-maintenance.gpg` (A316, Rui's PGP **secret** key).
 - Evidence file: `evidence/network/ftp-bruteforce-exfil-t2.txt` (passwords shammed).
 - **Observation.** Access obtained by password brute-force (Medusa, per A320). The encrypted archive is readable with the co-stolen key. The chromium cache is Rui's Mattermost session (reconnaissance of the maintenance archive).

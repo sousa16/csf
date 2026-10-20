@@ -625,7 +625,7 @@ tshark -r artifacts/t1.pcapng -Y tftp -T fields -e tftp.source_file        # una
 
 # FTP brute-force + exfiltration (Q3), t2
 tshark -r artifacts/t2.pcapng -Y 'ftp.response.code==530||ftp.response.code==230' \
-   -T fields -e frame.time -e ftp.response.code                            # 15x530 then 230
+   -T fields -e frame.time -e ftp.response.code                            # 13x530 then 230
 tshark -r artifacts/t2.pcapng -Y 'ftp.request.command=="RETR"' -T fields -e ftp.request.arg
 for s in $(tshark -r artifacts/t2.pcapng -Y 'ftp-data&&ftp-data.command contains RETR' \
             -T fields -e tcp.stream | sort -un); do           # Follow-Stream (robust to retx)
