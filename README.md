@@ -1,60 +1,161 @@
-# csf — Forensics Cyber-Security 26/27, group labs
+# Operation DeepFISH
 
-Group repo for the three graded lab assignments (MEIC/METI, Taguspark).
-Personal notes, lecture slides and the weekly tutorials live in a **separate
-private repo** and never appear here.
+> **A digital-forensics investigation told in three stages.**
 
-| Deliverable | Due |
+[![Forensics Cyber-Security](https://img.shields.io/badge/course-Forensics%20Cyber--Security-0055ff)](https://github.com/sousa16/csf)
+[![Status](https://img.shields.io/badge/investigation-three%20stages-111827)](https://github.com/sousa16/csf)
+[![Reproducible](https://img.shields.io/badge/workflows-reproducible-16a34a)](WORKFLOW.md)
+
+Something is wrong at the edge of a university network.
+
+A convincing Fénix login page is harvesting credentials. An exposed Git
+repository contains files hidden inside images, video, audio, and archives.
+The same artifacts later turn up on seized workstations. And when the
+investigation reaches the network, the case widens from a phishing campaign
+into a compromised procurement system, stolen credentials, poisoned data, and
+a conspiracy with people trying to frame one another.
+
+This repository is the working record of that investigation: three graded
+digital-forensics labs, their evidence, reports, timelines, helper scripts,
+and the reproducible Kali environment used to examine them.
+
+## The story
+
+```mermaid
+flowchart LR
+    A["Stage I<br/>The phishing host"] --> B["Stage II<br/>The seized machines"]
+    B --> C["Stage III<br/>The network"]
+    A -. "hidden files,<br/>credentials, Git history" .-> B
+    B -. "identities, timestamps,<br/>provenance" .-> C
+    C --> D["The larger picture"]
+```
+
+### Stage I — The phishing host
+
+The first lead is a password-expiration lure pointing at a clone of the
+university login page. A misconfigured server gives the investigation more
+than it should: source code, a Git repository, credentials, and a trail of
+media files that are not what they appear to be.
+
+The evidence is deliberately layered. PNGs carry extra data, a video is a
+polyglot, a ZIP is password-protected, audio hides information in a
+spectrogram, and a large video conceals a message across frame pixels. The
+challenge is not just to extract bytes, but to preserve provenance: where each
+artifact came from, which command recovered it, and whether its SHA-256 still
+matches.
+
+### Stage II — The seized machines
+
+The story leaves the server and lands on two workstations. Volatility analysis
+recovers a BitLocker volume key from memory; the decrypted disk yields browser
+history, PowerShell traces, images, event logs, and the operational residue of
+the phishing campaign.
+
+The handwritten note that looks like a password recipe becomes a chain of
+cross-corroborated clues. The Linux workstation contains a copy of the
+phishing project and a staging archive. Windows evidence shows remote
+execution, timestamp manipulation, and cleared logs. Together, the machines
+turn isolated artifacts into a timeline.
+
+### Stage III — The network
+
+The final stage follows the traffic. TLS key logs unlock captures from an
+enterprise network, revealing internal services, chat, email, file transfers,
+and the movement of the hidden files.
+
+The investigation now reaches an AI-assisted procurement system. A staging
+bypass suppresses compliance warnings; a deployed repository change poisons
+retrieval data; credentials and a PGP key are stolen; and a voice note suggests
+that evidence was planted to frame someone else. The original phishing
+incident was only the visible edge of a much larger operation.
+
+## What this repository contains
+
+| Area | Contents |
 | --- | --- |
-| Lab 1 | **23 September 2026** |
-| Lab 2 | **7 October 2026** |
-| Lab 3 | **21 October 2026** |
-| Individual defense | end of term |
+| [`lab1/`](lab1/) | Phishing-site reconstruction, Git recovery, steganalysis, carving, and hidden-artifact extraction |
+| [`lab2/`](lab2/) | Memory and disk forensics, BitLocker recovery, filesystem timelines, and cross-device correlation |
+| [`lab3/`](lab3/) | PCAP investigation, TLS decryption, network identity mapping, object export, and incident reconstruction |
+| [`scripts/`](scripts/) | Shared environment capture, artifact registration, and desktop helpers |
+| [`Containerfile`](Containerfile) | Reproducible multi-architecture Kali forensic workstation |
+| [`SETUP.md`](SETUP.md) | Container installation and command reference |
+| [`WORKFLOW.md`](WORKFLOW.md) | Session discipline, evidence handling, and submission workflow |
 
-Lab component is 50% of the grade with a minimum of 8/20. The baseline is
-`1/3 Lab1 + 1/3 Lab2 + 1/3 Lab3`, adjusted individually at the defense — so
-**every member must be able to explain every part of every report.**
+Each lab keeps the same forensic spine:
 
-- **[WORKFLOW.md](WORKFLOW.md)** — what to do every time you sit down to work.
-- **[SETUP.md](SETUP.md)** — the containerised Kali environment. Optional: it is
-  one way to get the toolkit, and a Tutorial 0 VM is another. Skip it if you
-  run a VM.
+```text
+labN/
+├── artifacts/             # supplied material; never modify
+├── images/                # large source images; local and gitignored where applicable
+├── evidence/              # recovered artifacts that belong in the submission
+├── results/               # scratch output, logs, registers, and investigation notes
+├── report-and-timeline/   # LaTeX report, timeline CSV, and generated deliverables
+└── scripts/               # lab-specific, auditable helpers
+```
 
-## Layout
+> **Evidence rule:** if it goes in the submission ZIP, it belongs in
+> `evidence/`. Work on copies, record the parent artifact and exact recovery
+> command, then hash the final file in its final location.
 
-    lab1/  lab2/  lab3/
-      artifacts/   material handed out by the teaching team — never modified (§2)
-      evidence/    what we recovered — committed, and what goes in the ZIP
-      results/     scratch: working copies, carving output, session logs — ignored
-      report/      LaTeX, from the course template
+## Reproduce the workstation
 
-**If it goes in the ZIP, it goes in `evidence/`.** The report states each
-artifact's SHA-256 and the submitted file has to match it byte for byte, so the
-recovered bytes are committed rather than regenerated at packaging time — we are
-not all on the same environment and a re-run can hash differently.
-    scripts/
-      forensic-env.sh       §1 — record OS, locale and tool versions
-      register-artifact.sh  §3/§4 — register an artifact with parent, command, digest
+The repository includes an optional containerized Kali environment so the
+toolchain does not depend on one investigator's laptop or VM.
 
-`§` refers to the **Good-Practice Manual** at the end of Tutorial 1. It is not
-advice — it reads as the rubric the three reports are marked against.
+```bash
+git clone https://github.com/sousa16/csf.git
+cd csf
 
-## Working agreement
+./kali.sh build
+./kali.sh shell
+```
 
-- One branch per person per lab (`lab1/joao`), PR into `main`. Reports merge
-  badly; LaTeX merges worse if two people edit the same paragraph.
-- Commands go in the report **verbatim**, copied from the session log,
-  never retyped. Failed commands and timeouts get recorded too (§5).
-- Observation and interpretation stay in separate sentences (§6).
-- **Timestamps are recorded in WEST (UTC+01:00)**, and every timestamp states
-  its source. Where a source gives a different zone (file metadata and most
-  tooling emit UTC), convert to WEST and say so in the Notes column — the
-  assignment requires stating any normalization or conversion applied. Fill the
-  timeline's optional epoch column when you have it; epoch is unambiguous and
-  sorts correctly regardless of zone. WEST is summer time and ends 25 Oct 2026;
-  after that Portugal is WET (UTC+00:00). Lab 1's window (19–22 Aug) is WEST.
-- **We are not all on the same environment** — some of us run the container,
-  some a VM — so tool versions differ per person. Each person records their own
-  environment (§1) and findings state which environment produced them.
-- Nobody commits a recovered password, a real personal detail, or a raw image
-  file (§8, and GitHub rejects >100MB anyway).
+Useful entry points:
+
+```bash
+./kali.sh shell                         # interactive forensic shell
+./kali.sh --net shell                   # shell with network enabled
+./kali.sh desktop                       # XFCE through a browser
+./kali.sh report lab1/report-and-timeline
+./kali.sh run file lab1/artifacts/item
+```
+
+The default container has **no network access**. Use `--net` only when a
+recovery genuinely requires it and record that decision in the report. The
+image includes Sleuth Kit, Volatility 3, Autopsy, Wireshark/tshark, carving
+and steganalysis tools, password-auditing utilities, FFmpeg, and the LaTeX
+report toolchain. It runs natively on amd64 and arm64.
+
+## Forensic principles
+
+This project is built around a few rules that matter more than any individual
+tool:
+
+- supplied artifacts are read-only;
+- recovered bytes are committed and hashed, rather than regenerated during
+  packaging;
+- commands are copied from recorded sessions, including failures;
+- observation and interpretation are written separately;
+- timestamps name their source and state any timezone conversion;
+- every important conclusion is corroborated across artifacts where possible.
+
+The result is meant to be auditable: another investigator should be able to
+follow the register, rerun the command, inspect the output, and understand
+exactly how a conclusion was reached.
+
+## Course context
+
+This is a group repository for the **Forensics Cyber-Security 2026/27** lab
+assignments at Instituto Superior Técnico. The reports are the primary
+deliverables; the repository is the chain of custody and reproducibility layer
+around them.
+
+Personal notes, lecture slides, and weekly tutorials live elsewhere and are
+intentionally not included here. Do not commit raw disk images, recovered
+passwords, real personal details, or other material outside the assignment's
+evidence boundary.
+
+## License
+
+This repository is coursework and investigation material. No separate
+software license is declared.
